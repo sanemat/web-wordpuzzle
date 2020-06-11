@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/sanemat/web-wordpuzzle/issues"
   },
-  "homepage": "https://github.com/sanemat/web-wordpuzzle#readme"
+  "homepage": "https://github.com/sanemat/web-wordpuzzle#readme",
+  "devDependencies": {
+    "typescript": "^3.9.5"
+  }
 }
