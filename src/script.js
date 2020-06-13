@@ -30,6 +30,7 @@
       }
 
       const area = document.createElement("textarea");
+      area.classList.add("textarea");
       const queryString = window.location.search;
       const urlParams = new URLSearchParams(queryString);
       area.value = urlParams.toString();
