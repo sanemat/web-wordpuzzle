@@ -15,7 +15,7 @@
 
   window.addEventListener("load", () => {
     initialize()
-      .then((value) => {
+      .then(() => {
         console.log(store);
       })
       .catch((/** @type {Error|string} */ err) => {
