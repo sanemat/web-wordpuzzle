@@ -22,6 +22,7 @@
   "scripts": {
     "prettier": "prettier --write src/*.{js,html,css} index.html",
     "start": "serve",
-    "test": "exit 1"
+    "test": "npm run tsc",
+    "tsc": "tsc"
   }
 }
