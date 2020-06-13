@@ -3,14 +3,17 @@
 
 (() => {
   /**
-   * @type {string} name A name to use.
+   * @typedef {Object<string, any>} Store
+   * @property {string[]} players The players' name.
+   * @type {Store} store
    */
-  const name = "Joe";
   const store = {};
-  console.log(`init ${name}`);
+
   window.addEventListener("load", () => {
     initialize()
-      .then()
+      .then((value) => {
+        console.log(store);
+      })
       .catch((/** @type {Error|string} */ err) => {
         console.error(err);
       });
