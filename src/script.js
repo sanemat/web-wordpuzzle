@@ -5,7 +5,7 @@
   /**
    * @typedef {Object<string, any>} Store
    * @property {string[]} players The players' name.
-   * @property {string} version The app version.
+   * @property {string|null} version The app version.
    * @type {Store} store
    */
   const store = {
