@@ -2,5 +2,9 @@
 "use strict";
 
 (() => {
-  console.log("init");
+  /**
+   * @type {string} name A name to use.
+   */
+  const name = 'Joe';
+  console.log(`init ${name}`);
 })();
