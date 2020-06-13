@@ -7,6 +7,7 @@
     "url": "https://github.com/sanemat/web-wordpuzzle/issues"
   },
   "devDependencies": {
+    "prettier": "^2.0.5",
     "serve": "^11.3.2",
     "typescript": "^3.9.5"
   },
@@ -19,6 +20,7 @@
     "url": "https://github.com/sanemat/web-wordpuzzle.git"
   },
   "scripts": {
+    "prettier": "prettier --write src/*.{js,html,css} index.html",
     "start": "serve",
     "test": "exit 1"
   }
