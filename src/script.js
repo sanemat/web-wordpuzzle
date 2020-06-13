@@ -7,7 +7,9 @@
    * @property {string[]} players The players' name.
    * @type {Store} store
    */
-  const store = {};
+  const store = {
+    players: [],
+  };
 
   window.addEventListener("load", () => {
     initialize()
@@ -36,6 +38,7 @@
       area.classList.add("textarea");
       const queryString = window.location.search;
       const urlParams = new URLSearchParams(queryString);
+      store.players = store.players.concat(urlParams.getAll("ps")); // type-coverage:ignore-line
       area.value = urlParams.toString();
       el.append(area);
 
