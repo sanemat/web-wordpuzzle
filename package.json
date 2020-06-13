@@ -10,6 +10,7 @@
     "@types/node": "^14.0.13",
     "prettier": "^2.0.5",
     "serve": "^11.3.2",
+    "type-coverage": "^2.7.2",
     "typescript": "^3.9.5"
   },
   "homepage": "https://github.com/sanemat/web-wordpuzzle#readme",
@@ -23,7 +24,8 @@
   "scripts": {
     "prettier": "prettier --write src/*.{js,html,css} index.html",
     "start": "serve",
-    "test": "npm run tsc",
-    "tsc": "tsc"
+    "test": "npm run tsc && npm run type-coverage",
+    "tsc": "tsc",
+    "type-coverage": "type-coverage --detail --strict --ignore-catch --is 100"
   }
 }
