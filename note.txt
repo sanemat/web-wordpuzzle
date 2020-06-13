@@ -1,0 +1,8 @@
+{
+  "ps": ["foo", "bar"],
+  "ms": [{"p": 1, "cs": ["a1": "a", "a2": "r", "a3": "m"]}],
+  "hs": ["a", "b", "c"],
+  "v": "0.1.0",
+  "b": {"w": 4, "h": 3, "sp": {"a1": "DW"}, "must": [], ty: "normal"}
+}
+// TODO: the definition of the board
