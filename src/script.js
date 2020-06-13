@@ -3,14 +3,21 @@
 
 (() => {
   /**
-   * @type {string} name A name to use.
+   * @typedef {Object<string, any>} Store
+   * @property {string[]} players The players' name.
+   * @property {string} version The app version.
+   * @type {Store} store
    */
-  const name = "Joe";
-  const store = {};
-  console.log(`init ${name}`);
+  const store = {
+    players: [],
+    version: null,
+  };
+
   window.addEventListener("load", () => {
     initialize()
-      .then()
+      .then((value) => {
+        console.log(store);
+      })
       .catch((/** @type {Error|string} */ err) => {
         console.error(err);
       });
@@ -33,6 +40,8 @@
       area.classList.add("textarea");
       const queryString = window.location.search;
       const urlParams = new URLSearchParams(queryString);
+      store.players = store.players.concat(urlParams.getAll("ps")); // type-coverage:ignore-line
+      store.version = urlParams.get("v"); // type-coverage:ignore-line
       area.value = urlParams.toString();
       el.append(area);
 
