@@ -5,10 +5,12 @@
   /**
    * @typedef {Object<string, any>} Store
    * @property {string[]} players The players' name.
+   * @property {string} version The app version.
    * @type {Store} store
    */
   const store = {
     players: [],
+    version: null,
   };
 
   window.addEventListener("load", () => {
@@ -39,6 +41,7 @@
       const queryString = window.location.search;
       const urlParams = new URLSearchParams(queryString);
       store.players = store.players.concat(urlParams.getAll("ps")); // type-coverage:ignore-line
+      store.version = urlParams.get("v"); // type-coverage:ignore-line
       area.value = urlParams.toString();
       el.append(area);
 
