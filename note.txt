@@ -6,8 +6,8 @@
   "ms": [{"p": 1, "cs": ["a1": "a", "a2": "r", "a3": "m"]}],
   "hs": ["a", "b", "c"],
   "v": "0.1.0",
-  "bw": 4,
-  "bh": 3,
+  "bw": 3,
+  "bh": 4,
   "b": {"sp": {"a1": "DW"}, "must": [], ty: "normal"}
 }
 
@@ -15,6 +15,12 @@
 {
   "players": ["foo", "bar"],
   "version": "0.1.0",
-  "boardMeta": {"w": 4, "h": 3},
+  "boardMeta": {"w": 3, "h": 4},
+  "board": [
+    [null, null, null],
+    [null, null, null],
+    [null, null, null],
+    [null, null, null],
+  ]
 }
 // TODO: the definition of the board

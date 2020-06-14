@@ -8,6 +8,7 @@
  *
  * @typedef {string} Player players' name.
  * @typedef {?string} Version version string.
+ * @typedef {?string} Panel the panel.
  */
 
 /**
@@ -15,12 +16,14 @@
  * @property {Player[]} players The list of player.
  * @property {Version} version The app version.
  * @property {BoardMeta} boardMeta The board options.
+ * @property {Panel[][]} board The board.
  * @type {Store} store
  */
 const store = {
   players: [],
   version: null,
   boardMeta: { width: null, height: null },
+  board: [],
 };
 
 /**
@@ -44,6 +47,11 @@ function initialize() {
     store.version = urlParams.get("v"); // type-coverage:ignore-line
     store.boardMeta.width = Number(urlParams.get("bw")); // type-coverage:ignore-line
     store.boardMeta.height = Number(urlParams.get("bh")); // type-coverage:ignore-line
+    // type-coverage:ignore-next-line
+    store.board = Array.from(
+      new Array(store.boardMeta.height), // type-coverage:ignore-line
+      () => new Array(store.boardMeta.width).fill(null) // type-coverage:ignore-line
+    );
     area.value = urlParams.toString();
     el.append(area);
 
