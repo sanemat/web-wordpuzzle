@@ -2,7 +2,7 @@
 "use strict";
 
 /**
- * @typedef {Object<string, any>} Board
+ * @typedef {Object<string, any>} BoardMeta
  * @property {?number} width The width of the board.
  * @property {?number} height The height of the board.
  *
@@ -14,13 +14,13 @@
  * @typedef {Object<string, any>} Store
  * @property {Player[]} players The list of player.
  * @property {Version} version The app version.
- * @property {Board} board The board options.
+ * @property {BoardMeta} boardMeta The board options.
  * @type {Store} store
  */
 const store = {
   players: [],
   version: null,
-  board: { width: null, height: null },
+  boardMeta: { width: null, height: null },
 };
 
 /**
@@ -42,8 +42,8 @@ function initialize() {
     const urlParams = new URLSearchParams(queryString);
     store.players = urlParams.getAll("ps"); // type-coverage:ignore-line
     store.version = urlParams.get("v"); // type-coverage:ignore-line
-    store.board.width = Number(urlParams.get("bw")); // type-coverage:ignore-line
-    store.board.height = Number(urlParams.get("bh")); // type-coverage:ignore-line
+    store.boardMeta.width = Number(urlParams.get("bw")); // type-coverage:ignore-line
+    store.boardMeta.height = Number(urlParams.get("bh")); // type-coverage:ignore-line
     area.value = urlParams.toString();
     el.append(area);
 
