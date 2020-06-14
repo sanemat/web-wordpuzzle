@@ -18,7 +18,7 @@
       .then(() => {
         console.log(store);
       })
-      .catch((/** @type {Error|string} */ err) => {
+      .catch(/** @param {Error|string} err */ (err) => {
         console.error(err);
       });
   });
