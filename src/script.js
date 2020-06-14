@@ -4,8 +4,10 @@
 (() => {
   /**
    * @typedef {Object<string, any>} Store
-   * @property {string[]} players The players' name.
-   * @property {string|null} version The app version.
+   * @property {Player[]} players list of player.
+   * @property {Version} version The app version.
+   * @typedef {string} Player players' name.
+   * @typedef {string|null} Version version string.
    * @type {Store} store
    */
   const store = {
