@@ -14,6 +14,32 @@ const store = {
   version: null,
 };
 
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {Boolean}
+ * @returns {Promise.<Boolean>}
+ */
+function initialize() {
+  return new Promise((resolve, reject) => {
+    const el = document.body.querySelector("#root");
+    if (!el) {
+      return reject(new Error("no #root"));
+    }
+
+    const area = document.createElement("textarea");
+    area.classList.add("textarea");
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    store.players = store.players.concat(urlParams.getAll("ps")); // type-coverage:ignore-line
+    store.version = urlParams.get("v"); // type-coverage:ignore-line
+    area.value = urlParams.toString();
+    el.append(area);
+
+    return resolve(true);
+  });
+}
+
 (() => {
   window.addEventListener("load", () => {
     initialize()
@@ -26,30 +52,4 @@ const store = {
         }
       );
   });
-
-  /**
-   * @promise
-   * @reject {Error}
-   * @fulfill {Boolean}
-   * @returns {Promise.<Boolean>}
-   */
-  function initialize() {
-    return new Promise((resolve, reject) => {
-      const el = document.body.querySelector("#root");
-      if (!el) {
-        return reject(new Error("no #root"));
-      }
-
-      const area = document.createElement("textarea");
-      area.classList.add("textarea");
-      const queryString = window.location.search;
-      const urlParams = new URLSearchParams(queryString);
-      store.players = store.players.concat(urlParams.getAll("ps")); // type-coverage:ignore-line
-      store.version = urlParams.get("v"); // type-coverage:ignore-line
-      area.value = urlParams.toString();
-      el.append(area);
-
-      return resolve(true);
-    });
-  }
 })();
