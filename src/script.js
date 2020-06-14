@@ -1,20 +1,20 @@
 // @ts-check
 "use strict";
 
-(() => {
-  /**
-   * @typedef {Object<string, any>} Store
-   * @property {Player[]} players list of player.
-   * @property {Version} version The app version.
-   * @typedef {string} Player players' name.
-   * @typedef {string|null} Version version string.
-   * @type {Store} store
-   */
-  const store = {
-    players: [],
-    version: null,
-  };
+/**
+ * @typedef {Object<string, any>} Store
+ * @property {Player[]} players list of player.
+ * @property {Version} version The app version.
+ * @typedef {string} Player players' name.
+ * @typedef {string|null} Version version string.
+ * @type {Store} store
+ */
+const store = {
+  players: [],
+  version: null,
+};
 
+(() => {
   window.addEventListener("load", () => {
     initialize()
       .then(() => {
