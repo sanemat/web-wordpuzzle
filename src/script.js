@@ -2,16 +2,25 @@
 "use strict";
 
 /**
- * @typedef {Object<string, any>} Store
- * @property {Player[]} players list of player.
- * @property {Version} version The app version.
+ * @typedef {Object<string, any>} Board
+ * @property {?number} width The width of the board.
+ * @property {?number} height The height of the board.
+ *
  * @typedef {string} Player players' name.
- * @typedef {string|null} Version version string.
+ * @typedef {?string} Version version string.
+ */
+
+/**
+ * @typedef {Object<string, any>} Store
+ * @property {Player[]} players The list of player.
+ * @property {Version} version The app version.
+ * @property {Board} board The board options.
  * @type {Store} store
  */
 const store = {
   players: [],
   version: null,
+  board: { width: null, height: null },
 };
 
 /**
@@ -31,8 +40,10 @@ function initialize() {
     area.classList.add("textarea");
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
-    store.players = store.players.concat(urlParams.getAll("ps")); // type-coverage:ignore-line
+    store.players = urlParams.getAll("ps"); // type-coverage:ignore-line
     store.version = urlParams.get("v"); // type-coverage:ignore-line
+    store.board.width = Number(urlParams.get("bw")); // type-coverage:ignore-line
+    store.board.height = Number(urlParams.get("bh")); // type-coverage:ignore-line
     area.value = urlParams.toString();
     el.append(area);
 
