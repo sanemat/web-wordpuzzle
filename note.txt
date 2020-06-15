@@ -4,7 +4,10 @@
   "ps": "foo",
   "ps": "bar",
   "ms": [{"p": 1, "cs": ["a1": "a", "a2": "r", "a3": "m"]}],
-  "hs": ["a", "b", "c"],
+  "hs": "a",
+  "hs": "b",
+  "hs": "c",
+  "hs": "t",
   "v": "0.1.0",
   "bw": 3,
   "bh": 4,
@@ -21,6 +24,7 @@
     [null, null, null],
     [null, null, null],
     [null, null, null],
-  ]
+  ],
+  "hands": ["a", "b", "c", "t"]
 }
 // TODO: the definition of the board
