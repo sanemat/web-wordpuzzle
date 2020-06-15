@@ -17,6 +17,7 @@
  * @property {Version} version The app version.
  * @property {BoardMeta} boardMeta The board options.
  * @property {Panel[][]} board The board.
+ * @property {Panel[]} hands The hands.
  * @type {Store} store
  */
 const store = {
@@ -24,6 +25,7 @@ const store = {
   version: null,
   boardMeta: { width: null, height: null },
   board: [],
+  hands: [],
 };
 
 /**
@@ -45,6 +47,7 @@ function initialize() {
     const urlParams = new URLSearchParams(queryString);
     store.players = urlParams.getAll("ps"); // type-coverage:ignore-line
     store.version = urlParams.get("v"); // type-coverage:ignore-line
+    store.hands = urlParams.getAll("hs"); // type-coverage:ignore-line
     store.boardMeta.width = Number(urlParams.get("bw")); // type-coverage:ignore-line
     store.boardMeta.height = Number(urlParams.get("bh")); // type-coverage:ignore-line
     // type-coverage:ignore-next-line
