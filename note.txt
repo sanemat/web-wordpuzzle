@@ -3,7 +3,7 @@
 {
   "ps": "foo",
   "ps": "bar",
-  "ms": [{"p": 1, "cs": ["a1": "a", "a2": "r", "a3": "m"]}],
+  "ms": "0|00|a|10|r|20|m",
   "hs": "a",
   "hs": "b",
   "hs": "c",
@@ -25,6 +25,16 @@
     [null, null, null],
     [null, null, null],
   ],
-  "hands": ["a", "b", "c", "t"]
+  "hands": ["a", "b", "c", "t"],
+  "moves": [
+    {
+      "player": 0,
+      "coordinates": [
+        {"panel": "a", "x": 0, "y": 0},
+        {"panel": "r", "x": 1, "y": 0},
+        {"panel": "m", "x": 2, "y": 0}
+      ]
+    },
+  ]
 }
 // TODO: the definition of the board
