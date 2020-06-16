@@ -5,10 +5,22 @@
  * @typedef {Object<string, any>} BoardMeta
  * @property {?number} width The width of the board.
  * @property {?number} height The height of the board.
- *
+ */
+/**
  * @typedef {string} Player players' name.
  * @typedef {?string} Version version string.
  * @typedef {?string} Panel the panel.
+ */
+/**
+ * @typedef {Object<string, any>} Coordinate
+ * @property {number} x
+ * @property {number} y
+ * @property {Panel} panel
+ */
+/**
+ * @typedef {Object<string, any>} Move
+ * @property {Player} player
+ * @property {Coordinate[]} coordinates
  */
 
 /**
@@ -18,6 +30,7 @@
  * @property {BoardMeta} boardMeta The board options.
  * @property {Panel[][]} board The board.
  * @property {Panel[]} hands The hands.
+ * @property {Move[]} moves The moves.
  * @type {Store} store
  */
 const store = {
@@ -26,6 +39,7 @@ const store = {
   boardMeta: { width: null, height: null },
   board: [],
   hands: [],
+  moves: [],
 };
 
 /**
@@ -50,6 +64,23 @@ function initialize() {
     store.hands = urlParams.getAll("hs"); // type-coverage:ignore-line
     store.boardMeta.width = Number(urlParams.get("bw")); // type-coverage:ignore-line
     store.boardMeta.height = Number(urlParams.get("bh")); // type-coverage:ignore-line
+    const ms = urlParams.getAll("ms");
+    for (const m of ms) {
+      const parts = m.split("|");
+      /** @type {Move} */
+      const move = {};
+      move.player = parts[0]; // type-coverage:ignore-line
+      move.coordinates = []; // type-coverage:ignore-line
+      for (let i = 0; i < parts.length - 1; i += 2) {
+        // type-coverage:ignore-next-line
+        move.coordinates = move.coordinates.concat({
+          x: parseInt(parts[i + 1].charAt(0), 10),
+          y: parseInt(parts[i + 1].charAt(1), 10),
+          panel: parts[i + 2],
+        });
+      }
+      store.moves = store.moves.concat(move); // type-coverage:ignore-line
+    }
     // type-coverage:ignore-next-line
     store.board = Array.from(
       new Array(store.boardMeta.height), // type-coverage:ignore-line
