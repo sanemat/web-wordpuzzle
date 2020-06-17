@@ -2,9 +2,10 @@
 "use strict";
 
 /**
- * @typedef {Object<string, any>} BoardMeta
- * @property {?number} width The width of the board.
- * @property {?number} height The height of the board.
+ * @typedef {{
+ *   width: ?number,
+ *   height: ?number,
+ * }} BoardMeta
  */
 /**
  * @typedef {string} Player players' name.
@@ -12,25 +13,29 @@
  * @typedef {?string} Panel the panel.
  */
 /**
- * @typedef {Object<string, any>} Coordinate
- * @property {number} x
- * @property {number} y
- * @property {Panel} panel
+ * @typedef {{
+ *   x: number,
+ *   y: number,
+ *   panel: Panel,
+ * }} Coordinate
  */
 /**
- * @typedef {Object<string, any>} Move
- * @property {Player} player
- * @property {Coordinate[]} coordinates
+ * @typedef {{
+ *   player: Player,
+ *   coordinates: Coordinate[],
+ * }} Move
  */
-
 /**
- * @typedef {Object<string, any>} Store
- * @property {Player[]} players The list of player.
- * @property {Version} version The app version.
- * @property {BoardMeta} boardMeta The board options.
- * @property {Panel[][]} board The board.
- * @property {Panel[]} hands The hands.
- * @property {Move[]} moves The moves.
+ * @typedef {{
+ *   players: Player[],
+ *   version: Version,
+ *   boardMeta: BoardMeta,
+ *   board: Panel[][],
+ *   hands: Panel[],
+ *   moves: Move[],
+ * }} Store
+ */
+/**
  * @type {Store} store
  */
 const store = {
@@ -59,33 +64,32 @@ function initialize() {
     area.classList.add("textarea");
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
-    store.players = urlParams.getAll("ps"); // type-coverage:ignore-line
-    store.version = urlParams.get("v"); // type-coverage:ignore-line
-    store.hands = urlParams.getAll("hs"); // type-coverage:ignore-line
-    store.boardMeta.width = Number(urlParams.get("bw")); // type-coverage:ignore-line
-    store.boardMeta.height = Number(urlParams.get("bh")); // type-coverage:ignore-line
+    store.players = urlParams.getAll("ps");
+    store.version = urlParams.get("v");
+    store.hands = urlParams.getAll("hs");
+    store.boardMeta.width = Number(urlParams.get("bw"));
+    store.boardMeta.height = Number(urlParams.get("bh"));
     const ms = urlParams.getAll("ms");
     for (const m of ms) {
       const parts = m.split("|");
       /** @type {Move} */
-      const move = {};
-      move.player = parts[0]; // type-coverage:ignore-line
-      move.coordinates = []; // type-coverage:ignore-line
+      const move = { player: parts[0], coordinates: [] };
       for (let i = 0; i < parts.length - 1; i += 2) {
-        // type-coverage:ignore-next-line
         move.coordinates = move.coordinates.concat({
           x: parseInt(parts[i + 1].charAt(0), 10),
           y: parseInt(parts[i + 1].charAt(1), 10),
           panel: parts[i + 2],
         });
       }
-      store.moves = store.moves.concat(move); // type-coverage:ignore-line
+      store.moves = store.moves.concat(move);
     }
-    // type-coverage:ignore-next-line
-    store.board = Array.from(
-      new Array(store.boardMeta.height), // type-coverage:ignore-line
-      () => new Array(store.boardMeta.width).fill(null) // type-coverage:ignore-line
-    );
+
+    /** @type {Panel[][]} */
+    const board = [];
+    for (let i = 0; i < store.boardMeta.height; i++) {
+      board.push(new Array(store.boardMeta.width).fill(null));
+    }
+    store.board = board;
     area.value = urlParams.toString();
     el.append(area);
 
