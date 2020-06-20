@@ -128,9 +128,16 @@ function render() {
  * @param {Event} ev
  */
 function playAction(ev) {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
+    if (!(ev.currentTarget instanceof HTMLElement)) {
+      return reject(new Error("event is not playable"));
+    }
+    const wrapped = ev.currentTarget.closest(".js-play-wrap");
+    if (!wrapped) {
+      return reject(new Error("no .js-play-wrap"));
+    }
     console.log("play");
-    console.log(ev);
+    console.log(wrapped);
     return resolve(true);
   });
 }
