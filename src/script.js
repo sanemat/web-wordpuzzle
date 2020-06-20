@@ -66,7 +66,10 @@ function initialize() {
     const urlParams = new URLSearchParams(queryString);
     store.players = urlParams.getAll("ps");
     store.version = urlParams.get("v");
-    store.hands = urlParams.getAll("hs");
+    const hs = urlParams.get("hs");
+    if (hs !== null) {
+      store.hands = hs.split("|");
+    }
     store.boardMeta.width = Number(urlParams.get("bw"));
     store.boardMeta.height = Number(urlParams.get("bh"));
     const ms = urlParams.getAll("ms");
