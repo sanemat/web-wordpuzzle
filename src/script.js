@@ -70,19 +70,22 @@ function initialize() {
     store.boardMeta.width = Number(urlParams.get("bw"));
     store.boardMeta.height = Number(urlParams.get("bh"));
     const ms = urlParams.getAll("ms");
+    /** @type {Move[]} */
+    const moves = [];
     for (const m of ms) {
       const parts = m.split("|");
       /** @type {Move} */
       const move = { playerId: parseInt(parts[0], 10), coordinates: [] };
       for (let i = 0; i < parts.length - 1; i += 2) {
-        move.coordinates = move.coordinates.concat({
+        move.coordinates.push({
           x: parseInt(parts[i + 1].charAt(0), 10),
           y: parseInt(parts[i + 1].charAt(1), 10),
           panel: parts[i + 2],
         });
       }
-      store.moves = store.moves.concat(move);
+      moves.push(move);
     }
+    store.moves = moves;
 
     /** @type {Panel[][]} */
     const board = [];
