@@ -96,6 +96,13 @@ function initialize() {
       board.push(new Array(store.boardMeta.width).fill(null));
     }
     store.board = board;
+
+    for (const m of store.moves) {
+      for (const c of m.coordinates) {
+        store.board[c.y][c.x] = c.panel;
+      }
+    }
+
     area.value = urlParams.toString();
     el.append(area);
 
