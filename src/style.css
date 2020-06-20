@@ -1,3 +1,6 @@
 .main__game {
   min-height: 60vh;
 }
+.main__options {
+  margin-top: 1rem;
+}
