@@ -107,14 +107,13 @@ function initialize() {
  */
 function render() {
   return new Promise((resolve, reject) => {
-    const el = document.body.querySelector("#root");
+    const el = document.body.querySelector("#game");
     if (!el) {
-      return reject(new Error("no #root"));
+      return reject(new Error("no #game"));
     }
 
-    const area = document.createElement("textarea");
-    area.classList.add("textarea");
-    area.value = JSON.stringify(store.board, null, 2);
+    const area = document.createElement("pre");
+    area.innerText = JSON.stringify(store.board, null, 2);
     el.append(area);
 
     return resolve(true);
