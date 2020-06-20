@@ -133,4 +133,12 @@ function render() {
         }
       );
   });
+
+  const play = document.body.querySelector(".js-play");
+  if (play) {
+    play.addEventListener("click", (ev) => {
+      console.log("play");
+      console.log(ev);
+    });
+  }
 })();
