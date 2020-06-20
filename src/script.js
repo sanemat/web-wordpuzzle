@@ -21,7 +21,7 @@
  */
 /**
  * @typedef {{
- *   player: Player,
+ *   playerId: number,
  *   coordinates: Coordinate[],
  * }} Move
  */
@@ -73,7 +73,7 @@ function initialize() {
     for (const m of ms) {
       const parts = m.split("|");
       /** @type {Move} */
-      const move = { player: parts[0], coordinates: [] };
+      const move = { playerId: parseInt(parts[0], 10), coordinates: [] };
       for (let i = 0; i < parts.length - 1; i += 2) {
         move.coordinates = move.coordinates.concat({
           x: parseInt(parts[i + 1].charAt(0), 10),
