@@ -120,6 +120,21 @@ function render() {
   });
 }
 
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {Boolean}
+ * @returns {Promise.<Boolean>}
+ * @param {Event} ev
+ */
+function playAction(ev) {
+  return new Promise((resolve) => {
+    console.log("play");
+    console.log(ev);
+    return resolve(true);
+  });
+}
+
 (() => {
   window.addEventListener("load", () => {
     initialize()
@@ -136,9 +151,6 @@ function render() {
 
   const play = document.body.querySelector(".js-play");
   if (play) {
-    play.addEventListener("click", (ev) => {
-      console.log("play");
-      console.log(ev);
-    });
+    play.addEventListener("click", playAction);
   }
 })();
