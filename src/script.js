@@ -54,14 +54,7 @@ const store = {
  * @returns {Promise.<Boolean>}
  */
 function initialize() {
-  return new Promise((resolve, reject) => {
-    const el = document.body.querySelector("#root");
-    if (!el) {
-      return reject(new Error("no #root"));
-    }
-
-    const area = document.createElement("textarea");
-    area.classList.add("textarea");
+  return new Promise((resolve) => {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     store.players = urlParams.getAll("ps");
@@ -102,8 +95,26 @@ function initialize() {
         store.board[c.y][c.x] = c.panel;
       }
     }
+    return resolve(true);
+  });
+}
 
-    area.value = urlParams.toString();
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {Boolean}
+ * @returns {Promise.<Boolean>}
+ */
+function render() {
+  return new Promise((resolve, reject) => {
+    const el = document.body.querySelector("#root");
+    if (!el) {
+      return reject(new Error("no #root"));
+    }
+
+    const area = document.createElement("textarea");
+    area.classList.add("textarea");
+    area.value = JSON.stringify(store.board, null, 2);
     el.append(area);
 
     return resolve(true);
@@ -115,6 +126,7 @@ function initialize() {
     initialize()
       .then(() => {
         console.log(store);
+        return render();
       })
       .catch(
         /** @param {Error|string} err */ (err) => {
