@@ -120,6 +120,26 @@ function render() {
   });
 }
 
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {Boolean}
+ * @returns {Promise.<Boolean>}
+ * @param {Event} ev
+ */
+function playAction(ev) {
+  ev.preventDefault();
+  return new Promise((resolve, reject) => {
+    if (!(ev.target instanceof HTMLFormElement)) {
+      return reject(new Error("event is not form"));
+    }
+    console.log("play");
+    const data = new FormData(ev.target);
+    console.log(data);
+    return resolve(true);
+  });
+}
+
 (() => {
   window.addEventListener("load", () => {
     initialize()
@@ -133,4 +153,8 @@ function render() {
         }
       );
   });
+  const play = document.body.querySelector(".js-play");
+  if (play) {
+    play.addEventListener("submit", playAction);
+  }
 })();
