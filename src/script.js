@@ -105,6 +105,26 @@ function initialize() {
  * @fulfill {Boolean}
  * @returns {Promise.<Boolean>}
  */
+function renderGame() {
+  return new Promise((resolve, reject) => {
+    const el = document.body.querySelector("#game");
+    if (!el) {
+      return reject(new Error("no #game"));
+    }
+
+    const area = document.createElement("pre");
+    area.innerText = JSON.stringify(store.board, null, 2);
+    el.appendChild(area);
+    return resolve(true);
+  });
+}
+
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {Boolean}
+ * @returns {Promise.<Boolean>}
+ */
 function render() {
   return new Promise((resolve, reject) => {
     const el = document.body.querySelector("#game");
