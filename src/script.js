@@ -3,8 +3,8 @@
 
 /**
  * @typedef {{
- *   width: ?number,
- *   height: ?number,
+ *   width: number,
+ *   height: number,
  * }} BoardMeta
  */
 /**
@@ -41,7 +41,7 @@
 const store = {
   players: [],
   version: null,
-  boardMeta: { width: null, height: null },
+  boardMeta: { width: 0, height: 0 },
   board: [],
   hands: [],
   moves: [],
@@ -143,20 +143,23 @@ function render() {
       control1.appendChild(select1);
       grouped.appendChild(control1);
 
-      // x
-      const control2 = document.createElement("div");
-      control2.classList.add("control");
-      const select2 = document.createElement("div");
-      select2.classList.add("select");
-      const coordinate = document.createElement("select");
-      coordinate.setAttribute("name", "x");
-      coordinate.add(new Option())
-      for (let j = 0; j < store.boardMeta.width; j++) {
-        coordinate.add(new Option(j.toString(), j.toString()))
+      // x, y
+      for (const xy of ["x", "y"]) {
+        const control2 = document.createElement("div");
+        control2.classList.add("control");
+        const select2 = document.createElement("div");
+        select2.classList.add("select");
+        const coordinate = document.createElement("select");
+        coordinate.setAttribute("name", xy);
+        coordinate.add(new Option());
+        const lim = xy === "x" ? store.boardMeta.width : store.boardMeta.height;
+        for (let j = 0; j < lim; j++) {
+          coordinate.add(new Option(j.toString(), j.toString()));
+        }
+        select2.appendChild(coordinate);
+        control2.appendChild(select2);
+        grouped.appendChild(control2);
       }
-      select2.appendChild(coordinate);
-      control2.appendChild(select2);
-      grouped.appendChild(control2);
 
       handsEl.appendChild(grouped);
     }
