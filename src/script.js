@@ -182,70 +182,10 @@ function renderHands() {
 /**
  * @promise
  * @reject {Error}
- * @fulfill {Boolean}
- * @returns {Promise.<Boolean>}
+ * @returns {Promise.<any>}
  */
 function render() {
-  return new Promise((resolve, reject) => {
-    const el = document.body.querySelector("#game");
-    if (!el) {
-      return reject(new Error("no #game"));
-    }
-
-    const area = document.createElement("pre");
-    area.innerText = JSON.stringify(store.board, null, 2);
-    el.appendChild(area);
-
-    const handsEl = document.body.querySelector(".js-hands");
-    if (!handsEl) {
-      return reject(new Error("no .js-hands"));
-    }
-
-    for (const [i, v] of store.hands.entries()) {
-      const grouped = document.createElement("div");
-      grouped.classList.add("field");
-      grouped.classList.add("is-grouped");
-      const hidden = document.createElement("input");
-      hidden.setAttribute("type", "hidden");
-      hidden.setAttribute("name", "handId");
-      hidden.setAttribute("value", i.toString());
-      grouped.appendChild(hidden);
-
-      // panel
-      const control1 = document.createElement("div");
-      control1.classList.add("control");
-      const select1 = document.createElement("div");
-      select1.classList.add("select");
-      const panel1 = document.createElement("select");
-      panel1.setAttribute("name", "panel");
-      panel1.add(new Option(v, v, true, true));
-      select1.appendChild(panel1);
-      control1.appendChild(select1);
-      grouped.appendChild(control1);
-
-      // x, y
-      for (const xy of ["x", "y"]) {
-        const control2 = document.createElement("div");
-        control2.classList.add("control");
-        const select2 = document.createElement("div");
-        select2.classList.add("select");
-        const coordinate = document.createElement("select");
-        coordinate.setAttribute("name", xy);
-        coordinate.add(new Option());
-        const lim = xy === "x" ? store.boardMeta.width : store.boardMeta.height;
-        for (let j = 0; j < lim; j++) {
-          coordinate.add(new Option(j.toString(), j.toString()));
-        }
-        select2.appendChild(coordinate);
-        control2.appendChild(select2);
-        grouped.appendChild(control2);
-      }
-
-      handsEl.appendChild(grouped);
-    }
-
-    return resolve(true);
-  });
+  return Promise.all([renderGame(), renderHands()]);
 }
 
 /**
