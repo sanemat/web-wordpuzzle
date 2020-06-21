@@ -210,6 +210,17 @@ function buildMove(data) {
  * @reject {Error}
  * @fulfill {Boolean}
  * @returns {Promise.<Boolean>}
+ * @param {Move} move
+ */
+function validateMove(move) {
+  return Promise.resolve(true);
+}
+
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {Boolean}
+ * @returns {Promise.<Boolean>}
  * @param {Event} ev
  */
 function playAction(ev) {
@@ -220,12 +231,20 @@ function playAction(ev) {
     }
     console.log("play");
     return resolve(buildMove(new FormData(ev.target)));
-  }).then(
-    /** @param {Move} value */ (value) => {
-      console.log(value);
+  })
+    .then(
+      /** @param {Move} value */ (value) => {
+        console.log(value);
+        return validateMove(value);
+      }
+    )
+    .then((value) => {
+      const params = new URLSearchParams(location.search);
+      params.set("bh", "5");
+
+      window.history.pushState({}, "", `${location.pathname}?${params}`);
       return Promise.resolve(true);
-    }
-  );
+    });
 }
 
 (() => {
