@@ -1,3 +1,6 @@
 .main__game {
   min-height: 60vh;
 }
+.main__play {
+  margin-top: 0.5rem;
+}
