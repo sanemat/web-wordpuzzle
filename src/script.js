@@ -114,7 +114,7 @@ function render() {
 
     const area = document.createElement("pre");
     area.innerText = JSON.stringify(store.board, null, 2);
-    el.append(area);
+    el.appendChild(area);
 
     const handsEl = document.body.querySelector(".js-hands");
     if (!handsEl) {
@@ -183,7 +183,7 @@ function playAction(ev) {
     }
     console.log("play");
     const data = new FormData(ev.target);
-    console.log(data);
+    console.log([...data.entries()]);
     return resolve(true);
   });
 }
