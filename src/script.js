@@ -127,8 +127,8 @@ function renderGame() {
  */
 function renderHands() {
   return new Promise((resolve, reject) => {
-    const handsEl = document.body.querySelector(".js-hands");
-    if (!handsEl) {
+    const el = document.body.querySelector(".js-hands");
+    if (!el) {
       return reject(new Error("no .js-hands"));
     }
 
@@ -172,7 +172,7 @@ function renderHands() {
         grouped.appendChild(control2);
       }
 
-      handsEl.appendChild(grouped);
+      el.appendChild(grouped);
     }
 
     return resolve(true);
