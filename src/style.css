@@ -4,3 +4,6 @@
 .main__play {
   margin-top: 0.5rem;
 }
+.main__hands {
+  min-height: 40vh;
+}
