@@ -136,11 +136,11 @@ function renderHands() {
       const grouped = document.createElement("div");
       grouped.classList.add("field");
       grouped.classList.add("is-grouped");
-      const hidden = document.createElement("input");
-      hidden.setAttribute("type", "hidden");
-      hidden.setAttribute("name", "handId");
-      hidden.setAttribute("value", i.toString());
-      grouped.appendChild(hidden);
+      const handId = document.createElement("input");
+      handId.setAttribute("type", "hidden");
+      handId.setAttribute("name", "handId");
+      handId.setAttribute("value", i.toString());
+      grouped.appendChild(handId);
 
       // panel
       const control1 = document.createElement("div");
