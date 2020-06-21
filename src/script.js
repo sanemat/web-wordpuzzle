@@ -191,6 +191,23 @@ function render() {
 /**
  * @promise
  * @reject {Error}
+ * @fulfill {Move}
+ * @returns {Promise.<Move>}
+ * @param {FormData} data
+ */
+function buildMove(data) {
+  return new Promise((resolve) => {
+    // TODO: Reject no use
+    // TODO: Build move from actual data
+    /** @type {Move} */
+    const move = { playerId: 0, coordinates: [] };
+    return resolve(move);
+  });
+}
+
+/**
+ * @promise
+ * @reject {Error}
  * @fulfill {Boolean}
  * @returns {Promise.<Boolean>}
  * @param {Event} ev
@@ -202,10 +219,13 @@ function playAction(ev) {
       return reject(new Error("event is not form"));
     }
     console.log("play");
-    const data = new FormData(ev.target);
-    console.log([...data.entries()]);
-    return resolve(true);
-  });
+    return resolve(buildMove(new FormData(ev.target)));
+  }).then(
+    /** @param {Move} value */ (value) => {
+      console.log(value);
+      return Promise.resolve(true);
+    }
+  );
 }
 
 (() => {
