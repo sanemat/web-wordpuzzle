@@ -105,7 +105,7 @@ function initialize() {
  * @fulfill {Boolean}
  * @returns {Promise.<Boolean>}
  */
-function render() {
+function renderGame() {
   return new Promise((resolve, reject) => {
     const el = document.body.querySelector("#game");
     if (!el) {
@@ -115,9 +115,20 @@ function render() {
     const area = document.createElement("pre");
     area.innerText = JSON.stringify(store.board, null, 2);
     el.appendChild(area);
+    return resolve(true);
+  });
+}
 
-    const handsEl = document.body.querySelector(".js-hands");
-    if (!handsEl) {
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {Boolean}
+ * @returns {Promise.<Boolean>}
+ */
+function renderHands() {
+  return new Promise((resolve, reject) => {
+    const el = document.body.querySelector(".js-hands");
+    if (!el) {
       return reject(new Error("no .js-hands"));
     }
 
@@ -125,21 +136,21 @@ function render() {
       const grouped = document.createElement("div");
       grouped.classList.add("field");
       grouped.classList.add("is-grouped");
-      const hidden = document.createElement("input");
-      hidden.setAttribute("type", "hidden");
-      hidden.setAttribute("name", "handId");
-      hidden.setAttribute("value", i.toString());
-      grouped.appendChild(hidden);
+      const handId = document.createElement("input");
+      handId.setAttribute("type", "hidden");
+      handId.setAttribute("name", "handId");
+      handId.setAttribute("value", i.toString());
+      grouped.appendChild(handId);
 
       // panel
       const control1 = document.createElement("div");
       control1.classList.add("control");
       const select1 = document.createElement("div");
       select1.classList.add("select");
-      const panel1 = document.createElement("select");
-      panel1.setAttribute("name", "panel");
-      panel1.add(new Option(v, v, true, true));
-      select1.appendChild(panel1);
+      const panel = document.createElement("select");
+      panel.setAttribute("name", "panel");
+      panel.add(new Option(v, v, true, true));
+      select1.appendChild(panel);
       control1.appendChild(select1);
       grouped.appendChild(control1);
 
@@ -161,11 +172,20 @@ function render() {
         grouped.appendChild(control2);
       }
 
-      handsEl.appendChild(grouped);
+      el.appendChild(grouped);
     }
 
     return resolve(true);
   });
+}
+
+/**
+ * @promise
+ * @reject {Error}
+ * @returns {Promise.<any>}
+ */
+function render() {
+  return Promise.all([renderGame(), renderHands()]);
 }
 
 /**
