@@ -38,32 +38,38 @@
 /**
  * @type {Store} store
  */
-const store = {
-  players: [],
-  version: null,
-  boardMeta: { width: 0, height: 0 },
-  board: [],
-  hands: [],
-  moves: [],
-};
+let store;
 
 /**
- * @promise
- * @reject {Error}
- * @fulfill {Boolean}
- * @returns {Promise.<Boolean>}
+ * @returns {Store}
  */
-function initialize() {
-  const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
-  store.players = urlParams.getAll("ps");
-  store.version = urlParams.get("v");
+function _minimalStore() {
+  return {
+    players: [],
+    version: null,
+    boardMeta: { width: 0, height: 0 },
+    board: [],
+    hands: [],
+    moves: [],
+  };
+}
+
+/**
+ * @param {String} query
+ * @returns {Store}
+ */
+function buildStore(query) {
+  /** @type {Store} */
+  const data = _minimalStore();
+  const urlParams = new URLSearchParams(query);
+  data.players = urlParams.getAll("ps");
+  data.version = urlParams.get("v");
   const hs = urlParams.get("hs");
   if (hs !== null) {
-    store.hands = hs.split("|");
+    data.hands = hs.split("|");
   }
-  store.boardMeta.width = Number(urlParams.get("bw"));
-  store.boardMeta.height = Number(urlParams.get("bh"));
+  data.boardMeta.width = Number(urlParams.get("bw"));
+  data.boardMeta.height = Number(urlParams.get("bh"));
   const ms = urlParams.getAll("ms");
   /** @type {Move[]} */
   const moves = [];
@@ -80,20 +86,32 @@ function initialize() {
     }
     moves.push(move);
   }
-  store.moves = moves;
+  data.moves = moves;
 
   /** @type {Panel[][]} */
   const board = [];
-  for (let i = 0; i < store.boardMeta.height; i++) {
-    board.push(new Array(store.boardMeta.width).fill(null));
+  for (let i = 0; i < data.boardMeta.height; i++) {
+    board.push(new Array(data.boardMeta.width).fill(null));
   }
-  store.board = board;
+  data.board = board;
 
-  for (const m of store.moves) {
+  for (const m of data.moves) {
     for (const c of m.coordinates) {
-      store.board[c.y][c.x] = c.panel;
+      data.board[c.y][c.x] = c.panel;
     }
   }
+  return data;
+}
+
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {Boolean}
+ * @returns {Promise.<Boolean>}
+ */
+function initialize() {
+  const queryString = window.location.search;
+  store = buildStore(queryString);
   return Promise.resolve(true);
 }
 
