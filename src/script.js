@@ -54,49 +54,47 @@ const store = {
  * @returns {Promise.<Boolean>}
  */
 function initialize() {
-  return new Promise((resolve) => {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    store.players = urlParams.getAll("ps");
-    store.version = urlParams.get("v");
-    const hs = urlParams.get("hs");
-    if (hs !== null) {
-      store.hands = hs.split("|");
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  store.players = urlParams.getAll("ps");
+  store.version = urlParams.get("v");
+  const hs = urlParams.get("hs");
+  if (hs !== null) {
+    store.hands = hs.split("|");
+  }
+  store.boardMeta.width = Number(urlParams.get("bw"));
+  store.boardMeta.height = Number(urlParams.get("bh"));
+  const ms = urlParams.getAll("ms");
+  /** @type {Move[]} */
+  const moves = [];
+  for (const m of ms) {
+    const parts = m.split("|");
+    /** @type {Move} */
+    const move = { playerId: parseInt(parts[0], 10), coordinates: [] };
+    for (let i = 0; i < parts.length - 1; i += 2) {
+      move.coordinates.push({
+        x: parseInt(parts[i + 1].charAt(0), 10),
+        y: parseInt(parts[i + 1].charAt(1), 10),
+        panel: parts[i + 2],
+      });
     }
-    store.boardMeta.width = Number(urlParams.get("bw"));
-    store.boardMeta.height = Number(urlParams.get("bh"));
-    const ms = urlParams.getAll("ms");
-    /** @type {Move[]} */
-    const moves = [];
-    for (const m of ms) {
-      const parts = m.split("|");
-      /** @type {Move} */
-      const move = { playerId: parseInt(parts[0], 10), coordinates: [] };
-      for (let i = 0; i < parts.length - 1; i += 2) {
-        move.coordinates.push({
-          x: parseInt(parts[i + 1].charAt(0), 10),
-          y: parseInt(parts[i + 1].charAt(1), 10),
-          panel: parts[i + 2],
-        });
-      }
-      moves.push(move);
-    }
-    store.moves = moves;
+    moves.push(move);
+  }
+  store.moves = moves;
 
-    /** @type {Panel[][]} */
-    const board = [];
-    for (let i = 0; i < store.boardMeta.height; i++) {
-      board.push(new Array(store.boardMeta.width).fill(null));
-    }
-    store.board = board;
+  /** @type {Panel[][]} */
+  const board = [];
+  for (let i = 0; i < store.boardMeta.height; i++) {
+    board.push(new Array(store.boardMeta.width).fill(null));
+  }
+  store.board = board;
 
-    for (const m of store.moves) {
-      for (const c of m.coordinates) {
-        store.board[c.y][c.x] = c.panel;
-      }
+  for (const m of store.moves) {
+    for (const c of m.coordinates) {
+      store.board[c.y][c.x] = c.panel;
     }
-    return resolve(true);
-  });
+  }
+  return Promise.resolve(true);
 }
 
 /**
