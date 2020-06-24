@@ -41,12 +41,10 @@
 let store;
 
 /**
- * @param {String} query
  * @returns {Store}
  */
-function buildStore(query) {
-  /** @type {Store} */
-  const data = {
+function _minimalStore() {
+  return {
     players: [],
     version: null,
     boardMeta: { width: 0, height: 0 },
@@ -54,6 +52,15 @@ function buildStore(query) {
     hands: [],
     moves: [],
   };
+}
+
+/**
+ * @param {String} query
+ * @returns {Store}
+ */
+function buildStore(query) {
+  /** @type {Store} */
+  const data = _minimalStore();
   const urlParams = new URLSearchParams(query);
   data.players = urlParams.getAll("ps");
   data.version = urlParams.get("v");
