@@ -126,10 +126,10 @@ function renderGame() {
  * @returns {Promise.<Boolean>}
  */
 function renderHands() {
-  return new Promise((resolve, reject) => {
+  try {
     const el = document.body.querySelector(".js-hands");
     if (!el) {
-      return reject(new Error("no .js-hands"));
+      throw new Error("no .js-hands");
     }
 
     for (const [i, v] of store.hands.entries()) {
@@ -174,9 +174,10 @@ function renderHands() {
 
       el.appendChild(grouped);
     }
-
-    return resolve(true);
-  });
+    return Promise.resolve(true);
+  } catch (/** @type {Error|string} */ e) {
+    return Promise.reject(e);
+  }
 }
 
 /**
