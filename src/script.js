@@ -191,21 +191,58 @@ function render() {
 /**
  * @promise
  * @reject {Error}
+ * @fulfill {Move}
+ * @returns {Promise.<Move>}
+ * @param {FormData} data
+ */
+function buildMove(data) {
+  return new Promise((resolve) => {
+    // TODO: Reject no use
+    // TODO: Build move from actual data
+    /** @type {Move} */
+    const move = { playerId: 0, coordinates: [] };
+    return resolve(move);
+  });
+}
+
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {Boolean}
+ * @returns {Promise.<Boolean>}
+ * @param {Move} move
+ */
+function validateMove(move) {
+  return Promise.resolve(true);
+}
+
+/**
+ * @promise
+ * @reject {Error}
  * @fulfill {Boolean}
  * @returns {Promise.<Boolean>}
  * @param {Event} ev
  */
-function playAction(ev) {
-  ev.preventDefault();
-  return new Promise((resolve, reject) => {
+async function playAction(ev) {
+  try {
+    ev.preventDefault();
     if (!(ev.target instanceof HTMLFormElement)) {
-      return reject(new Error("event is not form"));
+      throw new Error("event is not form");
     }
-    console.log("play");
-    const data = new FormData(ev.target);
-    console.log([...data.entries()]);
-    return resolve(true);
-  });
+    const move = await buildMove(new FormData(ev.target));
+    console.log(move);
+    if (await validateMove(move)) {
+      console.log("move is valid");
+      const params = new URLSearchParams(location.search);
+      params.set("bh", "5");
+
+      window.history.pushState({}, "", `${location.pathname}?${params}`);
+      return Promise.resolve(true);
+    }
+    return Promise.resolve(true);
+  } catch (/** @type {Error|string} */ e) {
+    return Promise.reject(e);
+  }
 }
 
 (() => {
