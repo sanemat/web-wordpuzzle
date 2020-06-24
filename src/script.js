@@ -106,17 +106,19 @@ function initialize() {
  * @returns {Promise.<Boolean>}
  */
 function renderGame() {
-  return new Promise((resolve, reject) => {
+  try {
     const el = document.body.querySelector("#game");
     if (!el) {
-      return reject(new Error("no #game"));
+      throw new Error("no #game");
     }
 
     const area = document.createElement("pre");
     area.innerText = JSON.stringify(store.board, null, 2);
     el.appendChild(area);
-    return resolve(true);
-  });
+    return Promise.resolve(true);
+  } catch (/** @type {Error|string} */ e) {
+    return Promise.reject(e);
+  }
 }
 
 /**
