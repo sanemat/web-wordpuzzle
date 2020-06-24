@@ -222,7 +222,7 @@ async function playAction(ev) {
   try {
     ev.preventDefault();
     if (!(ev.target instanceof HTMLFormElement)) {
-      throw new Error("event is not form");
+      return Promise.reject(new Error("event is not form"));
     }
     const move = await buildMove(new FormData(ev.target));
     console.log(move);
