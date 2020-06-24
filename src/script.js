@@ -209,17 +209,14 @@ function playAction(ev) {
 }
 
 (() => {
-  window.addEventListener("load", () => {
-    initialize()
-      .then(() => {
-        console.log(store);
-        return render();
-      })
-      .catch(
-        /** @param {Error|string} err */ (err) => {
-          console.error(err);
-        }
-      );
+  window.addEventListener("load", async () => {
+    try {
+      await initialize();
+      console.log(store);
+      await render();
+    } catch (/** @type {Error|string} */ err) {
+      console.error(err);
+    }
   });
   const play = document.body.querySelector(".js-play");
   if (play) {
