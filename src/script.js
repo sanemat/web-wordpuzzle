@@ -43,7 +43,7 @@ let store;
 /**
  * @returns {Store}
  */
-function _minimalStore() {
+export function _minimalStore() {
   return {
     players: [],
     version: null,
@@ -58,7 +58,7 @@ function _minimalStore() {
  * @param {String} query
  * @returns {Store}
  */
-function buildStore(query) {
+export function buildStore(query) {
   /** @type {Store} */
   const data = _minimalStore();
   const urlParams = new URLSearchParams(query);
