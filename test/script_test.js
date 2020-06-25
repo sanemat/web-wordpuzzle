@@ -1,3 +1,5 @@
 import { strict as assert } from "assert";
 
-assert(1 != 1);
+import { _minimalStore } from "../src/script.js";
+
+assert(_minimalStore() == null);
