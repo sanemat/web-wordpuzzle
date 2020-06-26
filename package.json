@@ -26,11 +26,13 @@
     "url": "https://github.com/sanemat/web-wordpuzzle.git"
   },
   "scripts": {
-    "eslint": "eslint src/*.js",
-    "prettier": "prettier --write src/*.{js,html,css} index.html",
+    "assert": "node test/*.js",
+    "eslint": "eslint {src,test}/*.js",
+    "prettier": "prettier --write {src,test}/*.{js,html,css} index.html",
     "start": "serve",
-    "test": "npm run tsc && npm run type-coverage && npm run eslint",
+    "test": "npm run tsc && npm run type-coverage && npm run eslint && npm run assert",
     "tsc": "tsc",
     "type-coverage": "type-coverage --detail --strict --ignore-catch --is 100"
-  }
+  },
+  "type": "module"
 }
