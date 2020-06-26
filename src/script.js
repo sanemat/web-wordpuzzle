@@ -257,6 +257,9 @@ async function playAction(ev) {
 }
 
 (() => {
+  if (typeof window === "undefined") {
+    return;
+  }
   window.addEventListener("load", async () => {
     try {
       await initialize();
