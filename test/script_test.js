@@ -30,4 +30,31 @@ import { _minimalStore, buildStore } from "../src/script.js";
   assert.deepEqual(store.hands, ["a", "b", "c", "t"]);
 }
 
+{
+  const query = `ps=foo&ps=bar&ms=0|00|a|10|r|20|m&hs=a|b|c|t&v=0.1.0&bw=3&bh=4`;
+  const store = buildStore(query);
+  const expected = _minimalStore();
+  expected.board = [
+    ["a", "r", "m"],
+    [null, null, null],
+    [null, null, null],
+    [null, null, null],
+  ];
+  expected.boardMeta = { width: 3, height: 4 };
+  expected.hands = ["a", "b", "c", "t"];
+  expected.version = "0.1.0";
+  expected.players = ["foo", "bar"];
+  expected.moves = [
+    {
+      playerId: 0,
+      coordinates: [
+        { panel: "a", x: 0, y: 0 },
+        { panel: "r", x: 1, y: 0 },
+        { panel: "m", x: 2, y: 0 },
+      ],
+    },
+  ];
+  assert.deepEqual(store, expected);
+}
+
 assert.deepEqual(_minimalStore(), _minimalStore());
