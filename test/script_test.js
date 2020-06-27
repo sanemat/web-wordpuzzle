@@ -5,6 +5,7 @@ import {
   buildStore,
   filterMove,
   buildMove,
+  moveToParam,
 } from "../src/script.js";
 
 {
@@ -136,6 +137,30 @@ import {
   (async () => {
     assert.deepEqual(await buildMove(input), expected);
   })();
+}
+
+{
+  /** @type {import("../src/script.js").Move} */
+  const input = {
+    playerId: 0,
+    coordinates: [],
+  };
+  const expected = "0";
+  assert.equal(moveToParam(input), expected);
+}
+
+{
+  /** @type {import("../src/script.js").Move} */
+  const input = {
+    playerId: 0,
+    coordinates: [
+      { panel: "a", x: 0, y: 0 },
+      { panel: "r", x: 1, y: 0 },
+      { panel: "m", x: 2, y: 0 },
+    ],
+  };
+  const expected = "0|00|a|10|r|20|m";
+  assert.equal(moveToParam(input), expected);
 }
 
 assert.deepEqual(_minimalStore(), _minimalStore());

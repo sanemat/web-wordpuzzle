@@ -282,6 +282,25 @@ function validateMove(move) {
 }
 
 /**
+ * @returns {string}
+ * @param {Move} move
+ * @throws {Error}
+ */
+export function moveToParam(move) {
+  /** @type {string[]} */
+  const r = [];
+  r.push(move.playerId.toString());
+  for (const c of move.coordinates) {
+    r.push(`${c.x.toString()}${c.y.toString()}`);
+    if (c.panel === null) {
+      throw new Error("move panel is non-nullable");
+    }
+    r.push(c.panel);
+  }
+  return r.join("|");
+}
+
+/**
  * @promise
  * @reject {Error}
  * @fulfill {Boolean}
@@ -308,7 +327,7 @@ async function playAction(ev) {
       console.log("move is valid");
       store.moves.push(move);
       const params = new URLSearchParams(location.search);
-      params.append("ms", "0|01|y|11|e|21|s");
+      params.append("ms", moveToParam(move));
 
       for (const m of store.moves) {
         for (const c of m.coordinates) {
