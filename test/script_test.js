@@ -1,5 +1,20 @@
 import { strict as assert } from "assert";
 
-import { _minimalStore } from "../src/script.js";
+import { _minimalStore, buildStore } from "../src/script.js";
 
-assert(JSON.stringify(_minimalStore()) === JSON.stringify(_minimalStore()));
+{
+  const query = `v=0.1.0`;
+  const store = buildStore(query);
+  assert.equal(store.version, "0.1.0");
+}
+
+{
+  const query = "bw=3&bh=4";
+  const store = buildStore(query);
+  assert.equal(store.boardMeta.width, 3);
+  assert.equal(store.boardMeta.height, 4);
+  assert.equal(store.board.length, 4);
+  assert.equal(store.board[0].length, 3);
+}
+
+assert.deepEqual(_minimalStore(), _minimalStore());
