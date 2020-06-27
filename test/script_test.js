@@ -1,6 +1,11 @@
 import { strict as assert } from "assert";
 
-import { _minimalStore, buildStore, filterMove } from "../src/script.js";
+import {
+  _minimalStore,
+  buildStore,
+  filterMove,
+  buildMove,
+} from "../src/script.js";
 
 {
   const query = `v=0.1.0`;
@@ -100,6 +105,36 @@ import { _minimalStore, buildStore, filterMove } from "../src/script.js";
   ];
   (async () => {
     assert.deepEqual(await filterMove(input), expected);
+  })();
+}
+
+{
+  const input = [["playerId", "0"]];
+  /** @type {import("../src/script.js").Move} */
+  const expected = {
+    playerId: 0,
+    coordinates: [],
+  };
+  (async () => {
+    assert.deepEqual(await buildMove(input), expected);
+  })();
+}
+
+{
+  const input = [
+    ["playerId", "0"],
+    ["handId", "0"],
+    ["panel", "x"],
+    ["x", "2"],
+    ["y", "3"],
+  ];
+  /** @type {import("../src/script.js").Move} */
+  const expected = {
+    playerId: 0,
+    coordinates: [{ x: 2, y: 3, panel: "x" }],
+  };
+  (async () => {
+    assert.deepEqual(await buildMove(input), expected);
   })();
 }
 

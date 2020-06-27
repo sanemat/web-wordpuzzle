@@ -253,18 +253,20 @@ export function filterMove(data) {
  * @returns {Promise.<Move>}
  * @param {string[][]} data
  */
-function buildMove(data) {
-  console.log(data);
-  // TODO: Build move from actual data
+export function buildMove(data) {
   /** @type {Move} */
   const move = {
     playerId: 0,
-    coordinates: [
-      { x: 0, y: 1, panel: "y" },
-      { x: 1, y: 1, panel: "e" },
-      { x: 2, y: 1, panel: "s" },
-    ],
+    coordinates: [],
   };
+  move.playerId = parseInt(data[0][1], 10);
+  for (let i = 0; i < data.length - 1; i += 4) {
+    move.coordinates.push({
+      panel: data[i + 2][1],
+      x: parseInt(data[i + 3][1], 10),
+      y: parseInt(data[i + 4][1], 10),
+    });
+  }
   return Promise.resolve(move);
 }
 
