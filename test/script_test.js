@@ -1,6 +1,6 @@
 import { strict as assert } from "assert";
 
-import { _minimalStore, buildStore } from "../src/script.js";
+import { _minimalStore, buildStore, filterMove } from "../src/script.js";
 
 {
   const query = `v=0.1.0`;
@@ -67,6 +67,40 @@ import { _minimalStore, buildStore } from "../src/script.js";
     },
   ];
   assert.deepEqual(store, expected);
+}
+
+{
+  const input = [
+    ["playerId", "0"],
+    ["handId", "0"],
+    ["panel", "x"],
+    ["x", ""],
+    ["y", ""],
+  ];
+  const expected = [["playerId", "0"]];
+  (async () => {
+    assert.deepEqual(await filterMove(input), expected);
+  })();
+}
+
+{
+  const input = [
+    ["playerId", "0"],
+    ["handId", "0"],
+    ["panel", "x"],
+    ["x", "2"],
+    ["y", "3"],
+  ];
+  const expected = [
+    ["playerId", "0"],
+    ["handId", "0"],
+    ["panel", "x"],
+    ["x", "2"],
+    ["y", "3"],
+  ];
+  (async () => {
+    assert.deepEqual(await filterMove(input), expected);
+  })();
 }
 
 assert.deepEqual(_minimalStore(), _minimalStore());

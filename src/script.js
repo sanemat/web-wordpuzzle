@@ -159,7 +159,13 @@ function renderHands() {
   el.innerHTML = "";
 
   // TODO: Choose current player
-  for (const [i, v] of store.hands[0].entries()) {
+  const playerId = 0;
+  const playerIdInput = document.createElement("input");
+  playerIdInput.setAttribute("type", "hidden");
+  playerIdInput.setAttribute("name", "playerId");
+  playerIdInput.setAttribute("value", playerId.toString());
+  el.appendChild(playerIdInput);
+  for (const [i, v] of store.hands[playerId].entries()) {
     const grouped = document.createElement("div");
     grouped.classList.add("field");
     grouped.classList.add("is-grouped");
@@ -216,12 +222,39 @@ function render() {
 /**
  * @promise
  * @reject {Error}
+ * @fulfill {string[][]}
+ * @returns {Promise.<string[][]>}
+ * @param {string[][]} data
+ */
+export function filterMove(data) {
+  /** @type {string[][]} */
+  const r = [];
+  r.push([data[0][0], data[0][1]]);
+  for (let i = 0; i < data.length - 1; i += 4) {
+    // panel, x, y are exists
+    if (
+      data[i + 2][1].length > 0 &&
+      data[i + 3][1].length > 0 &&
+      data[i + 4][1].length > 0
+    ) {
+      r.push([data[i + 1][0], data[i + 1][1]]); // handId
+      r.push([data[i + 2][0], data[i + 2][1]]); // panel
+      r.push([data[i + 3][0], data[i + 3][1]]); // x
+      r.push([data[i + 4][0], data[i + 4][1]]); // y
+    }
+  }
+  return Promise.resolve(r);
+}
+
+/**
+ * @promise
+ * @reject {Error}
  * @fulfill {Move}
  * @returns {Promise.<Move>}
- * @param {FormData} data
+ * @param {string[][]} data
  */
 function buildMove(data) {
-  // TODO: Reject no use
+  console.log(data);
   // TODO: Build move from actual data
   /** @type {Move} */
   const move = {
@@ -259,7 +292,15 @@ async function playAction(ev) {
     if (!(ev.target instanceof HTMLFormElement)) {
       return Promise.reject(new Error("event is not form"));
     }
-    const move = await buildMove(new FormData(ev.target));
+    // Convert from (string|FormDataEntryValue)[][] to string[][]
+    const data = [...new FormData(ev.target).entries()].map((value) => {
+      if (typeof value[1] !== "string") {
+        throw new Error("form value is not string");
+      }
+      return [value[0], value[1]];
+    });
+
+    const move = await buildMove(await filterMove(data));
     console.log(move);
     if (await validateMove(move)) {
       console.log("move is valid");
