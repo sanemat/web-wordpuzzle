@@ -137,6 +137,7 @@ function renderGame() {
   if (!el) {
     return Promise.reject(new Error("no #game"));
   }
+  el.innerHTML = "";
 
   const area = document.createElement("pre");
   area.innerText = JSON.stringify(store.board, null, 2);
@@ -155,6 +156,7 @@ function renderHands() {
   if (!el) {
     return Promise.reject(new Error("no .js-hands"));
   }
+  el.innerHTML = "";
 
   // TODO: Choose current player
   for (const [i, v] of store.hands[0].entries()) {
@@ -219,13 +221,18 @@ function render() {
  * @param {FormData} data
  */
 function buildMove(data) {
-  return new Promise((resolve) => {
-    // TODO: Reject no use
-    // TODO: Build move from actual data
-    /** @type {Move} */
-    const move = { playerId: 0, coordinates: [] };
-    return resolve(move);
-  });
+  // TODO: Reject no use
+  // TODO: Build move from actual data
+  /** @type {Move} */
+  const move = {
+    playerId: 0,
+    coordinates: [
+      { x: 0, y: 1, panel: "y" },
+      { x: 1, y: 1, panel: "e" },
+      { x: 2, y: 1, panel: "s" },
+    ],
+  };
+  return Promise.resolve(move);
 }
 
 /**
@@ -256,11 +263,19 @@ async function playAction(ev) {
     console.log(move);
     if (await validateMove(move)) {
       console.log("move is valid");
+      store.moves.push(move);
       const params = new URLSearchParams(location.search);
-      params.set("bh", "5");
+      params.append("ms", "0|01|y|11|e|21|s");
 
+      /** @type {Panel[][]} */
+      for (const m of store.moves) {
+        for (const c of m.coordinates) {
+          store.board[c.y][c.x] = c.panel;
+        }
+      }
       window.history.pushState({}, "", `${location.pathname}?${params}`);
-      return Promise.resolve(true);
+      console.log(store);
+      return render();
     }
     return Promise.resolve(true);
   } catch (/** @type {Error|string} */ e) {
