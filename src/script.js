@@ -10,7 +10,7 @@
 /**
  * @typedef {string} Player players' name.
  * @typedef {?string} Version version string.
- * @typedef {string} Panel the panel.
+ * @typedef {?string} Panel the panel.
  */
 /**
  * @typedef {{
@@ -97,6 +97,12 @@ export function buildStore(query) {
 
   for (const m of data.moves) {
     for (const c of m.coordinates) {
+      if (
+        typeof data.board[c.y] === "undefined" ||
+        typeof data.board[c.y][c.x] === "undefined"
+      ) {
+        throw new Error(`board x: ${c.x}, y: ${c.y} is unavailable`);
+      }
       data.board[c.y][c.x] = c.panel;
     }
   }
@@ -162,7 +168,7 @@ function renderHands() {
     select1.classList.add("select");
     const panel = document.createElement("select");
     panel.setAttribute("name", "panel");
-    panel.add(new Option(v, v, true, true));
+    panel.add(new Option(v ?? "", v ?? "", true, true));
     select1.appendChild(panel);
     control1.appendChild(select1);
     grouped.appendChild(control1);
