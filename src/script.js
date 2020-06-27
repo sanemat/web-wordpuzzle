@@ -60,7 +60,6 @@ export function _minimalStore() {
  * @throws {Error}
  */
 export function buildStore(query) {
-  /** @type {Store} */
   const data = _minimalStore();
   const urlParams = new URLSearchParams(query);
   data.players = urlParams.getAll("ps");
