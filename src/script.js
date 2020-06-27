@@ -267,7 +267,6 @@ async function playAction(ev) {
       const params = new URLSearchParams(location.search);
       params.append("ms", "0|01|y|11|e|21|s");
 
-      /** @type {Panel[][]} */
       for (const m of store.moves) {
         for (const c of m.coordinates) {
           store.board[c.y][c.x] = c.panel;
