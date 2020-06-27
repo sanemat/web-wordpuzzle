@@ -57,6 +57,7 @@ export function _minimalStore() {
 /**
  * @param {String} query
  * @returns {Store}
+ * @throws {Error}
  */
 export function buildStore(query) {
   /** @type {Store} */
