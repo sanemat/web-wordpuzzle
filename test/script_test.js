@@ -17,4 +17,11 @@ import { _minimalStore, buildStore } from "../src/script.js";
   assert.equal(store.board[0].length, 3);
 }
 
+{
+  const query = `ps=foo&ps=bar`;
+  const store = buildStore(query);
+  assert.equal(store.players.length, 2);
+  assert.deepEqual(store.players, ["foo", "bar"]);
+}
+
 assert.deepEqual(_minimalStore(), _minimalStore());
