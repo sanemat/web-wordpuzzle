@@ -159,7 +159,13 @@ function renderHands() {
   el.innerHTML = "";
 
   // TODO: Choose current player
-  for (const [i, v] of store.hands[0].entries()) {
+  const playerId = 0;
+  const playerIdInput = document.createElement("input");
+  playerIdInput.setAttribute("type", "hidden");
+  playerIdInput.setAttribute("name", "playerId");
+  playerIdInput.setAttribute("value", playerId.toString());
+  el.appendChild(playerIdInput);
+  for (const [i, v] of store.hands[playerId].entries()) {
     const grouped = document.createElement("div");
     grouped.classList.add("field");
     grouped.classList.add("is-grouped");
@@ -216,22 +222,51 @@ function render() {
 /**
  * @promise
  * @reject {Error}
+ * @fulfill {string[][]}
+ * @returns {Promise.<string[][]>}
+ * @param {string[][]} data
+ */
+export function filterMove(data) {
+  /** @type {string[][]} */
+  const r = [];
+  r.push([data[0][0], data[0][1]]);
+  for (let i = 0; i < data.length - 1; i += 4) {
+    // panel, x, y are exists
+    if (
+      data[i + 2][1].length > 0 &&
+      data[i + 3][1].length > 0 &&
+      data[i + 4][1].length > 0
+    ) {
+      r.push([data[i + 1][0], data[i + 1][1]]); // handId
+      r.push([data[i + 2][0], data[i + 2][1]]); // panel
+      r.push([data[i + 3][0], data[i + 3][1]]); // x
+      r.push([data[i + 4][0], data[i + 4][1]]); // y
+    }
+  }
+  return Promise.resolve(r);
+}
+
+/**
+ * @promise
+ * @reject {Error}
  * @fulfill {Move}
  * @returns {Promise.<Move>}
- * @param {FormData} data
+ * @param {string[][]} data
  */
-function buildMove(data) {
-  // TODO: Reject no use
-  // TODO: Build move from actual data
+export function buildMove(data) {
   /** @type {Move} */
   const move = {
     playerId: 0,
-    coordinates: [
-      { x: 0, y: 1, panel: "y" },
-      { x: 1, y: 1, panel: "e" },
-      { x: 2, y: 1, panel: "s" },
-    ],
+    coordinates: [],
   };
+  move.playerId = parseInt(data[0][1], 10);
+  for (let i = 0; i < data.length - 1; i += 4) {
+    move.coordinates.push({
+      panel: data[i + 2][1],
+      x: parseInt(data[i + 3][1], 10),
+      y: parseInt(data[i + 4][1], 10),
+    });
+  }
   return Promise.resolve(move);
 }
 
@@ -247,6 +282,25 @@ function validateMove(move) {
 }
 
 /**
+ * @returns {string}
+ * @param {Move} move
+ * @throws {Error}
+ */
+export function moveToParam(move) {
+  /** @type {string[]} */
+  const r = [];
+  r.push(move.playerId.toString());
+  for (const c of move.coordinates) {
+    r.push(`${c.x.toString()}${c.y.toString()}`);
+    if (c.panel === null) {
+      throw new Error("move panel is non-nullable");
+    }
+    r.push(c.panel);
+  }
+  return r.join("|");
+}
+
+/**
  * @promise
  * @reject {Error}
  * @fulfill {Boolean}
@@ -259,13 +313,21 @@ async function playAction(ev) {
     if (!(ev.target instanceof HTMLFormElement)) {
       return Promise.reject(new Error("event is not form"));
     }
-    const move = await buildMove(new FormData(ev.target));
+    // Convert from (string|FormDataEntryValue)[][] to string[][]
+    const data = [...new FormData(ev.target).entries()].map((value) => {
+      if (typeof value[1] !== "string") {
+        throw new Error("form value is not string");
+      }
+      return [value[0], value[1]];
+    });
+
+    const move = await buildMove(await filterMove(data));
     console.log(move);
     if (await validateMove(move)) {
       console.log("move is valid");
       store.moves.push(move);
       const params = new URLSearchParams(location.search);
-      params.append("ms", "0|01|y|11|e|21|s");
+      params.append("ms", moveToParam(move));
 
       for (const m of store.moves) {
         for (const c of m.coordinates) {
