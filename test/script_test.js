@@ -27,7 +27,7 @@ import { _minimalStore, buildStore } from "../src/script.js";
 {
   const query = `hs=a|b|c|t`;
   const store = buildStore(query);
-  assert.deepEqual(store.hands, ["a", "b", "c", "t"]);
+  assert.deepEqual(store.hands, [["a", "b", "c", "t"]]);
 }
 
 {
@@ -40,7 +40,7 @@ import { _minimalStore, buildStore } from "../src/script.js";
 }
 
 {
-  const query = `ps=foo&ps=bar&ms=0|00|a|10|r|20|m&hs=a|b|c|t&v=0.1.0&bw=3&bh=4`;
+  const query = `ps=foo&ps=bar&ms=0|00|a|10|r|20|m&hs=a|b|c|t&hs=e|a|f&v=0.1.0&bw=3&bh=4`;
   const store = buildStore(query);
   const expected = _minimalStore();
   expected.board = [
@@ -50,7 +50,10 @@ import { _minimalStore, buildStore } from "../src/script.js";
     [null, null, null],
   ];
   expected.boardMeta = { width: 3, height: 4 };
-  expected.hands = ["a", "b", "c", "t"];
+  expected.hands = [
+    ["a", "b", "c", "t"],
+    ["e", "a", "f"],
+  ];
   expected.version = "0.1.0";
   expected.players = ["foo", "bar"];
   expected.moves = [

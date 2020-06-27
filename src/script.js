@@ -31,7 +31,7 @@
  *   version: Version,
  *   boardMeta: BoardMeta,
  *   board: Panel[][],
- *   hands: Panel[],
+ *   hands: Panel[][],
  *   moves: Move[],
  * }} Store
  */
@@ -64,10 +64,15 @@ export function buildStore(query) {
   const urlParams = new URLSearchParams(query);
   data.players = urlParams.getAll("ps");
   data.version = urlParams.get("v");
-  const hs = urlParams.get("hs");
-  if (hs !== null) {
-    data.hands = hs.split("|");
+
+  /** @type {Panel[][]} */
+  const hands = [];
+  const hs = urlParams.getAll("hs");
+  for (const h of hs) {
+    hands.push(h.split("|"));
   }
+  data.hands = hands;
+
   data.boardMeta.width = Number(urlParams.get("bw"));
   data.boardMeta.height = Number(urlParams.get("bh"));
   const ms = urlParams.getAll("ms");
@@ -151,7 +156,8 @@ function renderHands() {
     return Promise.reject(new Error("no .js-hands"));
   }
 
-  for (const [i, v] of store.hands.entries()) {
+  // TODO: Choose current player
+  for (const [i, v] of store.hands[0].entries()) {
     const grouped = document.createElement("div");
     grouped.classList.add("field");
     grouped.classList.add("is-grouped");
