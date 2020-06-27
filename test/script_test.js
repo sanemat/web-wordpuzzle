@@ -31,6 +31,15 @@ import { _minimalStore, buildStore } from "../src/script.js";
 }
 
 {
+  const query = `ms=0|00|a|10|r|20|m&bw=3&bh=4`;
+  const store = buildStore(query);
+  assert.equal(store.moves.length, 1);
+  assert.equal(store.moves[0].playerId, 0);
+  assert.equal(store.moves[0].coordinates.length, 3);
+  assert.deepEqual(store.moves[0].coordinates[1], { panel: "r", x: 1, y: 0 });
+}
+
+{
   const query = `ps=foo&ps=bar&ms=0|00|a|10|r|20|m&hs=a|b|c|t&v=0.1.0&bw=3&bh=4`;
   const store = buildStore(query);
   const expected = _minimalStore();
