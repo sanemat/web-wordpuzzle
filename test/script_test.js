@@ -24,4 +24,10 @@ import { _minimalStore, buildStore } from "../src/script.js";
   assert.deepEqual(store.players, ["foo", "bar"]);
 }
 
+{
+  const query = `hs=a|b|c|t`;
+  const store = buildStore(query);
+  assert.deepEqual(store.hands, ["a", "b", "c", "t"]);
+}
+
 assert.deepEqual(_minimalStore(), _minimalStore());
