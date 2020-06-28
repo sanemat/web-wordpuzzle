@@ -159,20 +159,36 @@ function renderGame() {
   }
   el.innerHTML = "";
 
-  const game = document.createElement("div")
+  const game = document.createElement("div");
+  // players
+  {
+    const rowElem = document.createElement("div");
+    rowElem.classList.add("columns");
+    for (const [i, player] of store.players.entries()) {
+      const playerElem = document.createElement("div");
+      playerElem.classList.add("column");
+      const playerText = document.createTextNode(
+        `${player}${store.currentPlayerId === i ? " *" : ""}`
+      );
+      playerElem.appendChild(playerText);
+      rowElem.appendChild(playerElem);
+    }
+    game.appendChild(rowElem);
+  }
+  // board
   for (const row of store.board) {
     const rowElem = document.createElement("div");
     rowElem.classList.add("columns");
     for (const boardPanel of row) {
       const panelElem = document.createElement("div");
       panelElem.classList.add("column");
-      const panelText = document.createTextNode(boardPanel ?? "(null)")
-      panelElem.appendChild(panelText)
-      rowElem.appendChild(panelElem)
+      const panelText = document.createTextNode(boardPanel ?? "(null)");
+      panelElem.appendChild(panelText);
+      rowElem.appendChild(panelElem);
     }
-    game.appendChild(rowElem)
+    game.appendChild(rowElem);
   }
-  el.appendChild(game)
+  el.appendChild(game);
 
   return Promise.resolve(true);
 }
