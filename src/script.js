@@ -184,7 +184,14 @@ function renderGame() {
     for (const boardPanel of row) {
       const panelElem = document.createElement("div");
       panelElem.classList.add("column");
-      const panelText = document.createTextNode(boardPanel ?? "(null)");
+      /** @type {string} */
+      let text;
+      if (boardPanel === null) {
+        text = "(null)";
+      } else {
+        text = boardPanel;
+      }
+      const panelText = document.createTextNode(text);
       panelElem.appendChild(panelText);
       rowElem.appendChild(panelElem);
     }
