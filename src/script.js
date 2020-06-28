@@ -159,9 +159,21 @@ function renderGame() {
   }
   el.innerHTML = "";
 
-  const area = document.createElement("pre");
-  area.innerText = JSON.stringify(store.board, null, 2);
-  el.appendChild(area);
+  const game = document.createElement("div")
+  for (const row of store.board) {
+    const rowElem = document.createElement("div");
+    rowElem.classList.add("columns");
+    for (const boardPanel of row) {
+      const panelElem = document.createElement("div");
+      panelElem.classList.add("column");
+      const panelText = document.createTextNode(boardPanel ?? "(null)")
+      panelElem.appendChild(panelText)
+      rowElem.appendChild(panelElem)
+    }
+    game.appendChild(rowElem)
+  }
+  el.appendChild(game)
+
   return Promise.resolve(true);
 }
 
