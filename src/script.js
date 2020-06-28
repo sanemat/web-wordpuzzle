@@ -184,7 +184,14 @@ function renderGame() {
     for (const boardPanel of row) {
       const panelElem = document.createElement("div");
       panelElem.classList.add("column");
-      const panelText = document.createTextNode(boardPanel ?? "(null)");
+      /** @type {string} */
+      let text;
+      if (boardPanel === null) {
+        text = "(null)";
+      } else {
+        text = boardPanel;
+      }
+      const panelText = document.createTextNode(text);
       panelElem.appendChild(panelText);
       rowElem.appendChild(panelElem);
     }
@@ -231,7 +238,7 @@ function renderHands() {
     select1.classList.add("select");
     const panel = document.createElement("select");
     panel.setAttribute("name", "panel");
-    panel.add(new Option(v ?? "", v ?? "", true, true));
+    panel.add(new Option(v, v, true, true));
     select1.appendChild(panel);
     control1.appendChild(select1);
     grouped.appendChild(control1);
