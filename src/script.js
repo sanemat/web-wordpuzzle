@@ -265,6 +265,16 @@ export function filterMove(data) {
   return Promise.resolve(r);
 }
 
+/**
+ * @promise
+ * @returns {number}
+ * @param {string[][]} data
+ */
+function playerIdFrom(data) {
+  const playerIdString = data[0][1];
+  return parseInt(playerIdString, 10);
+}
+
 /** @typedef {[Move, number[]]} MoveOpe */
 
 /**
@@ -282,7 +292,7 @@ export function buildMove(data) {
   };
   /** @type {number[]} */
   const used = [];
-  move.playerId = parseInt(data[0][1], 10);
+  move.playerId = playerIdFrom(data);
   for (let i = 0; i < data.length - 1; i += 4) {
     move.coordinates.push({
       panel: data[i + 2][1],
@@ -342,7 +352,8 @@ async function playAction(ev) {
       return [value[0], value[1]];
     });
 
-    const playerId = 0;
+    // get playerId from
+    const playerId = playerIdFrom(data);
     const [move, used] = await buildMove(await filterMove(data));
     console.log(move);
     if (await validateMove(move)) {
