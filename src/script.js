@@ -35,7 +35,8 @@
  *   hands: Panel[][],
  *   moves: Move[],
  *   jar: Panel[],
- *   currentPlayerId: number
+ *   currentPlayerId: number,
+ *   moved: boolean,
  * }} Store
  */
 /**
@@ -56,6 +57,7 @@ export function _minimalStore() {
     moves: [],
     jar: [],
     currentPlayerId: 0,
+    moved: false,
   };
 }
 
@@ -92,6 +94,9 @@ export function buildStore(query) {
   } else {
     data.currentPlayerId = 0;
   }
+
+  const md = urlParams.get("md");
+  data.moved = md === "1";
 
   data.boardMeta.width = Number(urlParams.get("bw"));
   data.boardMeta.height = Number(urlParams.get("bh"));
