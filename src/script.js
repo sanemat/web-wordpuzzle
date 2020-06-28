@@ -164,6 +164,7 @@ function renderGame() {
   {
     const rowElem = document.createElement("div");
     rowElem.classList.add("columns");
+    rowElem.classList.add("is-mobile");
     for (const [i, player] of store.players.entries()) {
       const playerElem = document.createElement("div");
       playerElem.classList.add("column");
@@ -179,6 +180,7 @@ function renderGame() {
   for (const row of store.board) {
     const rowElem = document.createElement("div");
     rowElem.classList.add("columns");
+    rowElem.classList.add("is-mobile");
     for (const boardPanel of row) {
       const panelElem = document.createElement("div");
       panelElem.classList.add("column");
