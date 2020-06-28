@@ -35,6 +35,7 @@
  *   hands: Panel[][],
  *   moves: Move[],
  *   jar: Panel[],
+ *   currentPlayerId: number
  * }} Store
  */
 /**
@@ -54,6 +55,7 @@ export function _minimalStore() {
     hands: [],
     moves: [],
     jar: [],
+    currentPlayerId: 0,
   };
 }
 
@@ -83,6 +85,13 @@ export function buildStore(query) {
     jar = j.split("|");
   }
   data.jar = jar;
+
+  const cp = urlParams.get("cp");
+  if (typeof cp === "string") {
+    data.currentPlayerId = parseInt(cp, 10);
+  } else {
+    data.currentPlayerId = 0;
+  }
 
   data.boardMeta.width = Number(urlParams.get("bw"));
   data.boardMeta.height = Number(urlParams.get("bh"));
@@ -169,8 +178,7 @@ function renderHands() {
   }
   el.innerHTML = "";
 
-  // TODO: Choose current player
-  const playerId = 0;
+  const playerId = store.currentPlayerId;
   const playerIdInput = document.createElement("input");
   playerIdInput.setAttribute("type", "hidden");
   playerIdInput.setAttribute("name", "playerId");
@@ -257,6 +265,16 @@ export function filterMove(data) {
   return Promise.resolve(r);
 }
 
+/**
+ * @promise
+ * @returns {number}
+ * @param {string[][]} data
+ */
+function playerIdFrom(data) {
+  const playerIdString = data[0][1];
+  return parseInt(playerIdString, 10);
+}
+
 /** @typedef {[Move, number[]]} MoveOpe */
 
 /**
@@ -274,7 +292,7 @@ export function buildMove(data) {
   };
   /** @type {number[]} */
   const used = [];
-  move.playerId = parseInt(data[0][1], 10);
+  move.playerId = playerIdFrom(data);
   for (let i = 0; i < data.length - 1; i += 4) {
     move.coordinates.push({
       panel: data[i + 2][1],
@@ -334,7 +352,8 @@ async function playAction(ev) {
       return [value[0], value[1]];
     });
 
-    const playerId = 0;
+    // get playerId from
+    const playerId = playerIdFrom(data);
     const [move, used] = await buildMove(await filterMove(data));
     console.log(move);
     if (await validateMove(move)) {
