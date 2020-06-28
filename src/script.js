@@ -34,6 +34,7 @@
  *   board: BoardPanel[][],
  *   hands: Panel[][],
  *   moves: Move[],
+ *   jar: Panel[],
  * }} Store
  */
 /**
@@ -52,6 +53,7 @@ export function _minimalStore() {
     board: [],
     hands: [],
     moves: [],
+    jar: [],
   };
 }
 
@@ -73,6 +75,14 @@ export function buildStore(query) {
     hands.push(h.split("|"));
   }
   data.hands = hands;
+
+  /** @type {Panel[]} */
+  let jar = [];
+  const j = urlParams.get("j");
+  if (j) {
+    jar = j.split("|");
+  }
+  data.jar = jar;
 
   data.boardMeta.width = Number(urlParams.get("bw"));
   data.boardMeta.height = Number(urlParams.get("bh"));
