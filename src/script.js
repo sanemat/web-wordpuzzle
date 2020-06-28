@@ -221,52 +221,58 @@ function renderHands() {
   el.innerHTML = "";
 
   const playerId = store.currentPlayerId;
-  const playerIdInput = document.createElement("input");
-  playerIdInput.setAttribute("type", "hidden");
-  playerIdInput.setAttribute("name", "playerId");
-  playerIdInput.setAttribute("value", playerId.toString());
-  el.appendChild(playerIdInput);
-  for (const [i, v] of store.hands[playerId].entries()) {
-    const grouped = document.createElement("div");
-    grouped.classList.add("field");
-    grouped.classList.add("is-grouped");
-    const handId = document.createElement("input");
-    handId.setAttribute("type", "hidden");
-    handId.setAttribute("name", "handId");
-    handId.setAttribute("value", i.toString());
-    grouped.appendChild(handId);
 
-    // panel
-    const control1 = document.createElement("div");
-    control1.classList.add("control");
-    const select1 = document.createElement("div");
-    select1.classList.add("select");
-    const panel = document.createElement("select");
-    panel.setAttribute("name", "panel");
-    panel.add(new Option(v, v, true, true));
-    select1.appendChild(panel);
-    control1.appendChild(select1);
-    grouped.appendChild(control1);
+  if (store.moved) {
+    const textElem = document.createTextNode("next")
+    el.appendChild(textElem)
+  } else {
+    const playerIdInput = document.createElement("input");
+    playerIdInput.setAttribute("type", "hidden");
+    playerIdInput.setAttribute("name", "playerId");
+    playerIdInput.setAttribute("value", playerId.toString());
+    el.appendChild(playerIdInput);
+    for (const [i, v] of store.hands[playerId].entries()) {
+      const grouped = document.createElement("div");
+      grouped.classList.add("field");
+      grouped.classList.add("is-grouped");
+      const handId = document.createElement("input");
+      handId.setAttribute("type", "hidden");
+      handId.setAttribute("name", "handId");
+      handId.setAttribute("value", i.toString());
+      grouped.appendChild(handId);
 
-    // x, y
-    for (const xy of ["x", "y"]) {
-      const control2 = document.createElement("div");
-      control2.classList.add("control");
-      const select2 = document.createElement("div");
-      select2.classList.add("select");
-      const coordinate = document.createElement("select");
-      coordinate.setAttribute("name", xy);
-      coordinate.add(new Option());
-      const lim = xy === "x" ? store.boardMeta.width : store.boardMeta.height;
-      for (let j = 0; j < lim; j++) {
-        coordinate.add(new Option(j.toString(), j.toString()));
+      // panel
+      const control1 = document.createElement("div");
+      control1.classList.add("control");
+      const select1 = document.createElement("div");
+      select1.classList.add("select");
+      const panel = document.createElement("select");
+      panel.setAttribute("name", "panel");
+      panel.add(new Option(v, v, true, true));
+      select1.appendChild(panel);
+      control1.appendChild(select1);
+      grouped.appendChild(control1);
+
+      // x, y
+      for (const xy of ["x", "y"]) {
+        const control2 = document.createElement("div");
+        control2.classList.add("control");
+        const select2 = document.createElement("div");
+        select2.classList.add("select");
+        const coordinate = document.createElement("select");
+        coordinate.setAttribute("name", xy);
+        coordinate.add(new Option());
+        const lim = xy === "x" ? store.boardMeta.width : store.boardMeta.height;
+        for (let j = 0; j < lim; j++) {
+          coordinate.add(new Option(j.toString(), j.toString()));
+        }
+        select2.appendChild(coordinate);
+        control2.appendChild(select2);
+        grouped.appendChild(control2);
       }
-      select2.appendChild(coordinate);
-      control2.appendChild(select2);
-      grouped.appendChild(control2);
-    }
 
-    el.appendChild(grouped);
+      el.appendChild(grouped);
+    }
   }
   return Promise.resolve(true);
 }
@@ -426,6 +432,9 @@ async function playAction(ev) {
           params.append("hs", v);
         }
       }
+
+      store.moved = true
+      params.set("md", "1")
 
       for (const m of store.moves) {
         for (const c of m.coordinates) {
