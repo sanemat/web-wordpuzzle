@@ -292,7 +292,7 @@ export function moveToParam(move) {
   r.push(move.playerId.toString());
   for (const c of move.coordinates) {
     r.push(`${c.x.toString()}${c.y.toString()}`);
-    if (c.panel === null) {
+    if (typeof c.panel !== "string") {
       throw new Error("move panel is non-nullable");
     }
     r.push(c.panel);
