@@ -111,11 +111,14 @@ import {
 
 {
   const input = [["playerId", "0"]];
-  /** @type {import("../src/script.js").Move} */
-  const expected = {
-    playerId: 0,
-    coordinates: [],
-  };
+  /** @type {import("../src/script.js").MoveOpe} */
+  const expected = [
+    {
+      playerId: 0,
+      coordinates: [],
+    },
+    [],
+  ];
   (async () => {
     assert.deepEqual(await buildMove(input), expected);
   })();
@@ -129,11 +132,14 @@ import {
     ["x", "2"],
     ["y", "3"],
   ];
-  /** @type {import("../src/script.js").Move} */
-  const expected = {
-    playerId: 0,
-    coordinates: [{ x: 2, y: 3, panel: "x" }],
-  };
+  /** @type {import("../src/script.js").MoveOpe} */
+  const expected = [
+    {
+      playerId: 0,
+      coordinates: [{ x: 2, y: 3, panel: "x" }],
+    },
+    [0],
+  ];
   (async () => {
     assert.deepEqual(await buildMove(input), expected);
   })();
