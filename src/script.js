@@ -178,8 +178,7 @@ function renderHands() {
   }
   el.innerHTML = "";
 
-  // TODO: Choose current player
-  const playerId = 0;
+  const playerId = store.currentPlayerId;
   const playerIdInput = document.createElement("input");
   playerIdInput.setAttribute("type", "hidden");
   playerIdInput.setAttribute("name", "playerId");
