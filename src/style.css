@@ -7,3 +7,6 @@
 .main__hands {
   min-height: 40vh;
 }
+.main__examples {
+  word-break: break-all;
+}
