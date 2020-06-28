@@ -348,6 +348,14 @@ async function playAction(ev) {
         store.hands[playerId].splice(usedIndex, 1);
       });
 
+      // fill from jar
+      while (store.hands[playerId].length < 7 && store.jar.length > 0) {
+        store.hands[playerId].push(
+          store.jar.splice(Math.floor(Math.random() * store.jar.length), 1)[0]
+        );
+      }
+      params.set("j", store.jar.join("|"));
+
       const hs = params.getAll("hs");
       params.delete("hs");
       for (const [i, v] of hs.entries()) {
