@@ -10,7 +10,8 @@
 /**
  * @typedef {string} Player players' name.
  * @typedef {?string} Version version string.
- * @typedef {?string} Panel the panel.
+ * @typedef {string} Panel the panel.
+ * @typedef {Panel|null} BoardPanel
  */
 /**
  * @typedef {{
@@ -30,7 +31,7 @@
  *   players: Player[],
  *   version: Version,
  *   boardMeta: BoardMeta,
- *   board: Panel[][],
+ *   board: BoardPanel[][],
  *   hands: Panel[][],
  *   moves: Move[],
  * }} Store
@@ -93,7 +94,7 @@ export function buildStore(query) {
   }
   data.moves = moves;
 
-  /** @type {Panel[][]} */
+  /** @type {BoardPanel[][]} */
   const board = [];
   for (let i = 0; i < data.boardMeta.height; i++) {
     board.push(new Array(data.boardMeta.width).fill(null));
@@ -297,9 +298,6 @@ export function moveToParam(move) {
   r.push(move.playerId.toString());
   for (const c of move.coordinates) {
     r.push(`${c.x.toString()}${c.y.toString()}`);
-    if (typeof c.panel !== "string") {
-      throw new Error("move panel is non-nullable");
-    }
     r.push(c.panel);
   }
   return r.join("|");
