@@ -65,7 +65,7 @@ import {
 }
 
 {
-  const query = `ps=foo&ps=bar&ms=0|00|a|10|r|20|m&hs=a|b|c|t&hs=e|a|f&v=0.1.0&bw=3&bh=4&j=a|b|x|x`;
+  const query = `ps=foo&ps=bar&ms=0|00|a|10|r|20|m&hs=a|b|c|t&hs=e|a|f&v=0.1.0&bw=3&bh=4&j=a|b|x|x&cp=0`;
   const store = buildStore(query);
   const expected = _minimalStore();
   expected.board = [
@@ -92,6 +92,7 @@ import {
     },
   ];
   expected.jar = ["a", "b", "x", "x"];
+  expected.currentPlayerId = 0;
   assert.deepEqual(store, expected);
 }
 
