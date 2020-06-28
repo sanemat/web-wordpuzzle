@@ -231,7 +231,7 @@ function renderHands() {
     select1.classList.add("select");
     const panel = document.createElement("select");
     panel.setAttribute("name", "panel");
-    panel.add(new Option(v ?? "", v ?? "", true, true));
+    panel.add(new Option(v, v, true, true));
     select1.appendChild(panel);
     control1.appendChild(select1);
     grouped.appendChild(control1);
