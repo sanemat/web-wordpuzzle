@@ -246,11 +246,13 @@ export function filterMove(data) {
   return Promise.resolve(r);
 }
 
+/** @typedef {[Move, number[]]} MoveOpe */
+
 /**
  * @promise
  * @reject {Error}
- * @fulfill {Move}
- * @returns {Promise.<Move>}
+ * @fulfill {MoveOpe}
+ * @returns {Promise.<MoveOpe>}
  * @param {string[][]} data
  */
 export function buildMove(data) {
@@ -259,6 +261,8 @@ export function buildMove(data) {
     playerId: 0,
     coordinates: [],
   };
+  /** @type {number[]} */
+  const used = [];
   move.playerId = parseInt(data[0][1], 10);
   for (let i = 0; i < data.length - 1; i += 4) {
     move.coordinates.push({
@@ -266,8 +270,9 @@ export function buildMove(data) {
       x: parseInt(data[i + 3][1], 10),
       y: parseInt(data[i + 4][1], 10),
     });
+    used.push(parseInt(data[i + 1][1], 10));
   }
-  return Promise.resolve(move);
+  return Promise.resolve([move, used]);
 }
 
 /**
@@ -321,13 +326,29 @@ async function playAction(ev) {
       return [value[0], value[1]];
     });
 
-    const move = await buildMove(await filterMove(data));
+    const playerId = 0;
+    const [move, used] = await buildMove(await filterMove(data));
     console.log(move);
     if (await validateMove(move)) {
       console.log("move is valid");
       store.moves.push(move);
       const params = new URLSearchParams(location.search);
       params.append("ms", moveToParam(move));
+
+      // update hands
+      used.reverse().forEach((usedIndex) => {
+        store.hands[playerId].splice(usedIndex, 1);
+      });
+
+      const hs = params.getAll("hs");
+      params.delete("hs");
+      for (const [i, v] of hs.entries()) {
+        if (i === playerId) {
+          params.append("hs", store.hands[playerId].join("|"));
+        } else {
+          params.append("hs", v);
+        }
+      }
 
       for (const m of store.moves) {
         for (const c of m.coordinates) {
