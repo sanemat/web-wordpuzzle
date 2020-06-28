@@ -35,6 +35,7 @@
  *   hands: Panel[][],
  *   moves: Move[],
  *   jar: Panel[],
+ *   currentPlayerId: number
  * }} Store
  */
 /**
@@ -54,6 +55,7 @@ export function _minimalStore() {
     hands: [],
     moves: [],
     jar: [],
+    currentPlayerId: 0,
   };
 }
 
@@ -83,6 +85,13 @@ export function buildStore(query) {
     jar = j.split("|");
   }
   data.jar = jar;
+
+  const cp = urlParams.get("cp");
+  if (typeof cp === "string") {
+    data.currentPlayerId = parseInt(cp, 10);
+  } else {
+    data.currentPlayerId = 0;
+  }
 
   data.boardMeta.width = Number(urlParams.get("bw"));
   data.boardMeta.height = Number(urlParams.get("bh"));
