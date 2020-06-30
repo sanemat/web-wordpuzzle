@@ -245,8 +245,8 @@ function renderHands() {
   const playerId = store.currentPlayerId;
 
   if (store.moved) {
-    const textElem = document.createTextNode("next")
-    el.appendChild(textElem)
+    const textElem = document.createTextNode("next");
+    el.appendChild(textElem);
   } else {
     const playerIdInput = document.createElement("input");
     playerIdInput.setAttribute("type", "hidden");
@@ -458,8 +458,8 @@ async function playAction(ev) {
         }
       }
 
-      store.moved = true
-      params.set("md", "1")
+      store.moved = true;
+      params.set("md", "1");
 
       for (const m of store.moves) {
         for (const c of m.coordinates) {
