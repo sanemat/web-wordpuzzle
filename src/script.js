@@ -44,6 +44,10 @@
  */
 let store;
 
+/** @typedef {{render: boolean}} Debug */
+/** @type {Debug} debug */
+let debug;
+
 /**
  * @returns {Store}
  */
@@ -59,6 +63,23 @@ export function _minimalStore() {
     currentPlayerId: 0,
     moved: false,
   };
+}
+
+/**
+ * @param {String} query
+ * @returns {Debug}
+ * @throws {Error}
+ */
+function buildDebug(query) {
+  /** @type {Debug} */
+  const data = {};
+  const urlParams = new URLSearchParams(query);
+  let render = true;
+  if (urlParams.get("debugRender") === "0") {
+    render = false;
+  }
+  data.render = render;
+  return data;
 }
 
 /**
@@ -148,6 +169,7 @@ export function buildStore(query) {
 function initialize() {
   const queryString = window.location.search;
   store = buildStore(queryString);
+  debug = buildDebug(queryString);
   return Promise.resolve(true);
 }
 
@@ -223,8 +245,8 @@ function renderHands() {
   const playerId = store.currentPlayerId;
 
   if (store.moved) {
-    const textElem = document.createTextNode("next")
-    el.appendChild(textElem)
+    const textElem = document.createTextNode("next");
+    el.appendChild(textElem);
   } else {
     const playerIdInput = document.createElement("input");
     playerIdInput.setAttribute("type", "hidden");
@@ -283,6 +305,9 @@ function renderHands() {
  * @returns {Promise.<any>}
  */
 function render() {
+  if (!debug.render) {
+    return Promise.resolve(true);
+  }
   return Promise.all([renderGame(), renderHands()]);
 }
 
@@ -433,8 +458,8 @@ async function playAction(ev) {
         }
       }
 
-      store.moved = true
-      params.set("md", "1")
+      store.moved = true;
+      params.set("md", "1");
 
       for (const m of store.moves) {
         for (const c of m.coordinates) {
