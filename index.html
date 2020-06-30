@@ -20,10 +20,62 @@
     </section>
     <section>
       <div class="container">
-        <div id="game" class="main__game"></div>
+        <div id="game" class="main__game">
+          <!-- game board -->
+          <div>
+            <div class="columns">
+              <div class="column">a</div>
+              <div class="column">r</div>
+              <div class="column">m</div>
+            </div>
+            <div class="columns">
+              <div class="column">(null)</div>
+              <div class="column">(null)</div>
+              <div class="column">(null)</div>
+            </div>
+            <div class="columns">
+              <div class="column">(null)</div>
+              <div class="column">(null)</div>
+              <div class="column">(null)</div>
+            </div>
+            <div class="columns">
+              <div class="column">(null)</div>
+              <div class="column">(null)</div>
+              <div class="column">(null)</div>
+            </div>
+          </div>
+        </div>
         <form class="control js-play">
           <div class="js-hands main__hands">
             <!-- fill hands here -->
+            <div class="field is-grouped">
+              <input type="hidden" name="handId" value="0" />
+              <div class="control">
+                <div class="select">
+                  <select name="panel">
+                    <option value="s">s</option>
+                  </select>
+                </div>
+              </div>
+              <div class="control">
+                <div class="select">
+                  <select name="x">
+                    <option></option>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                  </select>
+                </div>
+              </div>
+              <div class="control">
+                <div class="select">
+                  <select name="y">
+                    <option></option>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                  </select>
+                </div>
+              </div>
+            </div>
           </div>
           <button
             class="button is-primary is-fullwidth main__play"
