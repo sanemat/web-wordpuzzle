@@ -235,34 +235,10 @@ function renderGame() {
  * @fulfill {Boolean}
  * @returns {Promise.<Boolean>}
  */
-function renderHands() {
-  if (store.moved) {
-    const playArea = document.body.querySelector(".js-play-area");
-    if (!playArea) {
-      return Promise.reject(new Error("no .js-play-area"));
-    } else if (!(playArea instanceof HTMLElement)) {
-      return Promise.reject(new Error(".js-play-area is not html element"));
-    }
-    playArea.style.display = "none";
-
-    const nextArea = document.body.querySelector(".js-next-area");
-    if (!nextArea) {
-      return Promise.reject(new Error("no .js-next-area"));
-    } else if (!(nextArea instanceof HTMLElement)) {
-      return Promise.reject(new Error(".js-next-area is not html element"));
-    }
-    nextArea.innerHTML = "";
-    nextArea.style.display = "block";
-    const textElem = document.createTextNode("next");
-    nextArea.appendChild(textElem);
-    return Promise.resolve(true);
-  }
-
+function showPlayArea() {
   const playArea = document.body.querySelector(".js-play-area");
-  if (!playArea) {
+  if (!playArea || !(playArea instanceof HTMLElement)) {
     return Promise.reject(new Error("no .js-play-area"));
-  } else if (!(playArea instanceof HTMLElement)) {
-    return Promise.reject(new Error(".js-play-area is not html element"));
   }
   playArea.style.display = "block";
 
@@ -340,13 +316,91 @@ function renderHands() {
 /**
  * @promise
  * @reject {Error}
+ * @fulfill {Boolean}
+ * @returns {Promise.<Boolean>}
+ */
+function hidePlayArea() {
+  const playArea = document.body.querySelector(".js-play-area");
+  if (!playArea || !(playArea instanceof HTMLElement)) {
+    return Promise.reject(new Error("no .js-play-area"));
+  }
+  playArea.style.display = "none";
+  return Promise.resolve(true);
+}
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {Boolean}
+ * @returns {Promise.<Boolean>}
+ */
+function renderPlayArea() {
+  if (store.moved) {
+    return hidePlayArea();
+  } else {
+    return showPlayArea();
+  }
+}
+
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {Boolean}
+ * @returns {Promise.<Boolean>}
+ */
+function hideNextArea() {
+  const nextArea = document.body.querySelector(".js-next-area");
+  if (!nextArea || !(nextArea instanceof HTMLElement)) {
+    return Promise.reject(new Error("no .js-next-area"));
+  }
+
+  nextArea.style.display = "none";
+  return Promise.resolve(true);
+}
+
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {Boolean}
+ * @returns {Promise.<Boolean>}
+ */
+function showNextArea() {
+  const nextArea = document.body.querySelector(".js-next-area");
+  if (!nextArea || !(nextArea instanceof HTMLElement)) {
+    return Promise.reject(new Error("no .js-next-area"));
+  }
+
+  nextArea.innerHTML = "";
+  nextArea.style.display = "block";
+  const textElem = document.createTextNode("next");
+  nextArea.appendChild(textElem);
+
+  return Promise.resolve(true);
+}
+
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {Boolean}
+ * @returns {Promise.<Boolean>}
+ */
+function renderNextArea() {
+  if (store.moved) {
+    return showNextArea();
+  } else {
+    return hideNextArea();
+  }
+}
+
+/**
+ * @promise
+ * @reject {Error}
  * @returns {Promise.<any>}
  */
 function render() {
   if (!debug.render) {
     return Promise.resolve(true);
   }
-  return Promise.all([renderGame(), renderHands()]);
+  return Promise.all([renderGame(), renderPlayArea(), renderNextArea()]);
 }
 
 /**
