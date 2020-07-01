@@ -46,18 +46,18 @@
           </div>
         </div>
         <div class="main__play-area js-play-area">
-          <form class="js-play">
+          <form class="js-play field">
             <div class="js-play-coordinates">
               <input type="hidden" name="playerId" value="0" />
-              <div>
+              <div class="is-grouped field">
                 <input type="hidden" name="handId" value="0" />
-                <label
+                <label class="control label"
                   >panel
                   <select name="panel">
                     <option value="s">s</option>
                   </select>
                 </label>
-                <label
+                <label class="control label"
                   >x
                   <select name="x">
                     <option></option>
@@ -65,7 +65,7 @@
                     <option value="1">1</option>
                   </select>
                 </label>
-                <label
+                <label class="control label"
                   >y
                   <select name="y">
                     <option></option>
@@ -74,15 +74,15 @@
                   </select>
                 </label>
               </div>
-              <div>
+              <div class="field is-grouped">
                 <input type="hidden" name="handId" value="1" />
-                <label
+                <label class="control label"
                   >panel
                   <select name="panel">
                     <option value="o">o</option>
                   </select>
                 </label>
-                <label
+                <label class="control label"
                   >x
                   <select name="x">
                     <option></option>
@@ -90,7 +90,7 @@
                     <option value="1">1</option>
                   </select>
                 </label>
-                <label
+                <label class="control label"
                   >y
                   <select name="y">
                     <option></option>
@@ -100,7 +100,7 @@
                 </label>
               </div>
             </div>
-            <button type="submit">Play</button>
+            <button class="button is-primary is-fullwidth main__play-submit" type="submit">Play</button>
           </form>
         </div>
         <div class="main__examples">

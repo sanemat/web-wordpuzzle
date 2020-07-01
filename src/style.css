@@ -4,6 +4,9 @@
 .main__play-area {
   min-height: 40vh;
 }
+.main__play-submit {
+  margin-top: 1rem;
+}
 .main__examples {
   word-break: break-all;
 }
