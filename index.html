@@ -45,45 +45,82 @@
             </div>
           </div>
         </div>
-        <form class="control js-play">
-          <div class="js-hands main__hands">
-            <!-- fill hands here -->
-            <div class="field is-grouped">
-              <input type="hidden" name="handId" value="0" />
-              <div class="control">
-                <div class="select">
-                  <select name="panel">
-                    <option value="s">s</option>
-                  </select>
+        <div class="main__play-area js-play-area">
+          <form class="js-play field">
+            <div class="js-play-coordinates">
+              <input type="hidden" name="playerId" value="0" />
+              <div class="is-grouped field">
+                <input type="hidden" name="handId" value="0" />
+                <div class="control">
+                  <label for="play0panel"></label>
+                  <div class="select">
+                    <select name="panel" id="play0panel">
+                      <option value="s">s</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="control">
+                  <label for="play0x"></label>
+                  <div class="select">
+                    <select name="x" id="play0x">
+                      <option></option>
+                      <option value="0">0</option>
+                      <option value="1">1</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="control">
+                  <label for="play0y"></label>
+                  <div class="select">
+                    <select name="y" id="play0y">
+                      <option></option>
+                      <option value="0">0</option>
+                      <option value="1">1</option>
+                    </select>
+                  </div>
                 </div>
               </div>
-              <div class="control">
-                <div class="select">
-                  <select name="x">
-                    <option></option>
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                  </select>
+              <div class="field is-grouped">
+                <input type="hidden" name="handId" value="1" />
+                <div class="control">
+                  <label for="play1panel"></label>
+                  <div class="select">
+                    <select name="panel" id="play1panel">
+                      <option value="o">o</option>
+                    </select>
+                  </div>
                 </div>
-              </div>
-              <div class="control">
-                <div class="select">
-                  <select name="y">
-                    <option></option>
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                  </select>
+                <div class="control">
+                  <label for="play1x"></label>
+                  <div class="select">
+                    <select name="x" id="play1x">
+                      <option></option>
+                      <option value="0">0</option>
+                      <option value="1">1</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="control">
+                  <label for="play1y"></label>
+                  <div class="select">
+                    <select name="y" id="play1y">
+                      <option></option>
+                      <option value="0">0</option>
+                      <option value="1">1</option>
+                    </select>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <button
-            class="button is-primary is-fullwidth main__play"
-            type="submit"
-          >
-            Play
-          </button>
-        </form>
+            <button
+              class="button is-primary is-fullwidth main__play-submit"
+              type="submit"
+            >
+              Play
+            </button>
+          </form>
+        </div>
+        <div class="main_next-area js-next-area"></div>
         <div class="main__examples">
           <ul>
             <li>

@@ -235,68 +235,160 @@ function renderGame() {
  * @fulfill {Boolean}
  * @returns {Promise.<Boolean>}
  */
-function renderHands() {
-  const el = document.body.querySelector(".js-hands");
-  if (!el) {
-    return Promise.reject(new Error("no .js-hands"));
+function showPlayArea() {
+  const playArea = document.body.querySelector(".js-play-area");
+  if (!playArea || !(playArea instanceof HTMLElement)) {
+    return Promise.reject(new Error("no .js-play-area"));
   }
-  el.innerHTML = "";
+  playArea.style.display = "block";
+
+  const coordinatesElem = document.body.querySelector(".js-play-coordinates");
+  if (!coordinatesElem) {
+    return Promise.reject(new Error("no .js-play-coordinates"));
+  }
+  coordinatesElem.innerHTML = "";
 
   const playerId = store.currentPlayerId;
 
-  if (store.moved) {
-    const textElem = document.createTextNode("next");
-    el.appendChild(textElem);
-  } else {
-    const playerIdInput = document.createElement("input");
-    playerIdInput.setAttribute("type", "hidden");
-    playerIdInput.setAttribute("name", "playerId");
-    playerIdInput.setAttribute("value", playerId.toString());
-    el.appendChild(playerIdInput);
-    for (const [i, v] of store.hands[playerId].entries()) {
-      const grouped = document.createElement("div");
-      grouped.classList.add("field");
-      grouped.classList.add("is-grouped");
+  const playerIdInput = document.createElement("input");
+  playerIdInput.setAttribute("type", "hidden");
+  playerIdInput.setAttribute("name", "playerId");
+  playerIdInput.setAttribute("value", playerId.toString());
+  coordinatesElem.appendChild(playerIdInput);
+  for (const [i, v] of store.hands[playerId].entries()) {
+    const grouped = document.createElement("div");
+    grouped.classList.add("field");
+    grouped.classList.add("is-grouped");
+
+    {
       const handId = document.createElement("input");
       handId.setAttribute("type", "hidden");
       handId.setAttribute("name", "handId");
       handId.setAttribute("value", i.toString());
       grouped.appendChild(handId);
+    }
 
-      // panel
-      const control1 = document.createElement("div");
-      control1.classList.add("control");
-      const select1 = document.createElement("div");
-      select1.classList.add("select");
+    // panel
+    {
+      const control = document.createElement("div");
+      control.classList.add("control");
+      const label = document.createElement("label");
+      label.setAttribute("for", `play${i}panel`);
+      const select = document.createElement("div");
+      select.classList.add("select");
       const panel = document.createElement("select");
       panel.setAttribute("name", "panel");
+      panel.setAttribute("id", `play${i}panel`);
       panel.add(new Option(v, v, true, true));
-      select1.appendChild(panel);
-      control1.appendChild(select1);
-      grouped.appendChild(control1);
-
-      // x, y
-      for (const xy of ["x", "y"]) {
-        const control2 = document.createElement("div");
-        control2.classList.add("control");
-        const select2 = document.createElement("div");
-        select2.classList.add("select");
-        const coordinate = document.createElement("select");
-        coordinate.setAttribute("name", xy);
-        coordinate.add(new Option());
-        const lim = xy === "x" ? store.boardMeta.width : store.boardMeta.height;
-        for (let j = 0; j < lim; j++) {
-          coordinate.add(new Option(j.toString(), j.toString()));
-        }
-        select2.appendChild(coordinate);
-        control2.appendChild(select2);
-        grouped.appendChild(control2);
-      }
-
-      el.appendChild(grouped);
+      select.appendChild(panel);
+      control.appendChild(label);
+      control.appendChild(select);
+      grouped.appendChild(control);
     }
+
+    // x, y
+    for (const xy of ["x", "y"]) {
+      const control = document.createElement("div");
+      control.classList.add("control");
+      const label = document.createElement("label");
+      label.setAttribute("for", `play${i}${xy}`);
+      const select = document.createElement("div");
+      select.classList.add("select");
+      const coordinate = document.createElement("select");
+      coordinate.setAttribute("name", xy);
+      coordinate.setAttribute("id", `play${i}${xy}`);
+      coordinate.add(new Option());
+      const lim = xy === "x" ? store.boardMeta.width : store.boardMeta.height;
+      for (let j = 0; j < lim; j++) {
+        coordinate.add(new Option(j.toString(), j.toString()));
+      }
+      select.appendChild(coordinate);
+      control.appendChild(label);
+      control.appendChild(select);
+      grouped.appendChild(control);
+    }
+
+    coordinatesElem.appendChild(grouped);
   }
   return Promise.resolve(true);
+}
+
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {Boolean}
+ * @returns {Promise.<Boolean>}
+ */
+function hidePlayArea() {
+  const playArea = document.body.querySelector(".js-play-area");
+  if (!playArea || !(playArea instanceof HTMLElement)) {
+    return Promise.reject(new Error("no .js-play-area"));
+  }
+  playArea.style.display = "none";
+  return Promise.resolve(true);
+}
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {Boolean}
+ * @returns {Promise.<Boolean>}
+ */
+function renderPlayArea() {
+  if (store.moved) {
+    return hidePlayArea();
+  } else {
+    return showPlayArea();
+  }
+}
+
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {Boolean}
+ * @returns {Promise.<Boolean>}
+ */
+function hideNextArea() {
+  const nextArea = document.body.querySelector(".js-next-area");
+  if (!nextArea || !(nextArea instanceof HTMLElement)) {
+    return Promise.reject(new Error("no .js-next-area"));
+  }
+
+  nextArea.style.display = "none";
+  return Promise.resolve(true);
+}
+
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {Boolean}
+ * @returns {Promise.<Boolean>}
+ */
+function showNextArea() {
+  const nextArea = document.body.querySelector(".js-next-area");
+  if (!nextArea || !(nextArea instanceof HTMLElement)) {
+    return Promise.reject(new Error("no .js-next-area"));
+  }
+
+  nextArea.innerHTML = "";
+  nextArea.style.display = "block";
+  const textElem = document.createTextNode("next");
+  nextArea.appendChild(textElem);
+
+  return Promise.resolve(true);
+}
+
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {Boolean}
+ * @returns {Promise.<Boolean>}
+ */
+function renderNextArea() {
+  if (store.moved) {
+    return showNextArea();
+  } else {
+    return hideNextArea();
+  }
 }
 
 /**
@@ -308,7 +400,7 @@ function render() {
   if (!debug.render) {
     return Promise.resolve(true);
   }
-  return Promise.all([renderGame(), renderHands()]);
+  return Promise.all([renderGame(), renderPlayArea(), renderNextArea()]);
 }
 
 /**

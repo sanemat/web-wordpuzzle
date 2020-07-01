@@ -1,11 +1,11 @@
 .main__game {
   min-height: 60vh;
 }
-.main__play {
-  margin-top: 0.5rem;
-}
-.main__hands {
+.main__play-area {
   min-height: 40vh;
+}
+.main__play-submit {
+  margin-top: 1rem;
 }
 .main__examples {
   word-break: break-all;
