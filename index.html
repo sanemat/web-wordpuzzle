@@ -45,93 +45,64 @@
             </div>
           </div>
         </div>
-        <div class="main__hands-area">
+        <div class="main__play-area js-play-area">
           <form class="js-play">
-            <div class="js-hands">
+            <div class="js-play-coordinates">
               <input type="hidden" name="playerId" value="0" />
-              <input type="hidden" name="handId" value="0" />
-              <label>panel
-                <select name="panel">
-                  <option value="s">s</option>
-                </select>
-              </label>
-              <label>x
-                <select name="x">
-                  <option></option>
-                  <option value="0">0</option>
-                  <option value="1">1</option>
-                </select>
-              </label>
-              <label>y
-                <select name="y">
-                  <option></option>
-                  <option value="0">0</option>
-                  <option value="1">1</option>
-                </select>
-              </label>
-              <input type="hidden" name="handId" value="1" />
-              <label>panel
-                <select name="panel">
-                  <option value="o">o</option>
-                </select>
-              </label>
-              <label>x
-                <select name="x">
-                  <option></option>
-                  <option value="0">0</option>
-                  <option value="1">1</option>
-                </select>
-              </label>
-              <label>y
-                <select name="y">
-                  <option></option>
-                  <option value="0">0</option>
-                  <option value="1">1</option>
-                </select>
-              </label>
-            </div>
-            <button type="submit">Play</button>
-          </form>
-        </div>
-        <form class="control js-play">
-          <div class="js-hands main__hands">
-            <!-- fill hands here -->
-            <div class="field is-grouped">
-              <input type="hidden" name="handId" value="0" />
-              <div class="control">
-                <div class="select">
+              <div>
+                <input type="hidden" name="handId" value="0" />
+                <label
+                  >panel
                   <select name="panel">
                     <option value="s">s</option>
                   </select>
-                </div>
-              </div>
-              <div class="control">
-                <div class="select">
+                </label>
+                <label
+                  >x
                   <select name="x">
                     <option></option>
                     <option value="0">0</option>
                     <option value="1">1</option>
                   </select>
-                </div>
-              </div>
-              <div class="control">
-                <div class="select">
+                </label>
+                <label
+                  >y
                   <select name="y">
                     <option></option>
                     <option value="0">0</option>
                     <option value="1">1</option>
                   </select>
-                </div>
+                </label>
+              </div>
+              <div>
+                <input type="hidden" name="handId" value="1" />
+                <label
+                  >panel
+                  <select name="panel">
+                    <option value="o">o</option>
+                  </select>
+                </label>
+                <label
+                  >x
+                  <select name="x">
+                    <option></option>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                  </select>
+                </label>
+                <label
+                  >y
+                  <select name="y">
+                    <option></option>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                  </select>
+                </label>
               </div>
             </div>
-          </div>
-          <button
-            class="button is-primary is-fullwidth main__play"
-            type="submit"
-          >
-            Play
-          </button>
-        </form>
+            <button type="submit">Play</button>
+          </form>
+        </div>
         <div class="main__examples">
           <ul>
             <li>
