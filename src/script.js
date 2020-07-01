@@ -236,78 +236,103 @@ function renderGame() {
  * @returns {Promise.<Boolean>}
  */
 function renderHands() {
-  const coodinatesElem = document.body.querySelector(".js-play-coordinates");
-  if (!coodinatesElem) {
+  if (store.moved) {
+    const playArea = document.body.querySelector(".js-play-area");
+    if (!playArea) {
+      return Promise.reject(new Error("no .js-play-area"));
+    } else if (!(playArea instanceof HTMLElement)) {
+      return Promise.reject(new Error(".js-play-area is not html element"));
+    }
+    playArea.style.display = "none";
+
+    const nextArea = document.body.querySelector(".js-next-area");
+    if (!nextArea) {
+      return Promise.reject(new Error("no .js-next-area"));
+    } else if (!(nextArea instanceof HTMLElement)) {
+      return Promise.reject(new Error(".js-next-area is not html element"));
+    }
+    nextArea.innerHTML = "";
+    nextArea.style.display = "block";
+    const textElem = document.createTextNode("next");
+    nextArea.appendChild(textElem);
+    return Promise.resolve(true);
+  }
+
+  const playArea = document.body.querySelector(".js-play-area");
+  if (!playArea) {
+    return Promise.reject(new Error("no .js-play-area"));
+  } else if (!(playArea instanceof HTMLElement)) {
+    return Promise.reject(new Error(".js-play-area is not html element"));
+  }
+  playArea.style.display = "block";
+
+  const coordinatesElem = document.body.querySelector(".js-play-coordinates");
+  if (!coordinatesElem) {
     return Promise.reject(new Error("no .js-play-coordinates"));
   }
-  coodinatesElem.innerHTML = "";
+  coordinatesElem.innerHTML = "";
 
   const playerId = store.currentPlayerId;
 
-  if (store.moved) {
-    const textElem = document.createTextNode("next");
-    coodinatesElem.appendChild(textElem);
-  } else {
-    const playerIdInput = document.createElement("input");
-    playerIdInput.setAttribute("type", "hidden");
-    playerIdInput.setAttribute("name", "playerId");
-    playerIdInput.setAttribute("value", playerId.toString());
-    coodinatesElem.appendChild(playerIdInput);
-    for (const [i, v] of store.hands[playerId].entries()) {
-      const grouped = document.createElement("div");
-      grouped.classList.add("field");
-      grouped.classList.add("is-grouped");
+  const playerIdInput = document.createElement("input");
+  playerIdInput.setAttribute("type", "hidden");
+  playerIdInput.setAttribute("name", "playerId");
+  playerIdInput.setAttribute("value", playerId.toString());
+  coordinatesElem.appendChild(playerIdInput);
+  for (const [i, v] of store.hands[playerId].entries()) {
+    const grouped = document.createElement("div");
+    grouped.classList.add("field");
+    grouped.classList.add("is-grouped");
 
-      {
-        const handId = document.createElement("input");
-        handId.setAttribute("type", "hidden");
-        handId.setAttribute("name", "handId");
-        handId.setAttribute("value", i.toString());
-        grouped.appendChild(handId);
-      }
-
-      // panel
-      {
-        const control = document.createElement("div");
-        control.classList.add("control");
-        const label = document.createElement("label");
-        label.setAttribute("for", `play${i}panel`);
-        const select = document.createElement("div");
-        select.classList.add("select");
-        const panel = document.createElement("select");
-        panel.setAttribute("name", "panel");
-        panel.setAttribute("id", `play${i}panel`);
-        panel.add(new Option(v, v, true, true));
-        select.appendChild(panel);
-        control.appendChild(label);
-        control.appendChild(select);
-        grouped.appendChild(control);
-      }
-
-      // x, y
-      for (const xy of ["x", "y"]) {
-        const control = document.createElement("div");
-        control.classList.add("control");
-        const label = document.createElement("label");
-        label.setAttribute("for", `play${i}${xy}`);
-        const select = document.createElement("div");
-        select.classList.add("select");
-        const coordinate = document.createElement("select");
-        coordinate.setAttribute("name", xy);
-        coordinate.setAttribute("id", `play${i}${xy}`);
-        coordinate.add(new Option());
-        const lim = xy === "x" ? store.boardMeta.width : store.boardMeta.height;
-        for (let j = 0; j < lim; j++) {
-          coordinate.add(new Option(j.toString(), j.toString()));
-        }
-        select.appendChild(coordinate);
-        control.appendChild(label);
-        control.appendChild(select);
-        grouped.appendChild(control);
-      }
-
-      coodinatesElem.appendChild(grouped);
+    {
+      const handId = document.createElement("input");
+      handId.setAttribute("type", "hidden");
+      handId.setAttribute("name", "handId");
+      handId.setAttribute("value", i.toString());
+      grouped.appendChild(handId);
     }
+
+    // panel
+    {
+      const control = document.createElement("div");
+      control.classList.add("control");
+      const label = document.createElement("label");
+      label.setAttribute("for", `play${i}panel`);
+      const select = document.createElement("div");
+      select.classList.add("select");
+      const panel = document.createElement("select");
+      panel.setAttribute("name", "panel");
+      panel.setAttribute("id", `play${i}panel`);
+      panel.add(new Option(v, v, true, true));
+      select.appendChild(panel);
+      control.appendChild(label);
+      control.appendChild(select);
+      grouped.appendChild(control);
+    }
+
+    // x, y
+    for (const xy of ["x", "y"]) {
+      const control = document.createElement("div");
+      control.classList.add("control");
+      const label = document.createElement("label");
+      label.setAttribute("for", `play${i}${xy}`);
+      const select = document.createElement("div");
+      select.classList.add("select");
+      const coordinate = document.createElement("select");
+      coordinate.setAttribute("name", xy);
+      coordinate.setAttribute("id", `play${i}${xy}`);
+      coordinate.add(new Option());
+      const lim = xy === "x" ? store.boardMeta.width : store.boardMeta.height;
+      for (let j = 0; j < lim; j++) {
+        coordinate.add(new Option(j.toString(), j.toString()));
+      }
+      select.appendChild(coordinate);
+      control.appendChild(label);
+      control.appendChild(select);
+      grouped.appendChild(control);
+    }
+
+    coordinatesElem.appendChild(grouped);
   }
   return Promise.resolve(true);
 }
