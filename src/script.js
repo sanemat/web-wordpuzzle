@@ -369,10 +369,26 @@ function showNextArea() {
     return Promise.reject(new Error("no .js-next-area"));
   }
 
-  nextArea.innerHTML = "";
   nextArea.style.display = "block";
-  const textElem = document.createTextNode("next");
-  nextArea.appendChild(textElem);
+  const handsElem = nextArea.querySelector(".js-next-hands");
+  if (!handsElem) {
+    return Promise.reject(new Error("no .js-next-hands"));
+  }
+  handsElem.innerHTML = "";
+  const playerId = store.currentPlayerId;
+
+  {
+    const columns = document.createElement("div");
+    columns.classList.add("columns");
+    for (const hand of store.hands[playerId]) {
+      const handElem = document.createElement("div");
+      handElem.classList.add("column");
+      const panelText = document.createTextNode(hand);
+      handElem.appendChild(panelText);
+      columns.appendChild(handElem);
+    }
+    handsElem.appendChild(columns);
+  }
 
   return Promise.resolve(true);
 }
