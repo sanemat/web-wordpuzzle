@@ -53,3 +53,7 @@ This is first idea, we don't update it more.
   ["x", "1"],
   ["y", "1"],
 ]
+
+- Replayable
+    - Use seed. Each game has seed
+    - Snapshot for hands
