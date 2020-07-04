@@ -568,6 +568,17 @@ async function playAction(ev) {
   }
 }
 
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {Boolean}
+ * @returns {Promise.<Boolean>}
+ */
+async function nextAction() {
+  console.log("next!");
+  return Promise.resolve(true);
+}
+
 (() => {
   if (typeof window === "undefined") {
     return;
@@ -584,5 +595,9 @@ async function playAction(ev) {
   const play = document.body.querySelector(".js-play");
   if (play) {
     play.addEventListener("submit", playAction);
+  }
+  const next = document.body.querySelector(".js-next");
+  if (next) {
+    next.addEventListener("click", nextAction);
   }
 })();
