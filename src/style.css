@@ -7,6 +7,10 @@
 .main__play-submit {
   margin-top: 1rem;
 }
+.main__next-submit {
+  margin-top: 1rem;
+}
 .main__examples {
   word-break: break-all;
+  margin-top: 1rem;
 }
