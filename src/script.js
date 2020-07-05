@@ -48,6 +48,10 @@ let store;
 /** @type {Debug} debug */
 let debug;
 
+/** @typedef {{Object: any}} Words */
+/** @type {Words} words */
+let words;
+
 /**
  * @returns {Store}
  */
@@ -623,6 +627,19 @@ async function nextAction() {
   return render();
 }
 
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {Boolean}
+ * @returns {Promise.<Boolean>}
+ */
+async function loadDictionary() {
+  const data = await fetch("./english-words/words_dictionary.json");
+  words = await data.json();
+  console.log(words);
+  return Promise.resolve(true);
+}
+
 (() => {
   if (typeof window === "undefined") {
     return;
@@ -636,6 +653,14 @@ async function nextAction() {
       console.error(err);
     }
   });
+  window.addEventListener("load", async () => {
+    try {
+      await loadDictionary();
+    } catch (/** @type {Error|string} */ err) {
+      console.error(err);
+    }
+  });
+
   const play = document.body.querySelector(".js-play");
   if (play) {
     play.addEventListener("submit", playAction);
