@@ -491,8 +491,9 @@ export function buildMove(data) {
  * @fulfill {Boolean}
  * @returns {Promise.<Boolean>}
  * @param {Move} move
+ * @param {Store} store
  */
-function validateMove(move) {
+export function validateMove(move, store) {
   for (const coordinate of move.coordinates) {
     if (store.board[coordinate.y][coordinate.x] !== null) {
       console.error(
@@ -547,7 +548,7 @@ async function playAction(ev) {
     const playerId = playerIdFrom(data);
     const [move, used] = await buildMove(await filterMove(data));
     console.log(move);
-    if (await validateMove(move)) {
+    if (await validateMove(move, store)) {
       console.log("move is valid");
       store.moves.push(move);
       const params = new URLSearchParams(location.search);

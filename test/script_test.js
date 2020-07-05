@@ -6,6 +6,7 @@ import {
   filterMove,
   buildMove,
   moveToParam,
+  validateMove,
 } from "../src/script.js";
 
 {
@@ -201,6 +202,19 @@ import {
   };
   const expected = "0|00|a|10|r|20|m";
   assert.equal(moveToParam(input), expected);
+}
+
+{
+  /** @type {import("../src/script.js").Move} */
+  const move = {
+    playerId: 0,
+    coordinates: [{ panel: "a", x: 1, y: 0 }],
+  };
+  const query = `ms=0|00|a|10|r|20|m&bw=3&bh=4`; // will conflict 1,0:r
+  const store = buildStore(query);
+  (async () => {
+    assert.equal(await validateMove(move, store), false);
+  })();
 }
 
 assert.deepEqual(_minimalStore(), _minimalStore());
