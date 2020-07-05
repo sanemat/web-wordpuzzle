@@ -592,7 +592,15 @@ async function playAction(ev) {
  */
 async function nextAction() {
   console.log("next!");
-  return Promise.resolve(true);
+  const params = new URLSearchParams(location.search);
+  const nextPlayerId = (store.currentPlayerId + 1) % store.players.length;
+  store.currentPlayerId = nextPlayerId;
+  params.set("cp", nextPlayerId.toString());
+
+  store.moved = false;
+  params.set("md", "0");
+  window.history.pushState({}, "", `${location.pathname}?${params}`);
+  return render();
 }
 
 (() => {
