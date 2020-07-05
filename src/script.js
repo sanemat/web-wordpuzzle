@@ -633,7 +633,10 @@ async function nextAction() {
  * @fulfill {Boolean}
  * @returns {Promise.<Boolean>}
  */
-function loadDictionary() {
+async function loadDictionary() {
+  const data = await fetch("./english-words/words_dictionary.json");
+  words = await data.json();
+  console.log(words);
   return Promise.resolve(true);
 }
 
