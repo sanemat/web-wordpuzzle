@@ -205,7 +205,7 @@ import {
 }
 
 {
-  // will conflict 1,0:r
+  const message = "will conflict 1,0:r";
   /** @type {import("../src/script.js").Move} */
   const move = {
     playerId: 0,
@@ -214,12 +214,12 @@ import {
   const query = `ms=0|00|a|10|r|20|m&bw=3&bh=4`;
   const store = buildStore(query);
   (async () => {
-    assert.equal(await validateMove(move, store), false);
+    assert.equal(await validateMove(move, store), false, message);
   })();
 }
 
 {
-  // out of board
+  const message = "out of board";
   /** @type {import("../src/script.js").Move} */
   const move = {
     playerId: 0,
@@ -228,7 +228,7 @@ import {
   const query = `ms=0|00|a|10|r|20|m&bw=3&bh=4`;
   const store = buildStore(query);
   (async () => {
-    assert.equal(await validateMove(move, store), false);
+    assert.equal(await validateMove(move, store), false, message);
   })();
 }
 
