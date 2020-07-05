@@ -219,11 +219,25 @@ import {
 }
 
 {
-  const message = "out of board";
+  const message = "y is out of board";
   /** @type {import("../src/script.js").Move} */
   const move = {
     playerId: 0,
     coordinates: [{ panel: "a", x: 4, y: 5 }],
+  };
+  const query = `ms=0|00|a|10|r|20|m&bw=3&bh=4`;
+  const store = buildStore(query);
+  (async () => {
+    assert.equal(await validateMove(move, store), false, message);
+  })();
+}
+
+{
+  const message = "x is out of board";
+  /** @type {import("../src/script.js").Move} */
+  const move = {
+    playerId: 0,
+    coordinates: [{ panel: "a", x: 4, y: 2 }],
   };
   const query = `ms=0|00|a|10|r|20|m&bw=3&bh=4`;
   const store = buildStore(query);
