@@ -493,6 +493,16 @@ export function buildMove(data) {
  * @param {Move} move
  */
 function validateMove(move) {
+  for (const coordinate of move.coordinates) {
+    if (store.board[coordinate.y][coordinate.x] !== null) {
+      console.error(
+        `x: ${coordinate.x}, y: ${coordinate.y} exists ${
+          store.board[coordinate.y][coordinate.x]
+        }`
+      );
+      return Promise.resolve(false);
+    }
+  }
   return Promise.resolve(true);
 }
 
