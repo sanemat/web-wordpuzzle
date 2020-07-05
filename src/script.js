@@ -600,6 +600,7 @@ async function nextAction() {
   store.moved = false;
   params.set("md", "0");
   window.history.pushState({}, "", `${location.pathname}?${params}`);
+  console.log(store);
   return render();
 }
 
