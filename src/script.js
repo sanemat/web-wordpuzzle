@@ -495,6 +495,14 @@ export function buildMove(data) {
  */
 export function validateMove(move, store) {
   for (const coordinate of move.coordinates) {
+    if (typeof store.board[coordinate.y] === "undefined") {
+      console.error(`y: ${coordinate.y} is out of board`);
+      return Promise.resolve(false);
+    }
+    if (typeof store.board[coordinate.y][coordinate.x] === "undefined") {
+      console.error(`x: ${coordinate.x} is out of board`);
+      return Promise.resolve(false);
+    }
     if (store.board[coordinate.y][coordinate.x] !== null) {
       console.error(
         `x: ${coordinate.x}, y: ${coordinate.y} exists ${
