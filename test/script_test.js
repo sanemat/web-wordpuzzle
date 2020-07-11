@@ -214,7 +214,9 @@ import {
   const query = `ms=0|00|a|10|r|20|m&bw=3&bh=4`;
   const store = buildStore(query);
   (async () => {
-    assert.equal(await validateMove(move, store), false, message);
+    const [errors, result] = await validateMove(move, store);
+    assert.equal(errors?.length, 1, message);
+    assert.equal(result, false, message);
   })();
 }
 
@@ -228,7 +230,9 @@ import {
   const query = `ms=0|00|a|10|r|20|m&bw=3&bh=4`;
   const store = buildStore(query);
   (async () => {
-    assert.equal(await validateMove(move, store), false, message);
+    const [errors, result] = await validateMove(move, store);
+    assert.equal(errors?.length, 1, message);
+    assert.equal(result, false, message);
   })();
 }
 
@@ -242,7 +246,9 @@ import {
   const query = `ms=0|00|a|10|r|20|m&bw=3&bh=4`;
   const store = buildStore(query);
   (async () => {
-    assert.equal(await validateMove(move, store), false, message);
+    const [errors, result] = await validateMove(move, store);
+    assert.equal(errors?.length, 1, message);
+    assert.equal(result, false, message);
   })();
 }
 
@@ -255,7 +261,9 @@ import {
   const query = `ms=0|00|a|10|r|20|m&bw=3&bh=4`;
   const store = buildStore(query);
   (async () => {
-    assert.equal(await validateMove(move, store), true);
+    const [errors, result] = await validateMove(move, store);
+    assert.equal(errors, null);
+    assert.equal(result, true);
   })();
 }
 
