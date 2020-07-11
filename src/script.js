@@ -492,31 +492,38 @@ export function buildMove(data) {
 /**
  * @promise
  * @reject {Error}
- * @fulfill {Boolean}
- * @returns {Promise.<Boolean>}
+ * @fulfill {[Error[]|null, Boolean]}
+ * @returns {Promise.<[Error[]|null, Boolean]>}
  * @param {Move} move
  * @param {Store} store
  */
 export function validateMove(move, store) {
+  /** @type {Error[]} */
+  const errors = [];
   for (const coordinate of move.coordinates) {
     if (typeof store.board[coordinate.y] === "undefined") {
-      console.error(`y: ${coordinate.y} is out of board`);
-      return Promise.resolve(false);
+      errors.push(new Error(`y: ${coordinate.y} is out of board`));
+      continue;
     }
     if (typeof store.board[coordinate.y][coordinate.x] === "undefined") {
-      console.error(`x: ${coordinate.x} is out of board`);
-      return Promise.resolve(false);
+      errors.push(new Error(`x: ${coordinate.x} is out of board`));
+      continue;
     }
     if (store.board[coordinate.y][coordinate.x] !== null) {
-      console.error(
-        `x: ${coordinate.x}, y: ${coordinate.y} exists ${
-          store.board[coordinate.y][coordinate.x]
-        }`
+      errors.push(
+        new Error(
+          `x: ${coordinate.x}, y: ${coordinate.y} exists ${
+            store.board[coordinate.y][coordinate.x]
+          }`
+        )
       );
-      return Promise.resolve(false);
     }
   }
-  return Promise.resolve(true);
+  if (errors.length === 0) {
+    return Promise.resolve([null, true]);
+  } else {
+    return Promise.resolve([errors, false]);
+  }
 }
 
 /**
@@ -560,48 +567,52 @@ async function playAction(ev) {
     const playerId = playerIdFrom(data);
     const [move, used] = await buildMove(await filterMove(data));
     console.log(move);
-    if (await validateMove(move, store)) {
-      console.log("move is valid");
-      store.moves.push(move);
-      const params = new URLSearchParams(location.search);
-      params.append("ms", moveToParam(move));
-
-      // update hands
-      used.reverse().forEach((usedIndex) => {
-        store.hands[playerId].splice(usedIndex, 1);
+    const [errors] = await validateMove(move, store);
+    if (errors !== null) {
+      errors.map((err) => {
+        console.error(err);
       });
-
-      // fill from jar
-      while (store.hands[playerId].length < 7 && store.jar.length > 0) {
-        store.hands[playerId].push(
-          store.jar.splice(Math.floor(Math.random() * store.jar.length), 1)[0]
-        );
-      }
-      params.set("j", store.jar.join("|"));
-
-      const hs = params.getAll("hs");
-      params.delete("hs");
-      for (const [i, v] of hs.entries()) {
-        if (i === playerId) {
-          params.append("hs", store.hands[playerId].join("|"));
-        } else {
-          params.append("hs", v);
-        }
-      }
-
-      store.moved = true;
-      params.set("md", "1");
-
-      for (const m of store.moves) {
-        for (const c of m.coordinates) {
-          store.board[c.y][c.x] = c.panel;
-        }
-      }
-      window.history.pushState({}, "", `${location.pathname}?${params}`);
-      console.log(store);
-      return render();
+      return Promise.resolve(true);
     }
-    return Promise.resolve(true);
+    console.log("move is valid");
+    store.moves.push(move);
+    const params = new URLSearchParams(location.search);
+    params.append("ms", moveToParam(move));
+
+    // update hands
+    used.reverse().forEach((usedIndex) => {
+      store.hands[playerId].splice(usedIndex, 1);
+    });
+
+    // fill from jar
+    while (store.hands[playerId].length < 7 && store.jar.length > 0) {
+      store.hands[playerId].push(
+        store.jar.splice(Math.floor(Math.random() * store.jar.length), 1)[0]
+      );
+    }
+    params.set("j", store.jar.join("|"));
+
+    const hs = params.getAll("hs");
+    params.delete("hs");
+    for (const [i, v] of hs.entries()) {
+      if (i === playerId) {
+        params.append("hs", store.hands[playerId].join("|"));
+      } else {
+        params.append("hs", v);
+      }
+    }
+
+    store.moved = true;
+    params.set("md", "1");
+
+    for (const m of store.moves) {
+      for (const c of m.coordinates) {
+        store.board[c.y][c.x] = c.panel;
+      }
+    }
+    window.history.pushState({}, "", `${location.pathname}?${params}`);
+    console.log(store);
+    return render();
   } catch (/** @type {Error|string} */ e) {
     return Promise.reject(e);
   }
