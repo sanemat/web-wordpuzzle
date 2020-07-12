@@ -7,6 +7,8 @@ import {
   buildMove,
   moveToParam,
   validateMove,
+  findCandidates,
+  anywayGet,
 } from "../src/script.js";
 
 {
@@ -265,6 +267,173 @@ import {
     assert.equal(errors, null);
     assert.equal(result, true);
   })();
+}
+
+{
+  /** @type {import("../src/script.js").BoardPanel[][]} */
+  const board = [
+    ["a", "b"],
+    [null, null],
+  ];
+  /** @type {import("../src/script.js").Coordinate[]} */
+  const coordinates = [];
+  assert.equal(findCandidates(board, coordinates), null);
+}
+
+{
+  /** @type {import("../src/script.js").BoardPanel[][]} */
+  const board = [
+    ["a", null],
+    ["a", null],
+  ];
+  /** @type {import("../src/script.js").Coordinate[]} */
+  const coordinates = [{ x: 1, y: 0, panel: "x" }];
+  const expected = ["ax"];
+  assert.deepEqual(findCandidates(board, coordinates), expected);
+}
+
+{
+  /** @type {import("../src/script.js").BoardPanel[][]} */
+  const board = [
+    ["a", null],
+    ["a", null],
+  ];
+  /** @type {import("../src/script.js").Coordinate[]} */
+  const coordinates = [{ x: 1, y: 1, panel: "x" }];
+  const expected = ["ax"];
+  assert.deepEqual(findCandidates(board, coordinates), expected);
+}
+
+{
+  /** @type {import("../src/script.js").BoardPanel[][]} */
+  const board = [
+    ["a", null, "b"],
+    ["a", null, null],
+  ];
+  /** @type {import("../src/script.js").Coordinate[]} */
+  const coordinates = [{ x: 1, y: 0, panel: "x" }];
+  const expected = ["axb"];
+  assert.deepEqual(findCandidates(board, coordinates), expected);
+}
+
+{
+  /** @type {import("../src/script.js").BoardPanel[][]} */
+  const board = [
+    ["a", null, "b", null],
+    ["a", null, null, null],
+  ];
+  /** @type {import("../src/script.js").Coordinate[]} */
+  const coordinates = [
+    { x: 1, y: 0, panel: "x" },
+    { x: 3, y: 0, panel: "y" },
+  ];
+  const expected = ["axby"];
+  assert.deepEqual(findCandidates(board, coordinates), expected);
+}
+
+{
+  /** @type {import("../src/script.js").BoardPanel[][]} */
+  const board = [
+    [null, null, "b", null],
+    ["a", null, null, null],
+  ];
+  /** @type {import("../src/script.js").Coordinate[]} */
+  const coordinates = [
+    { x: 1, y: 0, panel: "x" },
+    { x: 3, y: 0, panel: "y" },
+  ];
+  const expected = ["xby"];
+  assert.deepEqual(findCandidates(board, coordinates), expected);
+}
+
+{
+  /** @type {import("../src/script.js").BoardPanel[][]} */
+  const board = [
+    ["a", null],
+    [null, null],
+  ];
+  /** @type {import("../src/script.js").Coordinate[]} */
+  const coordinates = [{ x: 0, y: 1, panel: "x" }];
+  const expected = ["ax"];
+  assert.deepEqual(findCandidates(board, coordinates), expected);
+}
+
+{
+  /** @type {import("../src/script.js").BoardPanel[][]} */
+  const board = [
+    ["a", null],
+    [null, null],
+    ["a", null],
+  ];
+  /** @type {import("../src/script.js").Coordinate[]} */
+  const coordinates = [{ x: 0, y: 1, panel: "x" }];
+  const expected = ["axa"];
+  assert.deepEqual(findCandidates(board, coordinates), expected);
+}
+
+{
+  /** @type {import("../src/script.js").BoardPanel[][]} */
+  const board = [
+    ["a", null],
+    [null, null],
+    ["a", null],
+    [null, null],
+  ];
+  /** @type {import("../src/script.js").Coordinate[]} */
+  const coordinates = [
+    { x: 0, y: 1, panel: "x" },
+    { x: 0, y: 3, panel: "x" },
+  ];
+  const expected = ["axax"];
+  assert.deepEqual(findCandidates(board, coordinates), expected);
+}
+
+{
+  /** @type {import("../src/script.js").BoardPanel[][]} */
+  const board = [
+    ["a", null],
+    [null, null],
+  ];
+  /** @type {import("../src/script.js").Coordinate[]} */
+  const coordinates = [
+    { x: 0, y: 1, panel: "x" },
+    { x: 1, y: 1, panel: "y" },
+  ];
+  const expected = ["xy", "ax"];
+  assert.deepEqual(findCandidates(board, coordinates), expected);
+}
+
+{
+  /** @type {import("../src/script.js").BoardPanel[][]} */
+  const board = [
+    ["a", "b"],
+    [null, null],
+  ];
+  /** @type {import("../src/script.js").Coordinate[]} */
+  const coordinates = [];
+  assert.equal(anywayGet(0, 0, board, coordinates), "a");
+}
+
+{
+  /** @type {import("../src/script.js").BoardPanel[][]} */
+  const board = [
+    ["a", "b"],
+    [null, null],
+  ];
+  /** @type {import("../src/script.js").Coordinate[]} */
+  const coordinates = [];
+  assert.equal(anywayGet(0, 1, board, coordinates), null);
+}
+
+{
+  /** @type {import("../src/script.js").BoardPanel[][]} */
+  const board = [
+    ["a", "b"],
+    [null, null],
+  ];
+  /** @type {import("../src/script.js").Coordinate[]} */
+  const coordinates = [{ x: 0, y: 1, panel: "a" }];
+  assert.equal(anywayGet(0, 1, board, coordinates), "a");
 }
 
 assert.deepEqual(_minimalStore(), _minimalStore());

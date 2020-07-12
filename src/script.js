@@ -490,6 +490,138 @@ export function buildMove(data) {
 }
 
 /**
+ * @returns {BoardPanel}
+ * @param {number} x
+ * @param {number} y
+ * @param {BoardPanel[][]} board
+ * @param {Coordinate[]} coordinates
+ * @throws {Error}
+ */
+export function anywayGet(x, y, board, coordinates) {
+  if (typeof board[y] === "undefined") {
+    throw new Error(`y: ${y} is out of range`);
+  }
+  if (typeof board[y][x] === "undefined") {
+    throw new Error(`x: ${x} is out of range`);
+  }
+  if (board[y][x] !== null) {
+    return board[y][x];
+  }
+  const fit = coordinates.find((coordinate) => {
+    return coordinate.x === x && coordinate.y === y;
+  });
+
+  return fit ? fit.panel : null;
+}
+
+/**
+ * @returns {string[]|null}
+ * @param {BoardPanel[][]} board
+ * @param {Coordinate[]} coordinates
+ * @throws {Error}
+ */
+export function findCandidates(board, coordinates) {
+  const height = board.length;
+  if (height === 0) {
+    throw new Error("require height");
+  }
+  const width = board[0].length;
+  if (width === 0) {
+    throw new Error("require width");
+  }
+  /** @type {string[]} */
+  const results = [];
+
+  for (let i = 0; i <= height - 1; i++) {
+    const pick = coordinates.find((coordinate) => {
+      return coordinate.y === i;
+    });
+    if (!pick) {
+      continue;
+    }
+    let start = pick.x;
+    let end = pick.x;
+    for (;;) {
+      if (
+        start - 1 < 0 ||
+        anywayGet(start - 1, i, board, coordinates) === null
+      ) {
+        break;
+      }
+      start--;
+    }
+    for (;;) {
+      if (
+        end + 1 > width - 1 ||
+        anywayGet(end + 1, i, board, coordinates) === null
+      ) {
+        break;
+      }
+      end++;
+    }
+    if (end - start <= 0) {
+      continue;
+    }
+    /** @type {Panel[]} panels */
+    let panels = [];
+    for (let j = start; j <= end; j++) {
+      const target = anywayGet(j, i, board, coordinates);
+      if (target) {
+        panels.push(target);
+      }
+    }
+    results.push(panels.join(""));
+  }
+
+  for (let i = 0; i <= width - 1; i++) {
+    const pick = coordinates.find((coordinate) => {
+      return coordinate.x === i;
+    });
+    if (!pick) {
+      continue;
+    }
+    let start = pick.y;
+    let end = pick.y;
+    for (;;) {
+      if (
+        start - 1 < 0 ||
+        anywayGet(i, start - 1, board, coordinates) === null
+      ) {
+        break;
+      }
+      start--;
+    }
+    for (;;) {
+      if (
+        end + 1 > height - 1 ||
+        anywayGet(i, end + 1, board, coordinates) === null
+      ) {
+        break;
+      }
+      end++;
+    }
+    if (end - start <= 0) {
+      continue;
+    }
+    /** @type {Panel[]} panels */
+    let panels = [];
+    for (let j = start; j <= end; j++) {
+      const target = anywayGet(i, j, board, coordinates);
+      if (target) {
+        panels.push(target);
+      }
+    }
+    results.push(panels.join(""));
+  }
+
+  if (results.length === 0) {
+    return null;
+  } else {
+    return results;
+  }
+}
+
+/**
  * @promise
  * @reject {Error}
  * @fulfill {[Error[]|null, Boolean]}
