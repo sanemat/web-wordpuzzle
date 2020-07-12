@@ -532,7 +532,7 @@ export function findCandidates(board, coordinates) {
   /** @type {string[]} */
   const results = [];
 
-  for (let i = 0; i < height - 1; i++) {
+  for (let i = 0; i <= height - 1; i++) {
     const pick = coordinates.find((coordinate) => {
       return coordinate.y === i;
     });
@@ -573,7 +573,7 @@ export function findCandidates(board, coordinates) {
     results.push(panels.join(""));
   }
 
-  for (let i = 0; i < width - 1; i++) {
+  for (let i = 0; i <= width - 1; i++) {
     const pick = coordinates.find((coordinate) => {
       return coordinate.x === i;
     });
