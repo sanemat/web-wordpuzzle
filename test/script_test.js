@@ -7,6 +7,7 @@ import {
   buildMove,
   moveToParam,
   validateMove,
+  anywayGet,
 } from "../src/script.js";
 
 {
@@ -265,6 +266,40 @@ import {
     assert.equal(errors, null);
     assert.equal(result, true);
   })();
+}
+
+
+{
+  /** @type {import("../src/script.js").BoardPanel[][]} */
+  const board = [
+    ["a", "b"],
+    [null, null],
+  ];
+  /** @type {import("../src/script.js").Coordinate[]} */
+  const coordinates = [];
+  assert.equal(anywayGet(0, 0, board, coordinates), "a");
+}
+
+{
+  /** @type {import("../src/script.js").BoardPanel[][]} */
+  const board = [
+    ["a", "b"],
+    [null, null],
+  ];
+  /** @type {import("../src/script.js").Coordinate[]} */
+  const coordinates = [];
+  assert.equal(anywayGet(0, 1, board, coordinates), null);
+}
+
+{
+  /** @type {import("../src/script.js").BoardPanel[][]} */
+  const board = [
+    ["a", "b"],
+    [null, null],
+  ];
+  /** @type {import("../src/script.js").Coordinate[]} */
+  const coordinates = [{ x: 0, y: 1, panel: "a" }];
+  assert.equal(anywayGet(0, 1, board, coordinates), "a");
 }
 
 assert.deepEqual(_minimalStore(), _minimalStore());

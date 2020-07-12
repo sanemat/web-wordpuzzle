@@ -490,6 +490,31 @@ export function buildMove(data) {
 }
 
 /**
+ * @returns {BoardPanel}
+ * @param {number} x
+ * @param {number} y
+ * @param {BoardPanel[][]} board
+ * @param {Coordinate[]} coordinates
+ * @throws {Error}
+ */
+export function anywayGet(x, y, board, coordinates) {
+  if (typeof board[y] === "undefined") {
+    throw new Error(`y: ${y} is out of range`);
+  }
+  if (typeof board[y][x] === "undefined") {
+    throw new Error(`x: ${x} is out of range`);
+  }
+  if (board[y][x] !== null) {
+    return board[y][x];
+  }
+  const fit = coordinates.find((coordinate) => {
+    return coordinate.x === x && coordinate.y === y;
+  });
+
+  return fit ? fit.panel : null;
+}
+
+/**
  * @promise
  * @reject {Error}
  * @fulfill {[Error[]|null, Boolean]}
