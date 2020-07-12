@@ -656,7 +656,7 @@ export function findCandidates(board, coordinates) {
  */
 export function validateMove(move, store) {
   /** @type {Error[]} */
-  const errors = [];
+  let errors = [];
   for (const coordinate of move.coordinates) {
     if (typeof store.board[coordinate.y] === "undefined") {
       errors.push(new Error(`y: ${coordinate.y} is out of board`));
@@ -675,6 +675,10 @@ export function validateMove(move, store) {
         )
       );
     }
+  }
+  const [errs, res] = isUnique(move.coordinates);
+  if (!res && errs !== null) {
+    errors = errors.concat(errs);
   }
   if (errors.length === 0) {
     return Promise.resolve([null, true]);
