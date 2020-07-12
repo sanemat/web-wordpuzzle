@@ -7,6 +7,7 @@ import {
   buildMove,
   moveToParam,
   validateMove,
+  findCandidates,
   anywayGet,
 } from "../src/script.js";
 
@@ -268,6 +269,28 @@ import {
   })();
 }
 
+{
+  /** @type {import("../src/script.js").BoardPanel[][]} */
+  const board = [
+    ["a", "b"],
+    [null, null],
+  ];
+  /** @type {import("../src/script.js").Coordinate[]} */
+  const coordinates = [];
+  assert.equal(findCandidates(board, coordinates), null);
+}
+
+{
+  /** @type {import("../src/script.js").BoardPanel[][]} */
+  const board = [
+    ["a", null],
+    ["a", null],
+  ];
+  /** @type {import("../src/script.js").Coordinate[]} */
+  const coordinates = [{ x: 1, y: 0, panel: "x" }];
+  const expected = ["ax"];
+  assert.deepEqual(findCandidates(board, coordinates), expected);
+}
 
 {
   /** @type {import("../src/script.js").BoardPanel[][]} */

@@ -515,6 +515,72 @@ export function anywayGet(x, y, board, coordinates) {
 }
 
 /**
+ * @returns {string[]|null}
+ * @param {BoardPanel[][]} board
+ * @param {Coordinate[]} coordinates
+ * @throws {Error}
+ */
+export function findCandidates(board, coordinates) {
+  const height = board.length;
+  if (height === 0) {
+    throw new Error("require height");
+  }
+  const width = board[0].length;
+  if (width === 0) {
+    throw new Error("require width");
+  }
+  /** @type {string[]} */
+  const results = [];
+
+  for (let i = 0; i < height - 1; i++) {
+    const pick = coordinates.find((coordinate) => {
+      return coordinate.y === i;
+    });
+    if (!pick) {
+      continue;
+    }
+    let start = pick.x;
+    let end = pick.x;
+    for (;;) {
+      if (
+        start - 1 < 0 ||
+        anywayGet(start - 1, i, board, coordinates) === null
+      ) {
+        break;
+      }
+      start--;
+    }
+    for (;;) {
+      if (
+        end + 1 > width - 1 ||
+        anywayGet(end + 1, i, board, coordinates) === null
+      ) {
+        break;
+      }
+      end++;
+    }
+    if (end - start <= 0) {
+      continue;
+    }
+    /** @type {Panel[]} panels */
+    let panels = [];
+    for (let j = start; j <= end; j++) {
+      const target = anywayGet(j, i, board, coordinates);
+      if (target) {
+        panels.push(target);
+      }
+    }
+    results.push(panels.join(""));
+  }
+
+  if (results.length === 0) {
+    return null;
+  } else {
+    return results;
+  }
+}
+
+/**
  * @promise
  * @reject {Error}
  * @fulfill {[Error[]|null, Boolean]}
