@@ -295,6 +295,48 @@ import {
 {
   /** @type {import("../src/script.js").BoardPanel[][]} */
   const board = [
+    ["a", null, "b"],
+    ["a", null, null],
+  ];
+  /** @type {import("../src/script.js").Coordinate[]} */
+  const coordinates = [{ x: 1, y: 0, panel: "x" }];
+  const expected = ["axb"];
+  assert.deepEqual(findCandidates(board, coordinates), expected);
+}
+
+{
+  /** @type {import("../src/script.js").BoardPanel[][]} */
+  const board = [
+    ["a", null, "b", null],
+    ["a", null, null, null],
+  ];
+  /** @type {import("../src/script.js").Coordinate[]} */
+  const coordinates = [
+    { x: 1, y: 0, panel: "x" },
+    { x: 3, y: 0, panel: "y" },
+  ];
+  const expected = ["axby"];
+  assert.deepEqual(findCandidates(board, coordinates), expected);
+}
+
+{
+  /** @type {import("../src/script.js").BoardPanel[][]} */
+  const board = [
+    [null, null, "b", null],
+    ["a", null, null, null],
+  ];
+  /** @type {import("../src/script.js").Coordinate[]} */
+  const coordinates = [
+    { x: 1, y: 0, panel: "x" },
+    { x: 3, y: 0, panel: "y" },
+  ];
+  const expected = ["xby"];
+  assert.deepEqual(findCandidates(board, coordinates), expected);
+}
+
+{
+  /** @type {import("../src/script.js").BoardPanel[][]} */
+  const board = [
     ["a", "b"],
     [null, null],
   ];
