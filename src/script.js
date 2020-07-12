@@ -515,6 +515,31 @@ export function anywayGet(x, y, board, coordinates) {
 }
 
 /**
+ * @returns {[Error[]|null, Boolean]}
+ * @param {Coordinate[]} coordinates
+ */
+export function isUnique(coordinates) {
+  /** @type {Error[]} */
+  const errors = [];
+  if (coordinates.length === 0 || coordinates.length === 1) {
+    return [null, true];
+  }
+  for (const [i, coordinate] of coordinates.entries()) {
+    for (let j = i + 1; j < coordinates.length; j++) {
+      if (
+        coordinate.x === coordinates[j].x &&
+        coordinate.y === coordinates[j].y
+      ) {
+        errors.push(
+          new Error(`x: ${coordinate.x}, y: ${coordinate.y} repeats`)
+        );
+      }
+    }
+  }
+  return errors.length === 0 ? [null, true] : [errors, false];
+}
+
+/**
  * @returns {string[]|null}
  * @param {BoardPanel[][]} board
  * @param {Coordinate[]} coordinates
