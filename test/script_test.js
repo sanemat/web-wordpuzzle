@@ -295,6 +295,18 @@ import {
 {
   /** @type {import("../src/script.js").BoardPanel[][]} */
   const board = [
+    ["a", null],
+    ["a", null],
+  ];
+  /** @type {import("../src/script.js").Coordinate[]} */
+  const coordinates = [{ x: 1, y: 1, panel: "x" }];
+  const expected = ["ax"];
+  assert.deepEqual(findCandidates(board, coordinates), expected);
+}
+
+{
+  /** @type {import("../src/script.js").BoardPanel[][]} */
+  const board = [
     ["a", null, "b"],
     ["a", null, null],
   ];
