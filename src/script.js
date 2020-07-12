@@ -573,6 +573,47 @@ export function findCandidates(board, coordinates) {
     results.push(panels.join(""));
   }
 
+  for (let i = 0; i < width - 1; i++) {
+    const pick = coordinates.find((coordinate) => {
+      return coordinate.x === i;
+    });
+    if (!pick) {
+      continue;
+    }
+    let start = pick.y;
+    let end = pick.y;
+    for (;;) {
+      if (
+        start - 1 < 0 ||
+        anywayGet(i, start - 1, board, coordinates) === null
+      ) {
+        break;
+      }
+      start--;
+    }
+    for (;;) {
+      if (
+        end + 1 > height - 1 ||
+        anywayGet(i, end + 1, board, coordinates) === null
+      ) {
+        break;
+      }
+      end++;
+    }
+    if (end - start <= 0) {
+      continue;
+    }
+    /** @type {Panel[]} panels */
+    let panels = [];
+    for (let j = start; j <= end; j++) {
+      const target = anywayGet(i, j, board, coordinates);
+      if (target) {
+        panels.push(target);
+      }
+    }
+    results.push(panels.join(""));
+  }
+
   if (results.length === 0) {
     return null;
   } else {

@@ -337,6 +337,48 @@ import {
 {
   /** @type {import("../src/script.js").BoardPanel[][]} */
   const board = [
+    ["a", null],
+    [null, null],
+  ];
+  /** @type {import("../src/script.js").Coordinate[]} */
+  const coordinates = [{ x: 0, y: 1, panel: "x" }];
+  const expected = ["ax"];
+  assert.deepEqual(findCandidates(board, coordinates), expected);
+}
+
+{
+  /** @type {import("../src/script.js").BoardPanel[][]} */
+  const board = [
+    ["a", null],
+    [null, null],
+    ["a", null],
+  ];
+  /** @type {import("../src/script.js").Coordinate[]} */
+  const coordinates = [{ x: 0, y: 1, panel: "x" }];
+  const expected = ["axa"];
+  assert.deepEqual(findCandidates(board, coordinates), expected);
+}
+
+{
+  /** @type {import("../src/script.js").BoardPanel[][]} */
+  const board = [
+    ["a", null],
+    [null, null],
+    ["a", null],
+    [null, null],
+  ];
+  /** @type {import("../src/script.js").Coordinate[]} */
+  const coordinates = [
+    { x: 0, y: 1, panel: "x" },
+    { x: 0, y: 3, panel: "x" },
+  ];
+  const expected = ["axax"];
+  assert.deepEqual(findCandidates(board, coordinates), expected);
+}
+
+{
+  /** @type {import("../src/script.js").BoardPanel[][]} */
+  const board = [
     ["a", "b"],
     [null, null],
   ];
