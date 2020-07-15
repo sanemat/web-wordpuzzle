@@ -315,7 +315,9 @@ import {
   ];
   /** @type {import("../src/script.js").Coordinate[]} */
   const coordinates = [];
-  assert.equal(findCandidates(board, coordinates), null);
+  (async () => {
+    assert.equal(await findCandidates(board, coordinates), null);
+  })();
 }
 
 {
@@ -327,7 +329,9 @@ import {
   /** @type {import("../src/script.js").Coordinate[]} */
   const coordinates = [{ x: 1, y: 0, panel: "x" }];
   const expected = ["ax"];
-  assert.deepEqual(findCandidates(board, coordinates), expected);
+  (async () => {
+    assert.deepEqual(await findCandidates(board, coordinates), expected);
+  })();
 }
 
 {
@@ -339,7 +343,9 @@ import {
   /** @type {import("../src/script.js").Coordinate[]} */
   const coordinates = [{ x: 1, y: 1, panel: "x" }];
   const expected = ["ax"];
-  assert.deepEqual(findCandidates(board, coordinates), expected);
+  (async () => {
+    assert.deepEqual(await findCandidates(board, coordinates), expected);
+  })();
 }
 
 {
@@ -351,7 +357,9 @@ import {
   /** @type {import("../src/script.js").Coordinate[]} */
   const coordinates = [{ x: 1, y: 0, panel: "x" }];
   const expected = ["axb"];
-  assert.deepEqual(findCandidates(board, coordinates), expected);
+  (async () => {
+    assert.deepEqual(await findCandidates(board, coordinates), expected);
+  })();
 }
 
 {
@@ -366,7 +374,9 @@ import {
     { x: 3, y: 0, panel: "y" },
   ];
   const expected = ["axby"];
-  assert.deepEqual(findCandidates(board, coordinates), expected);
+  (async () => {
+    assert.deepEqual(await findCandidates(board, coordinates), expected);
+  })();
 }
 
 {
@@ -381,7 +391,9 @@ import {
     { x: 3, y: 0, panel: "y" },
   ];
   const expected = ["xby"];
-  assert.deepEqual(findCandidates(board, coordinates), expected);
+  (async () => {
+    assert.deepEqual(await findCandidates(board, coordinates), expected);
+  })();
 }
 
 {
@@ -393,7 +405,9 @@ import {
   /** @type {import("../src/script.js").Coordinate[]} */
   const coordinates = [{ x: 0, y: 1, panel: "x" }];
   const expected = ["ax"];
-  assert.deepEqual(findCandidates(board, coordinates), expected);
+  (async () => {
+    assert.deepEqual(await findCandidates(board, coordinates), expected);
+  })();
 }
 
 {
@@ -406,7 +420,9 @@ import {
   /** @type {import("../src/script.js").Coordinate[]} */
   const coordinates = [{ x: 0, y: 1, panel: "x" }];
   const expected = ["axa"];
-  assert.deepEqual(findCandidates(board, coordinates), expected);
+  (async () => {
+    assert.deepEqual(await findCandidates(board, coordinates), expected);
+  })();
 }
 
 {
@@ -423,7 +439,9 @@ import {
     { x: 0, y: 3, panel: "x" },
   ];
   const expected = ["axax"];
-  assert.deepEqual(findCandidates(board, coordinates), expected);
+  (async () => {
+    assert.deepEqual(await findCandidates(board, coordinates), expected);
+  })();
 }
 
 {
@@ -438,7 +456,34 @@ import {
     { x: 1, y: 1, panel: "y" },
   ];
   const expected = ["xy", "ax"];
-  assert.deepEqual(findCandidates(board, coordinates), expected);
+  (async () => {
+    assert.deepEqual(await findCandidates(board, coordinates), expected);
+  })();
+}
+
+{
+  /** @type {import("../src/script.js").BoardPanel[][]} */
+  const board = [
+    ["a", null],
+    [null, null],
+    [null, null],
+  ];
+  /** @type {import("../src/script.js").Coordinate[]} */
+  const coordinates = [
+    { x: 1, y: 1, panel: "x" },
+    { x: 1, y: 3, panel: "y" },
+  ];
+  (async () => {
+    await assert.rejects(
+      async () => {
+        await findCandidates(board, coordinates);
+      },
+      /** @param {Error} err */ (err) => {
+        assert.equal(err.message, "Empty panel x: 1, y: 2");
+        return true;
+      }
+    );
+  })();
 }
 
 {

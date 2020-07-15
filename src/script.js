@@ -558,19 +558,22 @@ export function isUnique(coordinates) {
 }
 
 /**
- * @returns {string[]|null}
  * @param {BoardPanel[][]} board
  * @param {Coordinate[]} coordinates
+ * @promise
+ * @reject {Error}
+ * @fulfill {string[]|null}
+ * @returns {Promise.<string[]|null>}
  * @throws {Error}
  */
 export function findCandidates(board, coordinates) {
   const height = board.length;
   if (height === 0) {
-    throw new Error("require height");
+    return Promise.reject(new Error("require height"));
   }
   const width = board[0].length;
   if (width === 0) {
-    throw new Error("require width");
+    return Promise.reject(new Error("require width"));
   }
   /** @type {string[]} */
   const results = [];
@@ -612,7 +615,7 @@ export function findCandidates(board, coordinates) {
       if (target) {
         panels.push(target);
       } else {
-        throw new Error(`Empty panel x:${j}, y: ${i}`);
+        return Promise.reject(new Error(`Empty panel x:${j}, y: ${i}`));
       }
     }
     results.push(panels.join(""));
@@ -655,16 +658,16 @@ export function findCandidates(board, coordinates) {
       if (target) {
         panels.push(target);
       } else {
-        throw new Error(`Empty panel x: ${i}, y: ${j}`);
+        return Promise.reject(new Error(`Empty panel x: ${i}, y: ${j}`));
       }
     }
     results.push(panels.join(""));
   }
 
   if (results.length === 0) {
-    return null;
+    return Promise.resolve(null);
   } else {
-    return results;
+    return Promise.resolve(results);
   }
 }
 
