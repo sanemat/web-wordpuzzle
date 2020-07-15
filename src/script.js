@@ -576,14 +576,14 @@ export function findCandidates(board, coordinates) {
   const results = [];
 
   for (let i = 0; i <= height - 1; i++) {
-    const pick = coordinates.find((coordinate) => {
+    const some = coordinates.some((coordinate) => {
       return coordinate.y === i;
     });
-    if (!pick) {
+    if (!some) {
       continue;
     }
-    let start = pick.x;
-    let end = pick.x;
+    let start = coordinates[0].x;
+    let end = coordinates[coordinates.length - 1].x;
     for (;;) {
       if (
         start - 1 < 0 ||
@@ -611,20 +611,22 @@ export function findCandidates(board, coordinates) {
       const target = anywayGet(j, i, board, coordinates);
       if (target) {
         panels.push(target);
+      } else {
+        throw new Error(`Empty panel x:${j}, y: ${i}`);
       }
     }
     results.push(panels.join(""));
   }
 
   for (let i = 0; i <= width - 1; i++) {
-    const pick = coordinates.find((coordinate) => {
+    const some = coordinates.some((coordinate) => {
       return coordinate.x === i;
     });
-    if (!pick) {
+    if (!some) {
       continue;
     }
-    let start = pick.y;
-    let end = pick.y;
+    let start = coordinates[0].y;
+    let end = coordinates[coordinates.length - 1].y;
     for (;;) {
       if (
         start - 1 < 0 ||
@@ -652,6 +654,8 @@ export function findCandidates(board, coordinates) {
       const target = anywayGet(i, j, board, coordinates);
       if (target) {
         panels.push(target);
+      } else {
+        throw new Error(`Empty panel x: ${i}, y: ${j}`);
       }
     }
     results.push(panels.join(""));
