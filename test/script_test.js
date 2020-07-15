@@ -489,6 +489,27 @@ import {
 {
   /** @type {import("../src/script.js").BoardPanel[][]} */
   const board = [
+    ["a", null],
+    [null, null],
+  ];
+  /** @type {import("../src/script.js").Coordinate[]} */
+  const coordinates = [{ x: 1, y: 1, panel: "x" }];
+  (async () => {
+    await assert.rejects(
+      async () => {
+        await findCandidates(board, coordinates);
+      },
+      /** @param {Error} err */ (err) => {
+        assert.equal(err.message, "require minimal 2 letters");
+        return true;
+      }
+    );
+  })();
+}
+
+{
+  /** @type {import("../src/script.js").BoardPanel[][]} */
+  const board = [
     ["a", "b"],
     [null, null],
   ];
