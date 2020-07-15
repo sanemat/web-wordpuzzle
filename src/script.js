@@ -460,6 +460,22 @@ function playerIdFrom(data) {
   return parseInt(playerIdString, 10);
 }
 
+/**
+ * @returns {Coordinate[]}
+ * @param {Coordinate[]} coordinates
+ */
+export function sortCoordinates(coordinates) {
+  if (coordinates.length === 0 || coordinates.length === 1) {
+    return coordinates;
+  }
+  return coordinates.sort((a, b) => {
+    if (a.x === b.x) {
+      return a.y - b.y;
+    }
+    return a.x - b.x;
+  });
+}
+
 /** @typedef {[Move, number[]]} MoveOpe */
 
 /**
