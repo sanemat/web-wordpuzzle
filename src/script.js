@@ -139,6 +139,7 @@ export function buildStore(query) {
         panel: parts[i + 2],
       });
     }
+    move.coordinates = sortCoordinates(move.coordinates);
     moves.push(move);
   }
   data.moves = moves;
@@ -502,6 +503,7 @@ export function buildMove(data) {
     });
     used.push(parseInt(data[i + 1][1], 10));
   }
+  move.coordinates = sortCoordinates(move.coordinates);
   return Promise.resolve([move, used]);
 }
 
