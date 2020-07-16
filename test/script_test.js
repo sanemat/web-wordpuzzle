@@ -470,8 +470,8 @@ import {
   ];
   /** @type {import("../src/script.js").Coordinate[]} */
   const coordinates = [
-    { x: 1, y: 1, panel: "x" },
-    { x: 1, y: 3, panel: "y" },
+    { x: 1, y: 0, panel: "x" },
+    { x: 1, y: 2, panel: "y" },
   ];
   (async () => {
     await assert.rejects(
@@ -479,7 +479,7 @@ import {
         await findCandidates(board, coordinates);
       },
       /** @param {Error} err */ (err) => {
-        assert.equal(err.message, "Empty panel x: 1, y: 2");
+        assert.equal(err.message, "Empty panel x: 1, y: 1");
         return true;
       }
     );
