@@ -575,6 +575,11 @@ export function findCandidates(board, coordinates) {
   if (width === 0) {
     return Promise.reject(new Error("require width"));
   }
+
+  if (coordinates.length === 0) {
+    return Promise.resolve(null);
+  }
+
   /** @type {string[]} */
   const results = [];
 
@@ -665,7 +670,7 @@ export function findCandidates(board, coordinates) {
   }
 
   if (results.length === 0) {
-    return Promise.resolve(null);
+    return Promise.reject(new Error(`require minimal 2 letters`));
   } else {
     return Promise.resolve(results);
   }
