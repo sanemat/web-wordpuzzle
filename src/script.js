@@ -627,7 +627,13 @@ export function findCandidates(board, coordinates) {
     /** @type {Panel[]} panels */
     let panels = [];
     for (let j = start; j <= end; j++) {
-      const target = anywayGet(j, i, board, coordinates);
+      /** @type {BoardPanel} */
+      let target;
+      try {
+        target = anywayGet(j, i, board, coordinates);
+      } catch (e) {
+        return Promise.reject(e);
+      }
       if (target) {
         panels.push(target);
       } else {
@@ -681,7 +687,13 @@ export function findCandidates(board, coordinates) {
     /** @type {Panel[]} panels */
     let panels = [];
     for (let j = start; j <= end; j++) {
-      const target = anywayGet(i, j, board, coordinates);
+      /** @type {BoardPanel} */
+      let target;
+      try {
+        target = anywayGet(i, j, board, coordinates);
+      } catch (e) {
+        return Promise.reject(e);
+      }
       if (target) {
         panels.push(target);
       } else {
