@@ -562,22 +562,26 @@ export function isUnique(coordinates) {
  * @param {Coordinate[]} coordinates
  * @promise
  * @reject {Error}
- * @fulfill {string[]|null}
- * @returns {Promise.<string[]|null>}
+ * @fulfill {[Error[]|null, string[]|null]}
+ * @returns {Promise.<[Error[]|null, string[]|null]>}
  * @throws {Error}
  */
 export function findCandidates(board, coordinates) {
+  /** @type {Error[]} */
+  const errors = [];
   const height = board.length;
   if (height === 0) {
-    return Promise.reject(new Error("require height"));
+    errors.push(new Error("require height"));
+    return Promise.resolve([errors, null]);
   }
   const width = board[0].length;
   if (width === 0) {
-    return Promise.reject(new Error("require width"));
+    errors.push(new Error("require width"));
+    return Promise.resolve([errors, null]);
   }
 
   if (coordinates.length === 0) {
-    return Promise.resolve(null);
+    return Promise.resolve([null, null]);
   }
 
   /** @type {string[]} */
@@ -599,7 +603,8 @@ export function findCandidates(board, coordinates) {
         cond =
           start - 1 < 0 || anywayGet(start - 1, i, board, coordinates) === null;
       } catch (e) {
-        return Promise.reject(e);
+        errors.push(e);
+        return Promise.resolve([errors, null]);
       }
       if (cond) {
         break;
@@ -614,7 +619,8 @@ export function findCandidates(board, coordinates) {
           end + 1 > width - 1 ||
           anywayGet(end + 1, i, board, coordinates) === null;
       } catch (e) {
-        return Promise.reject(e);
+        errors.push(e);
+        return Promise.resolve([errors, null]);
       }
       if (cond) {
         break;
@@ -632,12 +638,13 @@ export function findCandidates(board, coordinates) {
       try {
         target = anywayGet(j, i, board, coordinates);
       } catch (e) {
-        return Promise.reject(e);
+        errors.push(e);
+        return Promise.resolve([errors, null]);
       }
       if (target) {
         panels.push(target);
       } else {
-        return Promise.reject(new Error(`Empty panel x:${j}, y: ${i}`));
+        errors.push(new Error(`Empty panel x:${j}, y: ${i}`));
       }
     }
     results.push(panels.join(""));
@@ -659,7 +666,8 @@ export function findCandidates(board, coordinates) {
         cond =
           start - 1 < 0 || anywayGet(i, start - 1, board, coordinates) === null;
       } catch (e) {
-        return Promise.reject(e);
+        errors.push(e);
+        return Promise.resolve([errors, null]);
       }
       if (cond) {
         break;
@@ -674,7 +682,8 @@ export function findCandidates(board, coordinates) {
           end + 1 > height - 1 ||
           anywayGet(i, end + 1, board, coordinates) === null;
       } catch (e) {
-        return Promise.reject(e);
+        errors.push(e);
+        return Promise.resolve([errors, null]);
       }
       if (cond) {
         break;
@@ -692,22 +701,25 @@ export function findCandidates(board, coordinates) {
       try {
         target = anywayGet(i, j, board, coordinates);
       } catch (e) {
-        return Promise.reject(e);
+        errors.push(e);
+        return Promise.resolve([errors, null]);
       }
       if (target) {
         panels.push(target);
       } else {
-        return Promise.reject(new Error(`Empty panel x: ${i}, y: ${j}`));
+        errors.push(new Error(`Empty panel x: ${i}, y: ${j}`));
       }
     }
     results.push(panels.join(""));
   }
 
   if (results.length === 0) {
-    return Promise.reject(new Error(`require minimal 2 letters`));
-  } else {
-    return Promise.resolve(results);
+    errors.push(new Error(`require minimal 2 letters`));
   }
+
+  return errors.length === 0
+    ? Promise.resolve([null, results])
+    : Promise.resolve([errors, null]);
 }
 
 /**

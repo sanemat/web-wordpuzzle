@@ -316,7 +316,7 @@ import {
   /** @type {import("../src/script.js").Coordinate[]} */
   const coordinates = [];
   (async () => {
-    assert.equal(await findCandidates(board, coordinates), null);
+    assert.deepEqual(await findCandidates(board, coordinates), [null, null]);
   })();
 }
 
@@ -328,7 +328,7 @@ import {
   ];
   /** @type {import("../src/script.js").Coordinate[]} */
   const coordinates = [{ x: 1, y: 0, panel: "x" }];
-  const expected = ["ax"];
+  const expected = [null, ["ax"]];
   (async () => {
     assert.deepEqual(await findCandidates(board, coordinates), expected);
   })();
@@ -342,7 +342,7 @@ import {
   ];
   /** @type {import("../src/script.js").Coordinate[]} */
   const coordinates = [{ x: 1, y: 1, panel: "x" }];
-  const expected = ["ax"];
+  const expected = [null, ["ax"]];
   (async () => {
     assert.deepEqual(await findCandidates(board, coordinates), expected);
   })();
@@ -356,7 +356,7 @@ import {
   ];
   /** @type {import("../src/script.js").Coordinate[]} */
   const coordinates = [{ x: 1, y: 0, panel: "x" }];
-  const expected = ["axb"];
+  const expected = [null, ["axb"]];
   (async () => {
     assert.deepEqual(await findCandidates(board, coordinates), expected);
   })();
@@ -373,7 +373,7 @@ import {
     { x: 1, y: 0, panel: "x" },
     { x: 3, y: 0, panel: "y" },
   ];
-  const expected = ["axby"];
+  const expected = [null, ["axby"]];
   (async () => {
     assert.deepEqual(await findCandidates(board, coordinates), expected);
   })();
@@ -390,7 +390,7 @@ import {
     { x: 1, y: 0, panel: "x" },
     { x: 3, y: 0, panel: "y" },
   ];
-  const expected = ["xby"];
+  const expected = [null, ["xby"]];
   (async () => {
     assert.deepEqual(await findCandidates(board, coordinates), expected);
   })();
@@ -404,7 +404,7 @@ import {
   ];
   /** @type {import("../src/script.js").Coordinate[]} */
   const coordinates = [{ x: 0, y: 1, panel: "x" }];
-  const expected = ["ax"];
+  const expected = [null, ["ax"]];
   (async () => {
     assert.deepEqual(await findCandidates(board, coordinates), expected);
   })();
@@ -419,7 +419,7 @@ import {
   ];
   /** @type {import("../src/script.js").Coordinate[]} */
   const coordinates = [{ x: 0, y: 1, panel: "x" }];
-  const expected = ["axa"];
+  const expected = [null, ["axa"]];
   (async () => {
     assert.deepEqual(await findCandidates(board, coordinates), expected);
   })();
@@ -438,7 +438,7 @@ import {
     { x: 0, y: 1, panel: "x" },
     { x: 0, y: 3, panel: "x" },
   ];
-  const expected = ["axax"];
+  const expected = [null, ["axax"]];
   (async () => {
     assert.deepEqual(await findCandidates(board, coordinates), expected);
   })();
@@ -455,7 +455,7 @@ import {
     { x: 0, y: 1, panel: "x" },
     { x: 1, y: 1, panel: "y" },
   ];
-  const expected = ["xy", "ax"];
+  const expected = [null, ["xy", "ax"]];
   (async () => {
     assert.deepEqual(await findCandidates(board, coordinates), expected);
   })();
@@ -474,15 +474,13 @@ import {
     { x: 1, y: 2, panel: "y" },
   ];
   (async () => {
-    await assert.rejects(
-      async () => {
-        await findCandidates(board, coordinates);
-      },
-      /** @param {Error} err */ (err) => {
-        assert.equal(err.message, "Empty panel x: 1, y: 1");
-        return true;
-      }
-    );
+    const [errors] = await findCandidates(board, coordinates);
+    if (errors !== null) {
+      assert.equal(errors.length, 1);
+      assert.equal(errors[0].message, "Empty panel x: 1, y: 1");
+    } else {
+      assert.fail("unreachable");
+    }
   })();
 }
 
@@ -495,15 +493,13 @@ import {
   /** @type {import("../src/script.js").Coordinate[]} */
   const coordinates = [{ x: 1, y: 1, panel: "x" }];
   (async () => {
-    await assert.rejects(
-      async () => {
-        await findCandidates(board, coordinates);
-      },
-      /** @param {Error} err */ (err) => {
-        assert.equal(err.message, "require minimal 2 letters");
-        return true;
-      }
-    );
+    const [errors] = await findCandidates(board, coordinates);
+    if (errors !== null) {
+      assert.equal(errors.length, 1);
+      assert.equal(errors[0].message, "require minimal 2 letters");
+    } else {
+      assert.fail("unreachable");
+    }
   })();
 }
 
