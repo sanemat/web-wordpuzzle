@@ -567,116 +567,112 @@ export function isUnique(coordinates) {
  * @throws {Error}
  */
 export function findCandidates(board, coordinates) {
-  try {
-    const height = board.length;
-    if (height === 0) {
-      return Promise.reject(new Error("require height"));
-    }
-    const width = board[0].length;
-    if (width === 0) {
-      return Promise.reject(new Error("require width"));
-    }
+  const height = board.length;
+  if (height === 0) {
+    return Promise.reject(new Error("require height"));
+  }
+  const width = board[0].length;
+  if (width === 0) {
+    return Promise.reject(new Error("require width"));
+  }
 
-    if (coordinates.length === 0) {
-      return Promise.resolve(null);
-    }
+  if (coordinates.length === 0) {
+    return Promise.resolve(null);
+  }
 
-    /** @type {string[]} */
-    const results = [];
+  /** @type {string[]} */
+  const results = [];
 
-    for (let i = 0; i <= height - 1; i++) {
-      const some = coordinates.some((coordinate) => {
-        return coordinate.y === i;
-      });
-      if (!some) {
-        continue;
-      }
-      let start = coordinates[0].x;
-      let end = coordinates[coordinates.length - 1].x;
-      for (;;) {
-        if (
-          start - 1 < 0 ||
-          anywayGet(start - 1, i, board, coordinates) === null
-        ) {
-          break;
-        }
-        start--;
-      }
-      for (;;) {
-        if (
-          end + 1 > width - 1 ||
-          anywayGet(end + 1, i, board, coordinates) === null
-        ) {
-          break;
-        }
-        end++;
-      }
-      if (end - start <= 0) {
-        continue;
-      }
-      /** @type {Panel[]} panels */
-      let panels = [];
-      for (let j = start; j <= end; j++) {
-        const target = anywayGet(j, i, board, coordinates);
-        if (target) {
-          panels.push(target);
-        } else {
-          return Promise.reject(new Error(`Empty panel x:${j}, y: ${i}`));
-        }
-      }
-      results.push(panels.join(""));
+  for (let i = 0; i <= height - 1; i++) {
+    const some = coordinates.some((coordinate) => {
+      return coordinate.y === i;
+    });
+    if (!some) {
+      continue;
     }
+    let start = coordinates[0].x;
+    let end = coordinates[coordinates.length - 1].x;
+    for (;;) {
+      if (
+        start - 1 < 0 ||
+        anywayGet(start - 1, i, board, coordinates) === null
+      ) {
+        break;
+      }
+      start--;
+    }
+    for (;;) {
+      if (
+        end + 1 > width - 1 ||
+        anywayGet(end + 1, i, board, coordinates) === null
+      ) {
+        break;
+      }
+      end++;
+    }
+    if (end - start <= 0) {
+      continue;
+    }
+    /** @type {Panel[]} panels */
+    let panels = [];
+    for (let j = start; j <= end; j++) {
+      const target = anywayGet(j, i, board, coordinates);
+      if (target) {
+        panels.push(target);
+      } else {
+        return Promise.reject(new Error(`Empty panel x:${j}, y: ${i}`));
+      }
+    }
+    results.push(panels.join(""));
+  }
 
-    for (let i = 0; i <= width - 1; i++) {
-      const some = coordinates.some((coordinate) => {
-        return coordinate.x === i;
-      });
-      if (!some) {
-        continue;
-      }
-      let start = coordinates[0].y;
-      let end = coordinates[coordinates.length - 1].y;
-      for (;;) {
-        if (
-          start - 1 < 0 ||
-          anywayGet(i, start - 1, board, coordinates) === null
-        ) {
-          break;
-        }
-        start--;
-      }
-      for (;;) {
-        if (
-          end + 1 > height - 1 ||
-          anywayGet(i, end + 1, board, coordinates) === null
-        ) {
-          break;
-        }
-        end++;
-      }
-      if (end - start <= 0) {
-        continue;
-      }
-      /** @type {Panel[]} panels */
-      let panels = [];
-      for (let j = start; j <= end; j++) {
-        const target = anywayGet(i, j, board, coordinates);
-        if (target) {
-          panels.push(target);
-        } else {
-          return Promise.reject(new Error(`Empty panel x: ${i}, y: ${j}`));
-        }
-      }
-      results.push(panels.join(""));
+  for (let i = 0; i <= width - 1; i++) {
+    const some = coordinates.some((coordinate) => {
+      return coordinate.x === i;
+    });
+    if (!some) {
+      continue;
     }
+    let start = coordinates[0].y;
+    let end = coordinates[coordinates.length - 1].y;
+    for (;;) {
+      if (
+        start - 1 < 0 ||
+        anywayGet(i, start - 1, board, coordinates) === null
+      ) {
+        break;
+      }
+      start--;
+    }
+    for (;;) {
+      if (
+        end + 1 > height - 1 ||
+        anywayGet(i, end + 1, board, coordinates) === null
+      ) {
+        break;
+      }
+      end++;
+    }
+    if (end - start <= 0) {
+      continue;
+    }
+    /** @type {Panel[]} panels */
+    let panels = [];
+    for (let j = start; j <= end; j++) {
+      const target = anywayGet(i, j, board, coordinates);
+      if (target) {
+        panels.push(target);
+      } else {
+        return Promise.reject(new Error(`Empty panel x: ${i}, y: ${j}`));
+      }
+    }
+    results.push(panels.join(""));
+  }
 
-    if (results.length === 0) {
-      return Promise.reject(new Error(`require minimal 2 letters`));
-    } else {
-      return Promise.resolve(results);
-    }
-  } catch (e) {
-    return Promise.reject(e);
+  if (results.length === 0) {
+    return Promise.reject(new Error(`require minimal 2 letters`));
+  } else {
+    return Promise.resolve(results);
   }
 }
 
