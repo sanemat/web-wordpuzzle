@@ -647,19 +647,30 @@ export function findCandidates(board, coordinates) {
     let start = coordinates[0].y;
     let end = coordinates[coordinates.length - 1].y;
     for (;;) {
-      if (
-        start - 1 < 0 ||
-        anywayGet(i, start - 1, board, coordinates) === null
-      ) {
+      /** @type {boolean} */
+      let cond;
+      try {
+        cond =
+          start - 1 < 0 || anywayGet(i, start - 1, board, coordinates) === null;
+      } catch (e) {
+        return Promise.reject(e);
+      }
+      if (cond) {
         break;
       }
       start--;
     }
     for (;;) {
-      if (
-        end + 1 > height - 1 ||
-        anywayGet(i, end + 1, board, coordinates) === null
-      ) {
+      /** @type {boolean} */
+      let cond;
+      try {
+        cond =
+          end + 1 > height - 1 ||
+          anywayGet(i, end + 1, board, coordinates) === null;
+      } catch (e) {
+        return Promise.reject(e);
+      }
+      if (cond) {
         break;
       }
       end++;
