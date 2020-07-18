@@ -800,6 +800,18 @@ export function findCandidates(board, coordinates) {
  * @reject {Error}
  * @fulfill {[Error[]|null, Boolean]}
  * @returns {Promise.<[Error[]|null, Boolean]>}
+ * @param {string[]} candidates
+ * @param {Set<string>} wordDict
+ */
+export async function allCandidatesInWordDictionary(candidates, wordDict) {
+  return Promise.resolve([[new Error("something happened")], false]);
+}
+
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {[Error[]|null, Boolean]}
+ * @returns {Promise.<[Error[]|null, Boolean]>}
  * @param {Move} move
  * @param {Store} store
  */
