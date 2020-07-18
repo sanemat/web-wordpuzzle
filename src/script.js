@@ -730,7 +730,7 @@ export function findCandidates(board, coordinates) {
  * @param {Move} move
  * @param {Store} store
  */
-export function validateMove(move, store) {
+export async function validateMove(move, store) {
   /** @type {Error[]} */
   let errors = [];
   for (const coordinate of move.coordinates) {
@@ -752,9 +752,19 @@ export function validateMove(move, store) {
       );
     }
   }
-  const [errs, res] = isUnique(move.coordinates);
-  if (!res && errs !== null) {
-    errors = errors.concat(errs);
+  {
+    const [errs, res] = isUnique(move.coordinates);
+    if (!res && errs !== null) {
+      errors = errors.concat(errs);
+    }
+  }
+  {
+    const [errs, res] = await findCandidates(store.board, move.coordinates);
+    if (errs !== null) {
+      errors = errors.concat(errs);
+    } else {
+      console.log(res);
+    }
   }
   if (errors.length === 0) {
     return Promise.resolve([null, true]);
