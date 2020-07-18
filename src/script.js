@@ -582,6 +582,59 @@ export function isSequence(board, coordinates) {
 }
 
 /**
+ * @returns {[Error[]|null, Boolean]}
+ * @param {Coordinate} coordinate
+ * @param {BoardPanel[][]} board
+ */
+export function connected(board, coordinate) {
+  const height = board.length;
+  if (height === 0) {
+    return [[new Error("require height")], false];
+  }
+  const width = board[0].length;
+  if (width === 0) {
+    return [[new Error("require width")], false];
+  }
+
+  // up
+  if (coordinate.y > 0 && board[coordinate.y - 1][coordinate.x] !== null) {
+    return [null, true];
+  }
+  // down
+  if (
+    coordinate.y < height - 1 &&
+    board[coordinate.y + 1][coordinate.x] !== null
+  ) {
+    return [null, true];
+  }
+  // left
+  if (coordinate.x > 0 && board[coordinate.y][coordinate.x - 1] !== null) {
+    return [null, true];
+  }
+  // right
+  if (
+    coordinate.x < width - 1 &&
+    board[coordinate.y][coordinate.x + 1] !== null
+  ) {
+    return [null, true];
+  }
+  return [null, false];
+}
+
+/**
+ * @returns {[Error[]|null, Boolean]}
+ * @param {Coordinate[]} coordinates
+ * @param {BoardPanel[][]} board
+ */
+export function hasConnection(board, coordinates) {
+  const result = coordinates.some((coordinate) => {
+    const [, res] = connected(board, coordinate);
+    return res;
+  });
+  return result ? [null, true] : [[new Error("has no connection")], false];
+}
+
+/**
  * @param {BoardPanel[][]} board
  * @param {Coordinate[]} coordinates
  * @promise
@@ -751,6 +804,9 @@ export function findCandidates(board, coordinates) {
  * @param {Store} store
  */
 export async function validateMove(move, store) {
+  if (move.coordinates.length === 0) {
+    return Promise.resolve([null, true]);
+  }
   /** @type {Error[]} */
   let errors = [];
   for (const coordinate of move.coordinates) {
@@ -784,6 +840,13 @@ export async function validateMove(move, store) {
   }
   {
     const [errs, res] = isSequence(store.board, move.coordinates);
+    if (!res && errs !== null) {
+      errors = errors.concat(errs);
+      return Promise.resolve([errors, false]);
+    }
+  }
+  {
+    const [errs, res] = hasConnection(store.board, move.coordinates);
     if (!res && errs !== null) {
       errors = errors.concat(errs);
       return Promise.resolve([errors, false]);
