@@ -309,9 +309,10 @@ import {
   const store = buildStore(query);
   const words = new Set(["aa"]); // valid
   (async () => {
-    const [errors, result] = await validateMove(move, store, words);
+    const [errors, result, wordList] = await validateMove(move, store, words);
     assert.equal(errors, null);
     assert.equal(result, true);
+    assert.deepEqual(wordList, ["aa"]);
   })();
 }
 
@@ -325,9 +326,10 @@ import {
   const store = buildStore(query);
   const words = new Set([]);
   (async () => {
-    const [errors, result] = await validateMove(move, store, words);
+    const [errors, result, wordList] = await validateMove(move, store, words);
     assert.equal(errors, null);
     assert.equal(result, true);
+    assert.equal(wordList, null);
   })();
 }
 
