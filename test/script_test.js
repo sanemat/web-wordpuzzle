@@ -736,8 +736,9 @@ import {
   ];
   /** @type {import("../src/script.js").Coordinate[]} */
   const coordinates = [{ x: 0, y: 0, panel: "a" }];
-  const [, result] = hasConnection(board, coordinates);
+  const [errors, result] = hasConnection(board, coordinates);
   assert.equal(result, false);
+  assert.equal(errors?.length, 1);
 }
 
 {
