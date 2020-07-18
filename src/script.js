@@ -818,15 +818,15 @@ export async function allCandidatesInWordDictionary(candidates, wordDict) {
 /**
  * @promise
  * @reject {Error}
- * @fulfill {[Error[]|null, Boolean]}
- * @returns {Promise.<[Error[]|null, Boolean]>}
+ * @fulfill {[Error[]|null, Boolean, string[]|null]}
+ * @returns {Promise.<[Error[]|null, Boolean, string[]|null]>} errors, valid, wordList
  * @param {Move} move
  * @param {Store} store
  * @param {Set<string>} words
  */
 export async function validateMove(move, store, words) {
   if (move.coordinates.length === 0) {
-    return Promise.resolve([null, true]);
+    return Promise.resolve([null, true, null]);
   }
   /** @type {Error[]} */
   let errors = [];
@@ -850,37 +850,39 @@ export async function validateMove(move, store, words) {
     }
   }
   if (errors.length !== 0) {
-    return Promise.resolve([errors, false]);
+    return Promise.resolve([errors, false, null]);
   }
   {
     const [errs, res] = isUnique(move.coordinates);
     if (!res && errs !== null) {
       errors = errors.concat(errs);
-      return Promise.resolve([errors, false]);
+      return Promise.resolve([errors, false, null]);
     }
   }
   {
     const [errs, res] = isSequence(store.board, move.coordinates);
     if (!res && errs !== null) {
       errors = errors.concat(errs);
-      return Promise.resolve([errors, false]);
+      return Promise.resolve([errors, false, null]);
     }
   }
   {
     const [errs, res] = hasConnection(store.board, move.coordinates);
     if (!res && errs !== null) {
       errors = errors.concat(errs);
-      return Promise.resolve([errors, false]);
+      return Promise.resolve([errors, false, null]);
     }
   }
+
+  /** @type {string[]|null} */
+  let candidates;
   {
-    const [errs, candidates] = await findCandidates(
-      store.board,
-      move.coordinates
-    );
+    /** @type {Error[]|null} */
+    let errs;
+    [errs, candidates] = await findCandidates(store.board, move.coordinates);
     if (errs !== null) {
       errors = errors.concat(errs);
-      return Promise.resolve([errors, false]);
+      return Promise.resolve([errors, false, null]);
     }
     if (candidates) {
       const [errs, res] = await allCandidatesInWordDictionary(
@@ -889,12 +891,12 @@ export async function validateMove(move, store, words) {
       );
       if (!res && errs !== null) {
         errors = errors.concat(errs);
-        return Promise.resolve([errors, false]);
+        return Promise.resolve([errors, false, null]);
       }
     }
   }
 
-  return Promise.resolve([null, true]);
+  return Promise.resolve([null, true, candidates]);
 }
 
 /**
@@ -938,13 +940,14 @@ async function playAction(ev) {
     const playerId = playerIdFrom(data);
     const [move, used] = await buildMove(await filterMove(data));
     console.log(move);
-    const [errors] = await validateMove(move, store, words);
+    const [errors, , wordList] = await validateMove(move, store, words);
     if (errors !== null) {
       errors.map((err) => {
         console.error(err);
       });
       return Promise.resolve(true);
     }
+    console.log(`wordList: ${wordList?.join("|")}`);
     console.log("move is valid");
     store.moves.push(move);
     const params = new URLSearchParams(location.search);
