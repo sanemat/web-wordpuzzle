@@ -800,10 +800,31 @@ export function findCandidates(board, coordinates) {
  * @reject {Error}
  * @fulfill {[Error[]|null, Boolean]}
  * @returns {Promise.<[Error[]|null, Boolean]>}
+ * @param {string[]} candidates
+ * @param {Set<string>} wordDict
+ */
+export async function allCandidatesInWordDictionary(candidates, wordDict) {
+  /** @type {Error[]} */
+  const errors = [];
+  candidates.map((candidate) => {
+    if (!wordDict.has(candidate)) {
+      errors.push(new Error(`${candidate} is not valid word`));
+    }
+  });
+
+  return Promise.resolve(errors.length === 0 ? [null, true] : [errors, false]);
+}
+
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {[Error[]|null, Boolean]}
+ * @returns {Promise.<[Error[]|null, Boolean]>}
  * @param {Move} move
  * @param {Store} store
+ * @param {Set<string>} words
  */
-export async function validateMove(move, store) {
+export async function validateMove(move, store, words) {
   if (move.coordinates.length === 0) {
     return Promise.resolve([null, true]);
   }
@@ -853,12 +874,23 @@ export async function validateMove(move, store) {
     }
   }
   {
-    const [errs, res] = await findCandidates(store.board, move.coordinates);
+    const [errs, candidates] = await findCandidates(
+      store.board,
+      move.coordinates
+    );
     if (errs !== null) {
       errors = errors.concat(errs);
       return Promise.resolve([errors, false]);
-    } else {
-      // words here
+    }
+    if (candidates) {
+      const [errs, res] = await allCandidatesInWordDictionary(
+        candidates,
+        words
+      );
+      if (!res && errs !== null) {
+        errors = errors.concat(errs);
+        return Promise.resolve([errors, false]);
+      }
     }
   }
 
@@ -906,7 +938,7 @@ async function playAction(ev) {
     const playerId = playerIdFrom(data);
     const [move, used] = await buildMove(await filterMove(data));
     console.log(move);
-    const [errors] = await validateMove(move, store);
+    const [errors] = await validateMove(move, store, words);
     if (errors !== null) {
       errors.map((err) => {
         console.error(err);

@@ -14,6 +14,7 @@ import {
   isSequence,
   connected,
   hasConnection,
+  allCandidatesInWordDictionary,
 } from "../src/script.js";
 
 {
@@ -256,8 +257,9 @@ import {
   };
   const query = `ms=0|00|a|10|r|20|m&bw=3&bh=4`;
   const store = buildStore(query);
+  const words = new Set([]);
   (async () => {
-    const [errors, result] = await validateMove(move, store);
+    const [errors, result] = await validateMove(move, store, words);
     assert.equal(errors?.length, 1, message);
     assert.equal(result, false, message);
   })();
@@ -272,8 +274,9 @@ import {
   };
   const query = `ms=0|00|a|10|r|20|m&bw=3&bh=4`;
   const store = buildStore(query);
+  const words = new Set([]);
   (async () => {
-    const [errors, result] = await validateMove(move, store);
+    const [errors, result] = await validateMove(move, store, words);
     assert.equal(errors?.length, 1, message);
     assert.equal(result, false, message);
   })();
@@ -288,8 +291,9 @@ import {
   };
   const query = `ms=0|00|a|10|r|20|m&bw=3&bh=4`;
   const store = buildStore(query);
+  const words = new Set([]);
   (async () => {
-    const [errors, result] = await validateMove(move, store);
+    const [errors, result] = await validateMove(move, store, words);
     assert.equal(errors?.length, 1, message);
     assert.equal(result, false, message);
   })();
@@ -303,8 +307,9 @@ import {
   };
   const query = `ms=0|00|a|10|r|20|m&bw=3&bh=4`;
   const store = buildStore(query);
+  const words = new Set(["aa"]); // valid
   (async () => {
-    const [errors, result] = await validateMove(move, store);
+    const [errors, result] = await validateMove(move, store, words);
     assert.equal(errors, null);
     assert.equal(result, true);
   })();
@@ -318,8 +323,9 @@ import {
   };
   const query = `ms=0|00|a|10|r|20|m&bw=3&bh=4`;
   const store = buildStore(query);
+  const words = new Set([]);
   (async () => {
-    const [errors, result] = await validateMove(move, store);
+    const [errors, result] = await validateMove(move, store, words);
     assert.equal(errors, null);
     assert.equal(result, true);
   })();
@@ -755,6 +761,74 @@ import {
   ];
   const [, result] = hasConnection(board, coordinates);
   assert.equal(result, true);
+}
+
+{
+  const candidates = ["invalid"];
+  const wordDict = new Set(["aa", "bb"]);
+  (async () => {
+    const [errors, result] = await allCandidatesInWordDictionary(
+      candidates,
+      wordDict
+    );
+    if (errors === null) {
+      assert.fail("unreachable");
+    } else {
+      assert.equal(errors.length, 1);
+      assert.equal(errors[0].message, "invalid is not valid word");
+      assert.equal(result, false);
+    }
+  })();
+}
+
+{
+  const candidates = ["valid"];
+  const wordDict = new Set(["aa", "valid"]);
+  (async () => {
+    const [errors, result] = await allCandidatesInWordDictionary(
+      candidates,
+      wordDict
+    );
+    if (errors === null) {
+      assert.equal(result, true);
+    } else {
+      assert.fail("unreachable");
+    }
+  })();
+}
+
+{
+  const candidates = ["valid", "invalid"];
+  const wordDict = new Set(["aa", "valid"]);
+  (async () => {
+    const [errors, result] = await allCandidatesInWordDictionary(
+      candidates,
+      wordDict
+    );
+    if (errors === null) {
+      assert.fail("unreachable");
+    } else {
+      assert.equal(errors.length, 1);
+      assert.equal(errors[0].message, "invalid is not valid word");
+      assert.equal(result, false);
+    }
+  })();
+}
+
+{
+  const candidates = ["valid", "true"];
+  const wordDict = new Set(["true", "valid"]);
+  (async () => {
+    const [errors, result] = await allCandidatesInWordDictionary(
+      candidates,
+      wordDict
+    );
+    if (errors === null) {
+      assert.equal(result, true);
+    } else {
+      assert.fail("unreachable");
+    }
+  })();
 }
 
 assert.deepEqual(_minimalStore(), _minimalStore());
