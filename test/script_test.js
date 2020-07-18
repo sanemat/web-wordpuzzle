@@ -257,8 +257,9 @@ import {
   };
   const query = `ms=0|00|a|10|r|20|m&bw=3&bh=4`;
   const store = buildStore(query);
+  const words = new Set([]);
   (async () => {
-    const [errors, result] = await validateMove(move, store);
+    const [errors, result] = await validateMove(move, store, words);
     assert.equal(errors?.length, 1, message);
     assert.equal(result, false, message);
   })();
@@ -273,8 +274,9 @@ import {
   };
   const query = `ms=0|00|a|10|r|20|m&bw=3&bh=4`;
   const store = buildStore(query);
+  const words = new Set([]);
   (async () => {
-    const [errors, result] = await validateMove(move, store);
+    const [errors, result] = await validateMove(move, store, words);
     assert.equal(errors?.length, 1, message);
     assert.equal(result, false, message);
   })();
@@ -289,8 +291,9 @@ import {
   };
   const query = `ms=0|00|a|10|r|20|m&bw=3&bh=4`;
   const store = buildStore(query);
+  const words = new Set([]);
   (async () => {
-    const [errors, result] = await validateMove(move, store);
+    const [errors, result] = await validateMove(move, store, words);
     assert.equal(errors?.length, 1, message);
     assert.equal(result, false, message);
   })();
@@ -304,8 +307,9 @@ import {
   };
   const query = `ms=0|00|a|10|r|20|m&bw=3&bh=4`;
   const store = buildStore(query);
+  const words = new Set(["aa"]); // valid
   (async () => {
-    const [errors, result] = await validateMove(move, store);
+    const [errors, result] = await validateMove(move, store, words);
     assert.equal(errors, null);
     assert.equal(result, true);
   })();
@@ -319,8 +323,9 @@ import {
   };
   const query = `ms=0|00|a|10|r|20|m&bw=3&bh=4`;
   const store = buildStore(query);
+  const words = new Set([]);
   (async () => {
-    const [errors, result] = await validateMove(move, store);
+    const [errors, result] = await validateMove(move, store, words);
     assert.equal(errors, null);
     assert.equal(result, true);
   })();
