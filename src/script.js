@@ -713,10 +713,6 @@ export function findCandidates(board, coordinates) {
     results.push(panels.join(""));
   }
 
-  if (results.length === 0) {
-    errors.push(new Error(`require minimal 2 letters`));
-  }
-
   return errors.length === 0
     ? Promise.resolve([null, results])
     : Promise.resolve([errors, null]);
@@ -763,7 +759,7 @@ export async function validateMove(move, store) {
     if (errs !== null) {
       errors = errors.concat(errs);
     } else {
-      console.log(res);
+      // words here
     }
   }
   if (errors.length === 0) {

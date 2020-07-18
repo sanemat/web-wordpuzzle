@@ -277,7 +277,7 @@ import {
 }
 
 {
-  const message = "x is out of board";
+  const message = "x4 is out of board; x3 is out of board";
   /** @type {import("../src/script.js").Move} */
   const move = {
     playerId: 0,
@@ -287,7 +287,7 @@ import {
   const store = buildStore(query);
   (async () => {
     const [errors, result] = await validateMove(move, store);
-    assert.equal(errors?.length, 1, message);
+    assert.equal(errors?.length, 2, message);
     assert.equal(result, false, message);
   })();
 }
@@ -478,25 +478,6 @@ import {
     if (errors !== null) {
       assert.equal(errors.length, 1);
       assert.equal(errors[0].message, "Empty panel x: 1, y: 1");
-    } else {
-      assert.fail("unreachable");
-    }
-  })();
-}
-
-{
-  /** @type {import("../src/script.js").BoardPanel[][]} */
-  const board = [
-    ["a", null],
-    [null, null],
-  ];
-  /** @type {import("../src/script.js").Coordinate[]} */
-  const coordinates = [{ x: 1, y: 1, panel: "x" }];
-  (async () => {
-    const [errors] = await findCandidates(board, coordinates);
-    if (errors !== null) {
-      assert.equal(errors.length, 1);
-      assert.equal(errors[0].message, "require minimal 2 letters");
     } else {
       assert.fail("unreachable");
     }
