@@ -310,6 +310,21 @@ import {
 }
 
 {
+  /** @type {import("../src/script.js").Move} */
+  const move = {
+    playerId: 0,
+    coordinates: [],
+  };
+  const query = `ms=0|00|a|10|r|20|m&bw=3&bh=4`;
+  const store = buildStore(query);
+  (async () => {
+    const [errors, result] = await validateMove(move, store);
+    assert.equal(errors, null);
+    assert.equal(result, true);
+  })();
+}
+
+{
   /** @type {import("../src/script.js").BoardPanel[][]} */
   const board = [
     ["a", "b"],
