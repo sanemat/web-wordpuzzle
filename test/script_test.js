@@ -12,6 +12,7 @@ import {
   isUnique,
   sortCoordinates,
   isSequence,
+  connected,
 } from "../src/script.js";
 
 {
@@ -639,6 +640,75 @@ import {
   const [errors, result] = isSequence(board, coordinates);
   assert.equal(errors?.length, 1);
   assert.equal(result, false);
+}
+
+{
+  /** @type {import("../src/script.js").BoardPanel[][]} */
+  const board = [
+    [null, null, null],
+    [null, "x", null],
+    [null, null, null],
+  ];
+  /** @type {import("../src/script.js").Coordinate} */
+  const coordinate = { x: 0, y: 0, panel: "a" };
+  const [, result] = connected(board, coordinate);
+  assert.equal(result, false);
+}
+
+{
+  // up
+  /** @type {import("../src/script.js").BoardPanel[][]} */
+  const board = [
+    [null, null, null],
+    [null, "x", null],
+    [null, null, null],
+  ];
+  /** @type {import("../src/script.js").Coordinate} */
+  const coordinate = { x: 1, y: 2, panel: "a" };
+  const [, result] = connected(board, coordinate);
+  assert.equal(result, true);
+}
+
+{
+  // down
+  /** @type {import("../src/script.js").BoardPanel[][]} */
+  const board = [
+    [null, null, null],
+    [null, "x", null],
+    [null, null, null],
+  ];
+  /** @type {import("../src/script.js").Coordinate} */
+  const coordinate = { x: 1, y: 0, panel: "a" };
+  const [, result] = connected(board, coordinate);
+  assert.equal(result, true);
+}
+
+{
+  // left
+  /** @type {import("../src/script.js").BoardPanel[][]} */
+  const board = [
+    [null, null, null],
+    [null, "x", null],
+    [null, null, null],
+  ];
+  /** @type {import("../src/script.js").Coordinate} */
+  const coordinate = { x: 2, y: 1, panel: "a" };
+  const [, result] = connected(board, coordinate);
+  assert.equal(result, true);
+}
+
+{
+  // right
+  /** @type {import("../src/script.js").BoardPanel[][]} */
+  const board = [
+    [null, null, null],
+    [null, "x", null],
+    [null, null, null],
+  ];
+  /** @type {import("../src/script.js").Coordinate} */
+  const coordinate = { x: 0, y: 1, panel: "a" };
+  const [, result] = connected(board, coordinate);
+  assert.equal(result, true);
 }
 
 assert.deepEqual(_minimalStore(), _minimalStore());
