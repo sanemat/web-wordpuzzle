@@ -618,7 +618,7 @@ export function connected(board, coordinate) {
   ) {
     return [null, true];
   }
-  return [[new Error("not connected")], false];
+  return [null, false];
 }
 
 /**
@@ -627,7 +627,13 @@ export function connected(board, coordinate) {
  * @param {BoardPanel[][]} board
  */
 export function hasConnection(board, coordinates) {
-  return [null, true];
+  return [
+    null,
+    coordinates.some((coordinate) => {
+      const [, result] = connected(board, coordinate);
+      return result;
+    }),
+  ];
 }
 
 /**
