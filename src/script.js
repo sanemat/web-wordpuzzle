@@ -804,7 +804,15 @@ export function findCandidates(board, coordinates) {
  * @param {Set<string>} wordDict
  */
 export async function allCandidatesInWordDictionary(candidates, wordDict) {
-  return Promise.resolve([[new Error("something happened")], false]);
+  /** @type {Error[]} */
+  const errors = [];
+  candidates.map((candidate) => {
+    if (!wordDict.has(candidate)) {
+      errors.push(new Error(`${candidate} is not valid word`));
+    }
+  });
+
+  return Promise.resolve(errors.length === 0 ? [null, true] : [errors, false]);
 }
 
 /**
