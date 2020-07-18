@@ -938,7 +938,7 @@ async function playAction(ev) {
     const playerId = playerIdFrom(data);
     const [move, used] = await buildMove(await filterMove(data));
     console.log(move);
-    const [errors] = await validateMove(move, store, words);
+    const [errors, ] = await validateMove(move, store, words);
     if (errors !== null) {
       errors.map((err) => {
         console.error(err);
