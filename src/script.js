@@ -713,10 +713,6 @@ export function findCandidates(board, coordinates) {
     results.push(panels.join(""));
   }
 
-  if (results.length === 0) {
-    errors.push(new Error(`require minimal 2 letters`));
-  }
-
   return errors.length === 0
     ? Promise.resolve([null, results])
     : Promise.resolve([errors, null]);
@@ -730,7 +726,7 @@ export function findCandidates(board, coordinates) {
  * @param {Move} move
  * @param {Store} store
  */
-export function validateMove(move, store) {
+export async function validateMove(move, store) {
   /** @type {Error[]} */
   let errors = [];
   for (const coordinate of move.coordinates) {
@@ -752,9 +748,19 @@ export function validateMove(move, store) {
       );
     }
   }
-  const [errs, res] = isUnique(move.coordinates);
-  if (!res && errs !== null) {
-    errors = errors.concat(errs);
+  {
+    const [errs, res] = isUnique(move.coordinates);
+    if (!res && errs !== null) {
+      errors = errors.concat(errs);
+    }
+  }
+  {
+    const [errs, res] = await findCandidates(store.board, move.coordinates);
+    if (errs !== null) {
+      errors = errors.concat(errs);
+    } else {
+      // words here
+    }
   }
   if (errors.length === 0) {
     return Promise.resolve([null, true]);
