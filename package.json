@@ -26,7 +26,7 @@
     "url": "https://github.com/sanemat/web-wordpuzzle.git"
   },
   "scripts": {
-    "assert": "node test/*.js",
+    "assert": "node --trace-warnings --unhandled-rejections=strict test/*.js",
     "eslint": "eslint {src,test}/*.js",
     "prettier": "prettier --write {src,test}/*.{js,html,css} index.html",
     "start": "serve",
