@@ -558,6 +558,30 @@ export function isUnique(coordinates) {
 }
 
 /**
+ * @returns {[Error[]|null, Boolean]}
+ * @param {Coordinate[]} coordinates
+ * @param {BoardPanel[][]} board
+ */
+export function isSequence(board, coordinates) {
+  if (coordinates.length === 0 || coordinates.length === 1) {
+    return [null, true];
+  }
+  /** @type {Error[]} */
+  const errors = [];
+  const hasSameX = coordinates.every((coordinate) => {
+    return coordinate.x === coordinates[0].x;
+  });
+  const hasSameY = coordinates.every((coordinate) => {
+    return coordinate.y === coordinates[0].y;
+  });
+  if (!hasSameX && !hasSameY) {
+    errors.push(new Error(`not same x and not same y`));
+  }
+
+  return errors.length === 0 ? [null, true] : [errors, false];
+}
+
+/**
  * @param {BoardPanel[][]} board
  * @param {Coordinate[]} coordinates
  * @promise
@@ -748,25 +772,34 @@ export async function validateMove(move, store) {
       );
     }
   }
+  if (errors.length !== 0) {
+    return Promise.resolve([errors, false]);
+  }
   {
     const [errs, res] = isUnique(move.coordinates);
     if (!res && errs !== null) {
       errors = errors.concat(errs);
+      return Promise.resolve([errors, false]);
+    }
+  }
+  {
+    const [errs, res] = isSequence(store.board, move.coordinates);
+    if (!res && errs !== null) {
+      errors = errors.concat(errs);
+      return Promise.resolve([errors, false]);
     }
   }
   {
     const [errs, res] = await findCandidates(store.board, move.coordinates);
     if (errs !== null) {
       errors = errors.concat(errs);
+      return Promise.resolve([errors, false]);
     } else {
       // words here
     }
   }
-  if (errors.length === 0) {
-    return Promise.resolve([null, true]);
-  } else {
-    return Promise.resolve([errors, false]);
-  }
+
+  return Promise.resolve([null, true]);
 }
 
 /**

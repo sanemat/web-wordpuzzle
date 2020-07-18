@@ -11,6 +11,7 @@ import {
   anywayGet,
   isUnique,
   sortCoordinates,
+  isSequence,
 } from "../src/script.js";
 
 {
@@ -277,7 +278,7 @@ import {
 }
 
 {
-  const message = "x4 is out of board; x3 is out of board";
+  const message = "x4 is out of board";
   /** @type {import("../src/script.js").Move} */
   const move = {
     playerId: 0,
@@ -287,7 +288,7 @@ import {
   const store = buildStore(query);
   (async () => {
     const [errors, result] = await validateMove(move, store);
-    assert.equal(errors?.length, 2, message);
+    assert.equal(errors?.length, 1, message);
     assert.equal(result, false, message);
   })();
 }
@@ -556,6 +557,32 @@ import {
 }
 
 {
+  /** @type {import("../src/script.js").BoardPanel[][]} */
+  const board = [
+    [null, null],
+    [null, null],
+  ];
+  /** @type {import("../src/script.js").Coordinate[]} */
+  const coordinates = [];
+  const [errors, result] = isSequence(board, coordinates);
+  assert.equal(errors, null);
+  assert.equal(result, true);
+}
+
+{
+  /** @type {import("../src/script.js").BoardPanel[][]} */
+  const board = [
+    [null, null],
+    [null, null],
+  ];
+  /** @type {import("../src/script.js").Coordinate[]} */
+  const coordinates = [{ x: 0, y: 1, panel: "a" }];
+  const [errors, result] = isSequence(board, coordinates);
+  assert.equal(errors, null);
+  assert.equal(result, true);
+}
+
+{
   /** @type {import("../src/script.js").Coordinate[]} */
   const coordinates = [
     { x: 0, y: 1, panel: "a" },
@@ -564,6 +591,54 @@ import {
   const [errors, result] = isUnique(coordinates);
   assert.equal(errors, null);
   assert.equal(result, true);
+}
+
+{
+  /** @type {import("../src/script.js").BoardPanel[][]} */
+  const board = [
+    [null, null],
+    [null, null],
+  ];
+  /** @type {import("../src/script.js").Coordinate[]} */
+  const coordinates = [
+    { x: 0, y: 0, panel: "a" },
+    { x: 0, y: 1, panel: "b" },
+  ];
+  const [errors, result] = isSequence(board, coordinates);
+  assert.equal(errors, null);
+  assert.equal(result, true);
+}
+
+{
+  /** @type {import("../src/script.js").BoardPanel[][]} */
+  const board = [
+    [null, null],
+    [null, null],
+  ];
+  /** @type {import("../src/script.js").Coordinate[]} */
+  const coordinates = [
+    { x: 0, y: 0, panel: "a" },
+    { x: 1, y: 0, panel: "b" },
+  ];
+  const [errors, result] = isSequence(board, coordinates);
+  assert.equal(errors, null);
+  assert.equal(result, true);
+}
+
+{
+  /** @type {import("../src/script.js").BoardPanel[][]} */
+  const board = [
+    [null, null],
+    [null, null],
+  ];
+  /** @type {import("../src/script.js").Coordinate[]} */
+  const coordinates = [
+    { x: 0, y: 0, panel: "a" },
+    { x: 1, y: 1, panel: "b" },
+  ];
+  const [errors, result] = isSequence(board, coordinates);
+  assert.equal(errors?.length, 1);
+  assert.equal(result, false);
 }
 
 assert.deepEqual(_minimalStore(), _minimalStore());
