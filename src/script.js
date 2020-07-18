@@ -48,7 +48,7 @@ let store;
 /** @type {Debug} debug */
 let debug;
 
-/** @typedef {{Object: any}} Words */
+/** @typedef {Set<string>} Words */
 /** @type {Words} words */
 let words;
 
@@ -985,8 +985,9 @@ async function nextAction() {
  */
 async function loadDictionary() {
   const data = await fetch("./english-words/words_dictionary.json");
-  words = await data.json();
-  console.log(words);
+  /** @type {{Object: any}} */
+  const dict = await data.json();
+  words = new Set(Object.keys(dict));
   return Promise.resolve(true);
 }
 
