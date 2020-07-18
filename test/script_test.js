@@ -278,7 +278,7 @@ import {
 }
 
 {
-  const message = "x4 is out of board; x3 is out of board";
+  const message = "x4 is out of board";
   /** @type {import("../src/script.js").Move} */
   const move = {
     playerId: 0,
@@ -288,7 +288,7 @@ import {
   const store = buildStore(query);
   (async () => {
     const [errors, result] = await validateMove(move, store);
-    assert.equal(errors?.length, 2, message);
+    assert.equal(errors?.length, 1, message);
     assert.equal(result, false, message);
   })();
 }

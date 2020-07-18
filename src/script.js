@@ -772,25 +772,34 @@ export async function validateMove(move, store) {
       );
     }
   }
+  if (errors.length !== 0) {
+    return Promise.resolve([errors, false]);
+  }
   {
     const [errs, res] = isUnique(move.coordinates);
     if (!res && errs !== null) {
       errors = errors.concat(errs);
+      return Promise.resolve([errors, false]);
+    }
+  }
+  {
+    const [errs, res] = isSequence(store.board, move.coordinates);
+    if (!res && errs !== null) {
+      errors = errors.concat(errs);
+      return Promise.resolve([errors, false]);
     }
   }
   {
     const [errs, res] = await findCandidates(store.board, move.coordinates);
     if (errs !== null) {
       errors = errors.concat(errs);
+      return Promise.resolve([errors, false]);
     } else {
       // words here
     }
   }
-  if (errors.length === 0) {
-    return Promise.resolve([null, true]);
-  } else {
-    return Promise.resolve([errors, false]);
-  }
+
+  return Promise.resolve([null, true]);
 }
 
 /**
