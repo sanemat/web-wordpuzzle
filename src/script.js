@@ -343,10 +343,54 @@ function hidePlayArea() {
  * @returns {Promise.<Boolean>}
  */
 function renderPlayArea() {
-  if (store.moved) {
+  if (store.moved || store.over) {
     return hidePlayArea();
   } else {
     return showPlayArea();
+  }
+}
+
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {Boolean}
+ * @returns {Promise.<Boolean>}
+ */
+function hideOverArea() {
+  const overArea = document.body.querySelector(".js-over-area");
+  if (!overArea || !(overArea instanceof HTMLElement)) {
+    return Promise.reject(new Error("no .js-over-area"));
+  }
+  overArea.style.display = "none";
+  return Promise.resolve(true);
+}
+
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {Boolean}
+ * @returns {Promise.<Boolean>}
+ */
+function showOverArea() {
+  const overArea = document.body.querySelector(".js-over-area");
+  if (!overArea || !(overArea instanceof HTMLElement)) {
+    return Promise.reject(new Error("no .js-over-area"));
+  }
+  overArea.style.display = "block";
+  return Promise.resolve(true);
+}
+
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {Boolean}
+ * @returns {Promise.<Boolean>}
+ */
+function renderOverArea() {
+  if (store.over) {
+    return showOverArea();
+  } else {
+    return hideOverArea();
   }
 }
 
@@ -409,7 +453,7 @@ function showNextArea() {
  * @returns {Promise.<Boolean>}
  */
 function renderNextArea() {
-  if (store.moved) {
+  if (store.moved || store.over) {
     return showNextArea();
   } else {
     return hideNextArea();
@@ -425,7 +469,12 @@ function render() {
   if (!debug.render) {
     return Promise.resolve(true);
   }
-  return Promise.all([renderGame(), renderPlayArea(), renderNextArea()]);
+  return Promise.all([
+    renderGame(),
+    renderPlayArea(),
+    renderNextArea(),
+    renderOverArea(),
+  ]);
 }
 
 /**
