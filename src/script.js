@@ -1011,6 +1011,22 @@ async function playAction(ev) {
       store.hands[playerId].splice(usedIndex, 1);
     });
 
+    {
+      // satisfy the condition for the game is over
+      const threshold = 2 * store.players.length;
+      const targetMoves = store.moves.slice(store.moves.length - threshold);
+      if (
+        targetMoves.length >= threshold &&
+        targetMoves.every((m) => {
+          return m.coordinates.length === 0;
+        })
+      ) {
+        console.log("this game is over!");
+        store.over = true;
+        params.set("ov", "1");
+      }
+    }
+
     // fill from jar
     while (store.hands[playerId].length < 7 && store.jar.length > 0) {
       store.hands[playerId].push(
