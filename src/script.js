@@ -997,7 +997,7 @@ export async function passTwice(store) {
  * @param {Store} store
  */
 export async function satisfyGameOver(store) {
-  if ((await passTwice(store)) === true) {
+  if (await passTwice(store)) {
     return Promise.resolve(true);
   }
   return Promise.resolve(false);
