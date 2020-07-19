@@ -37,6 +37,7 @@
  *   jar: Panel[],
  *   currentPlayerId: number,
  *   moved: boolean,
+ *   over: boolean,
  * }} Store
  */
 /**
@@ -66,6 +67,7 @@ export function _minimalStore() {
     jar: [],
     currentPlayerId: 0,
     moved: false,
+    over: false,
   };
 }
 
@@ -122,6 +124,8 @@ export function buildStore(query) {
 
   const md = urlParams.get("md");
   data.moved = md === "1";
+  const ov = urlParams.get("ov");
+  data.over = ov === "1";
 
   data.boardMeta.width = Number(urlParams.get("bw"));
   data.boardMeta.height = Number(urlParams.get("bh"));
