@@ -15,6 +15,7 @@ import {
   connected,
   hasConnection,
   allCandidatesInWordDictionary,
+  passTwice,
 } from "../src/script.js";
 
 {
@@ -259,6 +260,36 @@ import {
   };
   const expected = "0|00|a|10|r|20|m";
   assert.equal(moveToParam(input), expected);
+}
+
+{
+  const message = "first empty move";
+  const query = `ps=foo&ps=bar&ms=0&bw=3&bh=4`;
+  const store = buildStore(query);
+  (async () => {
+    const result = await passTwice(store);
+    assert.equal(result, false, message);
+  })();
+}
+
+{
+  const message = "third empty move";
+  const query = `ps=foo&ps=bar&ms=0&ms=1&ms=0&bw=3&bh=4`;
+  const store = buildStore(query);
+  (async () => {
+    const result = await passTwice(store);
+    assert.equal(result, false, message);
+  })();
+}
+
+{
+  const message = "fourth empty move";
+  const query = `ps=foo&ps=bar&ms=0&ms=1&ms=0&ms=1&bw=3&bh=4`;
+  const store = buildStore(query);
+  (async () => {
+    const result = await passTwice(store);
+    assert.equal(result, true, message);
+  })();
 }
 
 {

@@ -971,6 +971,41 @@ export function moveToParam(move) {
 /**
  * @promise
  * @reject {Error}
+ * @fulfill {boolean}
+ * @returns {Promise.<boolean>}
+ * @param {Store} store
+ */
+export async function passTwice(store) {
+  const threshold = 2 * store.players.length;
+  const targetMoves = store.moves.slice(store.moves.length - threshold);
+  if (
+    targetMoves.length >= threshold &&
+    targetMoves.every((m) => {
+      return m.coordinates.length === 0;
+    })
+  ) {
+    return Promise.resolve(true);
+  }
+  return Promise.resolve(false);
+}
+
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {boolean}
+ * @returns {Promise.<boolean>}
+ * @param {Store} store
+ */
+export async function satisfyGameOver(store) {
+  if (await passTwice(store)) {
+    return Promise.resolve(true);
+  }
+  return Promise.resolve(false);
+}
+
+/**
+ * @promise
+ * @reject {Error}
  * @fulfill {Boolean}
  * @returns {Promise.<Boolean>}
  * @param {Event} ev
@@ -1010,6 +1045,13 @@ async function playAction(ev) {
     used.reverse().forEach((usedIndex) => {
       store.hands[playerId].splice(usedIndex, 1);
     });
+
+    // satisfy the condition for the game is over
+    if (await satisfyGameOver(store)) {
+      console.log("this game is over!");
+      store.over = true;
+      params.set("ov", "1");
+    }
 
     // fill from jar
     while (store.hands[playerId].length < 7 && store.jar.length > 0) {
