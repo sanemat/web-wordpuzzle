@@ -212,11 +212,41 @@ function renderGame() {
     }
     game.appendChild(rowElem);
   }
-  // board
-  for (const row of store.board) {
+
+  // board header
+  {
     const rowElem = document.createElement("div");
     rowElem.classList.add("columns");
     rowElem.classList.add("is-mobile");
+    const panelElem = document.createElement("div");
+    panelElem.classList.add("column");
+    const text = "";
+    const panelText = document.createTextNode(text);
+    panelElem.appendChild(panelText);
+    rowElem.appendChild(panelElem);
+    for (let i = 0; i < store.boardMeta.width; i++) {
+      const panelElem = document.createElement("div");
+      panelElem.classList.add("column");
+      const text = `x${i}`;
+      const panelText = document.createTextNode(text);
+      panelElem.appendChild(panelText);
+      rowElem.appendChild(panelElem);
+    }
+    game.appendChild(rowElem);
+  }
+  // board
+  for (const [i, row] of store.board.entries()) {
+    const rowElem = document.createElement("div");
+    rowElem.classList.add("columns");
+    rowElem.classList.add("is-mobile");
+    {
+      const panelElem = document.createElement("div");
+      panelElem.classList.add("column");
+      const text = `y${i}`;
+      const panelText = document.createTextNode(text);
+      panelElem.appendChild(panelText);
+      rowElem.appendChild(panelElem);
+    }
     for (const boardPanel of row) {
       const panelElem = document.createElement("div");
       panelElem.classList.add("column");
