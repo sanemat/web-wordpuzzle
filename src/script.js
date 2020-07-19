@@ -1142,6 +1142,27 @@ async function nextAction() {
  * @reject {Error}
  * @fulfill {Boolean}
  * @returns {Promise.<Boolean>}
+ * @param {Event} ev
+ */
+async function swapAction(ev) {
+  console.log("swap");
+  try {
+    ev.preventDefault();
+    if (!(ev.target instanceof HTMLFormElement)) {
+      return Promise.reject(new Error("event is not form"));
+    }
+    // Convert from (string|FormDataEntryValue)[][] to string[][]
+    return Promise.resolve(true);
+  } catch (/** @type {Error|string} */ e) {
+    return Promise.reject(e);
+  }
+}
+
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {Boolean}
+ * @returns {Promise.<Boolean>}
  */
 async function loadDictionary() {
   const data = await fetch("./english-words/words_dictionary.json");
@@ -1179,5 +1200,9 @@ async function loadDictionary() {
   const next = document.body.querySelector(".js-next");
   if (next) {
     next.addEventListener("click", nextAction);
+  }
+  const swap = document.body.querySelector(".js-swap");
+  if (swap) {
+    swap.addEventListener("submit", swapAction);
   }
 })();
