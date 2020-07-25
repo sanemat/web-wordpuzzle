@@ -16,6 +16,7 @@ import {
   hasConnection,
   allCandidatesInWordDictionary,
   passTwice,
+  passToParam,
 } from "../src/script.js";
 
 {
@@ -50,18 +51,52 @@ import {
   const query = `as=0|m|0|0|a|1|0|r|2|0|m&bw=3&bh=4`;
   const store = buildStore(query);
   assert.equal(store.acts.length, 1);
-  assert.equal(store.acts[0].playerId, 0);
-  assert.equal(store.acts[0].coordinates.length, 3);
-  assert.deepEqual(store.acts[0].coordinates[1], { panel: "r", x: 1, y: 0 });
+  const act = store.acts[0];
+  assert.equal(act.type, "move");
+  assert.equal(
+    /** @type {import("../src/script.js").Move} */ (act).playerId,
+    0
+  );
+  assert.equal(
+    /** @type {import("../src/script.js").Move} */ (act).coordinates.length,
+    3
+  );
+  assert.deepEqual(
+    /** @type {import("../src/script.js").Move} */ (act).coordinates[1],
+    { panel: "r", x: 1, y: 0 }
+  );
 }
 
 {
   const query = `as=0|m|1|10|a&bw=2&bh=11`;
   const store = buildStore(query);
   assert.equal(store.acts.length, 1);
-  assert.equal(store.acts[0].playerId, 0);
-  assert.equal(store.acts[0].coordinates.length, 1);
-  assert.deepEqual(store.acts[0].coordinates[0], { panel: "a", x: 1, y: 10 });
+  const act = store.acts[0];
+  assert.equal(act.type, "move");
+  assert.equal(
+    /** @type {import("../src/script.js").Move} */ (act).playerId,
+    0
+  );
+  assert.equal(
+    /** @type {import("../src/script.js").Move} */ (act).coordinates.length,
+    1
+  );
+  assert.deepEqual(
+    /** @type {import("../src/script.js").Move} */ (act).coordinates[0],
+    { panel: "a", x: 1, y: 10 }
+  );
+}
+
+{
+  const query = `as=0|p&bw=3&bh=4`;
+  const store = buildStore(query);
+  assert.equal(store.acts.length, 1);
+  const act = store.acts[0];
+  assert.equal(act.type, "pass");
+  assert.equal(
+    /** @type {import("../src/script.js").Move} */ (act).playerId,
+    0
+  );
 }
 
 {
@@ -251,14 +286,13 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").Move} */
+  /** @type {import("../src/script.js").Pass} */
   const input = {
-    type: "move",
+    type: "pass",
     playerId: 0,
-    coordinates: [],
   };
-  const expected = "0|m";
-  assert.equal(moveToParam(input), expected);
+  const expected = "0|p";
+  assert.equal(passToParam(input), expected);
 }
 
 {
@@ -278,7 +312,7 @@ import {
 
 {
   const message = "first empty move";
-  const query = `ps=foo&ps=bar&as=0|m&bw=3&bh=4`;
+  const query = `ps=foo&ps=bar&as=0|p&bw=3&bh=4`;
   const store = buildStore(query);
   (async () => {
     const result = await passTwice(store);
@@ -288,7 +322,7 @@ import {
 
 {
   const message = "third empty move";
-  const query = `ps=foo&ps=bar&as=0|m&as=1|m&as=0|m&bw=3&bh=4`;
+  const query = `ps=foo&ps=bar&as=0|p&as=1|p&as=0|p&bw=3&bh=4`;
   const store = buildStore(query);
   (async () => {
     const result = await passTwice(store);
@@ -298,7 +332,7 @@ import {
 
 {
   const message = "fourth empty move";
-  const query = `ps=foo&ps=bar&as=0|m&as=1|m&as=0|m&as=1|m&bw=3&bh=4`;
+  const query = `ps=foo&ps=bar&as=0|p&as=1|p&as=0|p&as=1|p&bw=3&bh=4`;
   const store = buildStore(query);
   (async () => {
     const result = await passTwice(store);
@@ -375,24 +409,6 @@ import {
     assert.equal(errors, null);
     assert.equal(result, true);
     assert.deepEqual(wordList, ["aa"]);
-  })();
-}
-
-{
-  /** @type {import("../src/script.js").Move} */
-  const move = {
-    type: "move",
-    playerId: 0,
-    coordinates: [],
-  };
-  const query = `as=0|m|0|0|a|1|0|r|2|0|m&bw=3&bh=4`;
-  const store = buildStore(query);
-  const words = new Set([]);
-  (async () => {
-    const [errors, result, wordList] = await validateMove(move, store, words);
-    assert.equal(errors, null);
-    assert.equal(result, true);
-    assert.equal(wordList, null);
   })();
 }
 

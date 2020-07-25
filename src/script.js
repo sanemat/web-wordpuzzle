@@ -28,7 +28,13 @@
  * }} Move
  */
 /**
- * @typedef {Move} Act
+ * @typedef {{
+ *   type: string,
+ *   playerId: number,
+ * }} Pass
+ */
+/**
+ * @typedef {Move|Pass} Act
  */
 /**
  * @typedef {{
@@ -134,7 +140,7 @@ export function buildStore(query) {
   data.boardMeta.width = Number(urlParams.get("bw"));
   data.boardMeta.height = Number(urlParams.get("bh"));
   const as = urlParams.getAll("as");
-  /** @type {Move[]} */
+  /** @type {Act[]} */
   const acts = [];
   for (const m of as) {
     const parts = m.split("|");
@@ -154,6 +160,13 @@ export function buildStore(query) {
       }
       move.coordinates = sortCoordinates(move.coordinates);
       acts.push(move);
+    } else if (parts[1] === "p") {
+      /** @type {Pass} */
+      const pass = {
+        type: "pass",
+        playerId: parseInt(parts[0], 10),
+      };
+      acts.push(pass);
     }
   }
   data.acts = acts;
@@ -165,15 +178,17 @@ export function buildStore(query) {
   }
   data.board = board;
 
-  for (const m of data.acts) {
-    for (const c of m.coordinates) {
-      if (
-        typeof data.board[c.y] === "undefined" ||
-        typeof data.board[c.y][c.x] === "undefined"
-      ) {
-        throw new Error(`board x: ${c.x}, y: ${c.y} is unavailable`);
+  for (const a of data.acts) {
+    if (a.type === "move") {
+      for (const c of /** @type {Move} */ (a).coordinates) {
+        if (
+          typeof data.board[c.y] === "undefined" ||
+          typeof data.board[c.y][c.x] === "undefined"
+        ) {
+          throw new Error(`board x: ${c.x}, y: ${c.y} is unavailable`);
+        }
+        data.board[c.y][c.x] = c.panel;
       }
-      data.board[c.y][c.x] = c.panel;
     }
   }
   return data;
@@ -965,7 +980,11 @@ export async function allCandidatesInWordDictionary(candidates, wordDict) {
  */
 export async function validateMove(move, store, words) {
   if (move.coordinates.length === 0) {
-    return Promise.resolve([null, true, null]);
+    return Promise.resolve([
+      [new Error("move has no coordinates")],
+      false,
+      null,
+    ]);
   }
   /** @type {Error[]} */
   let errors = [];
@@ -1057,6 +1076,19 @@ export function moveToParam(move) {
 }
 
 /**
+ * @returns {string}
+ * @param {Pass} pass
+ * @throws {Error}
+ */
+export function passToParam(pass) {
+  /** @type {string[]} */
+  const r = [];
+  r.push(pass.playerId.toString());
+  r.push("p");
+  return r.join("|");
+}
+
+/**
  * @promise
  * @reject {Error}
  * @fulfill {boolean}
@@ -1069,7 +1101,7 @@ export async function passTwice(store) {
   if (
     targetMoves.length >= threshold &&
     targetMoves.every((m) => {
-      return m.coordinates.length === 0;
+      return m.type === "pass";
     })
   ) {
     return Promise.resolve(true);
@@ -1162,9 +1194,11 @@ async function playAction(ev) {
     store.moved = true;
     params.set("md", "1");
 
-    for (const m of store.acts) {
-      for (const c of m.coordinates) {
-        store.board[c.y][c.x] = c.panel;
+    for (const a of store.acts) {
+      if (a.type === "move") {
+        for (const c of /** @type {Move} */ (a).coordinates) {
+          store.board[c.y][c.x] = c.panel;
+        }
       }
     }
     window.history.pushState({}, "", `${location.pathname}?${params}`);
@@ -1185,14 +1219,13 @@ async function passAction() {
   console.log("pass!");
   const params = new URLSearchParams(location.search);
 
-  /** @type {Move} */
-  const emptyMove = {
-    type: "move",
+  /** @type {Pass} */
+  const pass = {
+    type: "pass",
     playerId: store.currentPlayerId,
-    coordinates: [],
   };
-  store.acts.push(emptyMove);
-  params.append("as", moveToParam(emptyMove));
+  store.acts.push(pass);
+  params.append("as", passToParam(pass));
 
   // satisfy the condition for the game is over
   if (await satisfyGameOver(store)) {
