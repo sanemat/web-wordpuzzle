@@ -137,17 +137,19 @@ export function buildStore(query) {
   const acts = [];
   for (const m of as) {
     const parts = m.split("|");
-    /** @type {Move} */
-    const move = { playerId: parseInt(parts[0], 10), coordinates: [] };
-    for (let i = 0; i < parts.length - 1; i += 3) {
-      move.coordinates.push({
-        x: parseInt(parts[i + 1], 10),
-        y: parseInt(parts[i + 2], 10),
-        panel: parts[i + 3],
-      });
+    if (parts[1] === "m") {
+      /** @type {Move} */
+      const move = { playerId: parseInt(parts[0], 10), coordinates: [] };
+      for (let i = 0; i < parts.length - 2; i += 3) {
+        move.coordinates.push({
+          x: parseInt(parts[i + 2], 10),
+          y: parseInt(parts[i + 3], 10),
+          panel: parts[i + 4],
+        });
+      }
+      move.coordinates = sortCoordinates(move.coordinates);
+      acts.push(move);
     }
-    move.coordinates = sortCoordinates(move.coordinates);
-    acts.push(move);
   }
   data.acts = acts;
 
@@ -994,6 +996,7 @@ export function moveToParam(move) {
   /** @type {string[]} */
   const r = [];
   r.push(move.playerId.toString());
+  r.push("m");
   for (const c of move.coordinates) {
     r.push(c.x.toString());
     r.push(c.y.toString());
