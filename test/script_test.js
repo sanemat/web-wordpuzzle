@@ -47,21 +47,21 @@ import {
 }
 
 {
-  const query = `ms=0|0|0|a|1|0|r|2|0|m&bw=3&bh=4`;
+  const query = `as=0|m|0|0|a|1|0|r|2|0|m&bw=3&bh=4`;
   const store = buildStore(query);
-  assert.equal(store.moves.length, 1);
-  assert.equal(store.moves[0].playerId, 0);
-  assert.equal(store.moves[0].coordinates.length, 3);
-  assert.deepEqual(store.moves[0].coordinates[1], { panel: "r", x: 1, y: 0 });
+  assert.equal(store.acts.length, 1);
+  assert.equal(store.acts[0].playerId, 0);
+  assert.equal(store.acts[0].coordinates.length, 3);
+  assert.deepEqual(store.acts[0].coordinates[1], { panel: "r", x: 1, y: 0 });
 }
 
 {
-  const query = `ms=0|1|10|a&bw=2&bh=11`;
+  const query = `as=0|m|1|10|a&bw=2&bh=11`;
   const store = buildStore(query);
-  assert.equal(store.moves.length, 1);
-  assert.equal(store.moves[0].playerId, 0);
-  assert.equal(store.moves[0].coordinates.length, 1);
-  assert.deepEqual(store.moves[0].coordinates[0], { panel: "a", x: 1, y: 10 });
+  assert.equal(store.acts.length, 1);
+  assert.equal(store.acts[0].playerId, 0);
+  assert.equal(store.acts[0].coordinates.length, 1);
+  assert.deepEqual(store.acts[0].coordinates[0], { panel: "a", x: 1, y: 10 });
 }
 
 {
@@ -108,7 +108,7 @@ import {
 }
 
 {
-  const query = `ps=foo&ps=bar&ms=0|0|0|a|1|0|r|2|0|m&hs=a|b|c|t&hs=e|a|f&v=0.1.0&bw=3&bh=4&j=a|b|x|x&cp=0&md=1&ov=1`;
+  const query = `ps=foo&ps=bar&as=0|m|0|0|a|1|0|r|2|0|m&hs=a|b|c|t&hs=e|a|f&v=0.1.0&bw=3&bh=4&j=a|b|x|x&cp=0&md=1&ov=1`;
   const store = buildStore(query);
   const expected = _minimalStore();
   expected.board = [
@@ -124,8 +124,9 @@ import {
   ];
   expected.version = "0.1.0";
   expected.players = ["foo", "bar"];
-  expected.moves = [
+  expected.acts = [
     {
+      type: "move",
       playerId: 0,
       coordinates: [
         { panel: "a", x: 0, y: 0 },
@@ -180,6 +181,7 @@ import {
   /** @type {import("../src/script.js").MoveOpe} */
   const expected = [
     {
+      type: "move",
       playerId: 0,
       coordinates: [],
     },
@@ -237,6 +239,7 @@ import {
   /** @type {import("../src/script.js").MoveOpe} */
   const expected = [
     {
+      type: "move",
       playerId: 0,
       coordinates: [{ x: 2, y: 3, panel: "x" }],
     },
@@ -250,16 +253,18 @@ import {
 {
   /** @type {import("../src/script.js").Move} */
   const input = {
+    type: "move",
     playerId: 0,
     coordinates: [],
   };
-  const expected = "0";
+  const expected = "0|m";
   assert.equal(moveToParam(input), expected);
 }
 
 {
   /** @type {import("../src/script.js").Move} */
   const input = {
+    type: "move",
     playerId: 0,
     coordinates: [
       { panel: "a", x: 0, y: 0 },
@@ -267,13 +272,13 @@ import {
       { panel: "m", x: 2, y: 0 },
     ],
   };
-  const expected = "0|0|0|a|1|0|r|2|0|m";
+  const expected = "0|m|0|0|a|1|0|r|2|0|m";
   assert.equal(moveToParam(input), expected);
 }
 
 {
   const message = "first empty move";
-  const query = `ps=foo&ps=bar&ms=0&bw=3&bh=4`;
+  const query = `ps=foo&ps=bar&as=0|m&bw=3&bh=4`;
   const store = buildStore(query);
   (async () => {
     const result = await passTwice(store);
@@ -283,7 +288,7 @@ import {
 
 {
   const message = "third empty move";
-  const query = `ps=foo&ps=bar&ms=0&ms=1&ms=0&bw=3&bh=4`;
+  const query = `ps=foo&ps=bar&as=0|m&as=1|m&as=0|m&bw=3&bh=4`;
   const store = buildStore(query);
   (async () => {
     const result = await passTwice(store);
@@ -293,7 +298,7 @@ import {
 
 {
   const message = "fourth empty move";
-  const query = `ps=foo&ps=bar&ms=0&ms=1&ms=0&ms=1&bw=3&bh=4`;
+  const query = `ps=foo&ps=bar&as=0|m&as=1|m&as=0|m&as=1|m&bw=3&bh=4`;
   const store = buildStore(query);
   (async () => {
     const result = await passTwice(store);
@@ -305,10 +310,11 @@ import {
   const message = "will conflict 1,0:r";
   /** @type {import("../src/script.js").Move} */
   const move = {
+    type: "move",
     playerId: 0,
     coordinates: [{ panel: "a", x: 1, y: 0 }],
   };
-  const query = `ms=0|0|0|a|1|0|r|2|0|m&bw=3&bh=4`;
+  const query = `as=0|m|0|0|a|1|0|r|2|0|m&bw=3&bh=4`;
   const store = buildStore(query);
   const words = new Set([]);
   (async () => {
@@ -322,10 +328,11 @@ import {
   const message = "y is out of board";
   /** @type {import("../src/script.js").Move} */
   const move = {
+    type: "move",
     playerId: 0,
     coordinates: [{ panel: "a", x: 4, y: 5 }],
   };
-  const query = `ms=0|0|0|a|1|0|r|2|0|m&bw=3&bh=4`;
+  const query = `as=0|m|0|0|a|1|0|r|2|0|m&bw=3&bh=4`;
   const store = buildStore(query);
   const words = new Set([]);
   (async () => {
@@ -339,10 +346,11 @@ import {
   const message = "x4 is out of board";
   /** @type {import("../src/script.js").Move} */
   const move = {
+    type: "move",
     playerId: 0,
     coordinates: [{ panel: "a", x: 4, y: 2 }],
   };
-  const query = `ms=0|0|0|a|1|0|r|2|0|m&bw=3&bh=4`;
+  const query = `as=0|m|0|0|a|1|0|r|2|0|m&bw=3&bh=4`;
   const store = buildStore(query);
   const words = new Set([]);
   (async () => {
@@ -355,10 +363,11 @@ import {
 {
   /** @type {import("../src/script.js").Move} */
   const move = {
+    type: "move",
     playerId: 0,
     coordinates: [{ panel: "a", x: 0, y: 1 }],
   };
-  const query = `ms=0|0|0|a|1|0|r|2|0|m&bw=3&bh=4`;
+  const query = `as=0|m|0|0|a|1|0|r|2|0|m&bw=3&bh=4`;
   const store = buildStore(query);
   const words = new Set(["aa"]); // valid
   (async () => {
@@ -372,10 +381,11 @@ import {
 {
   /** @type {import("../src/script.js").Move} */
   const move = {
+    type: "move",
     playerId: 0,
     coordinates: [],
   };
-  const query = `ms=0|0|0|a|1|0|r|2|0|m&bw=3&bh=4`;
+  const query = `as=0|m|0|0|a|1|0|r|2|0|m&bw=3&bh=4`;
   const store = buildStore(query);
   const words = new Set([]);
   (async () => {

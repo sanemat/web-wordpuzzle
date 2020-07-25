@@ -1,7 +1,7 @@
 {
   "name": "web-wordpuzzle",
   "description": "word puzzle",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "author": "Matt (Sanemat) (Murahashi Kenichi)",
   "bugs": {
     "url": "https://github.com/sanemat/web-wordpuzzle/issues"

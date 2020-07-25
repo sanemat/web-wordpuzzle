@@ -22,9 +22,13 @@
  */
 /**
  * @typedef {{
+ *   type: string,
  *   playerId: number,
  *   coordinates: Coordinate[],
  * }} Move
+ */
+/**
+ * @typedef {Move} Act
  */
 /**
  * @typedef {{
@@ -33,7 +37,7 @@
  *   boardMeta: BoardMeta,
  *   board: BoardPanel[][],
  *   hands: Panel[][],
- *   moves: Move[],
+ *   acts: Act[],
  *   jar: Panel[],
  *   currentPlayerId: number,
  *   moved: boolean,
@@ -63,7 +67,7 @@ export function _minimalStore() {
     boardMeta: { width: 0, height: 0 },
     board: [],
     hands: [],
-    moves: [],
+    acts: [],
     jar: [],
     currentPlayerId: 0,
     moved: false,
@@ -129,24 +133,30 @@ export function buildStore(query) {
 
   data.boardMeta.width = Number(urlParams.get("bw"));
   data.boardMeta.height = Number(urlParams.get("bh"));
-  const ms = urlParams.getAll("ms");
+  const as = urlParams.getAll("as");
   /** @type {Move[]} */
-  const moves = [];
-  for (const m of ms) {
+  const acts = [];
+  for (const m of as) {
     const parts = m.split("|");
-    /** @type {Move} */
-    const move = { playerId: parseInt(parts[0], 10), coordinates: [] };
-    for (let i = 0; i < parts.length - 1; i += 3) {
-      move.coordinates.push({
-        x: parseInt(parts[i + 1], 10),
-        y: parseInt(parts[i + 2], 10),
-        panel: parts[i + 3],
-      });
+    if (parts[1] === "m") {
+      /** @type {Move} */
+      const move = {
+        type: "move",
+        playerId: parseInt(parts[0], 10),
+        coordinates: [],
+      };
+      for (let i = 0; i < parts.length - 2; i += 3) {
+        move.coordinates.push({
+          x: parseInt(parts[i + 2], 10),
+          y: parseInt(parts[i + 3], 10),
+          panel: parts[i + 4],
+        });
+      }
+      move.coordinates = sortCoordinates(move.coordinates);
+      acts.push(move);
     }
-    move.coordinates = sortCoordinates(move.coordinates);
-    moves.push(move);
   }
-  data.moves = moves;
+  data.acts = acts;
 
   /** @type {BoardPanel[][]} */
   const board = [];
@@ -155,7 +165,7 @@ export function buildStore(query) {
   }
   data.board = board;
 
-  for (const m of data.moves) {
+  for (const m of data.acts) {
     for (const c of m.coordinates) {
       if (
         typeof data.board[c.y] === "undefined" ||
@@ -572,6 +582,7 @@ export function sortCoordinates(coordinates) {
 export function buildMove(data) {
   /** @type {Move} */
   const move = {
+    type: "move",
     playerId: 0,
     coordinates: [],
   };
@@ -991,6 +1002,7 @@ export function moveToParam(move) {
   /** @type {string[]} */
   const r = [];
   r.push(move.playerId.toString());
+  r.push("m");
   for (const c of move.coordinates) {
     r.push(c.x.toString());
     r.push(c.y.toString());
@@ -1008,7 +1020,7 @@ export function moveToParam(move) {
  */
 export async function passTwice(store) {
   const threshold = 2 * store.players.length;
-  const targetMoves = store.moves.slice(store.moves.length - threshold);
+  const targetMoves = store.acts.slice(store.acts.length - threshold);
   if (
     targetMoves.length >= threshold &&
     targetMoves.every((m) => {
@@ -1068,9 +1080,9 @@ async function playAction(ev) {
     }
     console.log(`wordList: ${wordList?.join("|")}`);
     console.log("move is valid");
-    store.moves.push(move);
+    store.acts.push(move);
     const params = new URLSearchParams(location.search);
-    params.append("ms", moveToParam(move));
+    params.append("as", moveToParam(move));
 
     // update hands
     used.reverse().forEach((usedIndex) => {
@@ -1105,7 +1117,7 @@ async function playAction(ev) {
     store.moved = true;
     params.set("md", "1");
 
-    for (const m of store.moves) {
+    for (const m of store.acts) {
       for (const c of m.coordinates) {
         store.board[c.y][c.x] = c.panel;
       }
