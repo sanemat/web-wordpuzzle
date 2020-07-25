@@ -126,6 +126,7 @@ import {
   expected.players = ["foo", "bar"];
   expected.acts = [
     {
+      type: "move",
       playerId: 0,
       coordinates: [
         { panel: "a", x: 0, y: 0 },
@@ -180,6 +181,7 @@ import {
   /** @type {import("../src/script.js").MoveOpe} */
   const expected = [
     {
+      type: "move",
       playerId: 0,
       coordinates: [],
     },
@@ -237,6 +239,7 @@ import {
   /** @type {import("../src/script.js").MoveOpe} */
   const expected = [
     {
+      type: "move",
       playerId: 0,
       coordinates: [{ x: 2, y: 3, panel: "x" }],
     },
@@ -250,6 +253,7 @@ import {
 {
   /** @type {import("../src/script.js").Move} */
   const input = {
+    type: "move",
     playerId: 0,
     coordinates: [],
   };
@@ -260,6 +264,7 @@ import {
 {
   /** @type {import("../src/script.js").Move} */
   const input = {
+    type: "move",
     playerId: 0,
     coordinates: [
       { panel: "a", x: 0, y: 0 },
@@ -305,6 +310,7 @@ import {
   const message = "will conflict 1,0:r";
   /** @type {import("../src/script.js").Move} */
   const move = {
+    type: "move",
     playerId: 0,
     coordinates: [{ panel: "a", x: 1, y: 0 }],
   };
@@ -322,6 +328,7 @@ import {
   const message = "y is out of board";
   /** @type {import("../src/script.js").Move} */
   const move = {
+    type: "move",
     playerId: 0,
     coordinates: [{ panel: "a", x: 4, y: 5 }],
   };
@@ -339,6 +346,7 @@ import {
   const message = "x4 is out of board";
   /** @type {import("../src/script.js").Move} */
   const move = {
+    type: "move",
     playerId: 0,
     coordinates: [{ panel: "a", x: 4, y: 2 }],
   };
@@ -355,6 +363,7 @@ import {
 {
   /** @type {import("../src/script.js").Move} */
   const move = {
+    type: "move",
     playerId: 0,
     coordinates: [{ panel: "a", x: 0, y: 1 }],
   };
@@ -372,6 +381,7 @@ import {
 {
   /** @type {import("../src/script.js").Move} */
   const move = {
+    type: "move",
     playerId: 0,
     coordinates: [],
   };

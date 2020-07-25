@@ -22,6 +22,7 @@
  */
 /**
  * @typedef {{
+ *   type: string,
  *   playerId: number,
  *   coordinates: Coordinate[],
  * }} Move
@@ -139,7 +140,11 @@ export function buildStore(query) {
     const parts = m.split("|");
     if (parts[1] === "m") {
       /** @type {Move} */
-      const move = { playerId: parseInt(parts[0], 10), coordinates: [] };
+      const move = {
+        type: "move",
+        playerId: parseInt(parts[0], 10),
+        coordinates: [],
+      };
       for (let i = 0; i < parts.length - 2; i += 3) {
         move.coordinates.push({
           x: parseInt(parts[i + 2], 10),
@@ -577,6 +582,7 @@ export function sortCoordinates(coordinates) {
 export function buildMove(data) {
   /** @type {Move} */
   const move = {
+    type: "move",
     playerId: 0,
     coordinates: [],
   };
