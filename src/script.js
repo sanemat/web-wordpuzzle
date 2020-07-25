@@ -396,6 +396,50 @@ function renderPlayArea() {
  * @fulfill {Boolean}
  * @returns {Promise.<Boolean>}
  */
+function hidePassArea() {
+  const passArea = document.body.querySelector(".js-pass-area");
+  if (!passArea || !(passArea instanceof HTMLElement)) {
+    return Promise.reject(new Error("no .js-pass-area"));
+  }
+  passArea.style.display = "none";
+  return Promise.resolve(true);
+}
+
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {Boolean}
+ * @returns {Promise.<Boolean>}
+ */
+function showPassArea() {
+  const passArea = document.body.querySelector(".js-pass-area");
+  if (!passArea || !(passArea instanceof HTMLElement)) {
+    return Promise.reject(new Error("no .js-pass-area"));
+  }
+  passArea.style.display = "block";
+  return Promise.resolve(true);
+}
+
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {Boolean}
+ * @returns {Promise.<Boolean>}
+ */
+function renderPassArea() {
+  if (store.moved || store.over) {
+    return hidePassArea();
+  } else {
+    return showPassArea();
+  }
+}
+
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {Boolean}
+ * @returns {Promise.<Boolean>}
+ */
 function hideOverArea() {
   const overArea = document.body.querySelector(".js-over-area");
   if (!overArea || !(overArea instanceof HTMLElement)) {
@@ -513,6 +557,7 @@ function render() {
     renderGame(),
     renderPlayArea(),
     renderNextArea(),
+    renderPassArea(),
     renderOverArea(),
   ]);
 }
@@ -1136,6 +1181,40 @@ async function playAction(ev) {
  * @fulfill {Boolean}
  * @returns {Promise.<Boolean>}
  */
+async function passAction() {
+  console.log("pass!");
+  const params = new URLSearchParams(location.search);
+
+  /** @type {Move} */
+  const emptyMove = {
+    type: "move",
+    playerId: store.currentPlayerId,
+    coordinates: [],
+  };
+  store.acts.push(emptyMove);
+  params.append("as", moveToParam(emptyMove));
+
+  // satisfy the condition for the game is over
+  if (await satisfyGameOver(store)) {
+    console.log("this game is over!");
+    store.over = true;
+    params.set("ov", "1");
+  }
+
+  store.moved = true;
+  params.set("md", "1");
+
+  window.history.pushState({}, "", `${location.pathname}?${params}`);
+  console.log(store);
+  return render();
+}
+
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {Boolean}
+ * @returns {Promise.<Boolean>}
+ */
 async function nextAction() {
   console.log("next!");
   const params = new URLSearchParams(location.search);
@@ -1217,5 +1296,9 @@ async function loadDictionary() {
   const swap = document.body.querySelector(".js-swap");
   if (swap) {
     swap.addEventListener("submit", swapAction);
+  }
+  const pass = document.body.querySelector(".js-pass");
+  if (pass) {
+    pass.addEventListener("click", passAction);
   }
 })();
