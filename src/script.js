@@ -27,13 +27,16 @@
  * }} Move
  */
 /**
+ * @typedef {Move} Act
+ */
+/**
  * @typedef {{
  *   players: Player[],
  *   version: Version,
  *   boardMeta: BoardMeta,
  *   board: BoardPanel[][],
  *   hands: Panel[][],
- *   moves: Move[],
+ *   acts: Act[],
  *   jar: Panel[],
  *   currentPlayerId: number,
  *   moved: boolean,
@@ -63,7 +66,7 @@ export function _minimalStore() {
     boardMeta: { width: 0, height: 0 },
     board: [],
     hands: [],
-    moves: [],
+    acts: [],
     jar: [],
     currentPlayerId: 0,
     moved: false,
@@ -131,7 +134,7 @@ export function buildStore(query) {
   data.boardMeta.height = Number(urlParams.get("bh"));
   const as = urlParams.getAll("as");
   /** @type {Move[]} */
-  const moves = [];
+  const acts = [];
   for (const m of as) {
     const parts = m.split("|");
     /** @type {Move} */
@@ -144,9 +147,9 @@ export function buildStore(query) {
       });
     }
     move.coordinates = sortCoordinates(move.coordinates);
-    moves.push(move);
+    acts.push(move);
   }
-  data.moves = moves;
+  data.acts = acts;
 
   /** @type {BoardPanel[][]} */
   const board = [];
@@ -155,7 +158,7 @@ export function buildStore(query) {
   }
   data.board = board;
 
-  for (const m of data.moves) {
+  for (const m of data.acts) {
     for (const c of m.coordinates) {
       if (
         typeof data.board[c.y] === "undefined" ||
@@ -1008,7 +1011,7 @@ export function moveToParam(move) {
  */
 export async function passTwice(store) {
   const threshold = 2 * store.players.length;
-  const targetMoves = store.moves.slice(store.moves.length - threshold);
+  const targetMoves = store.acts.slice(store.acts.length - threshold);
   if (
     targetMoves.length >= threshold &&
     targetMoves.every((m) => {
@@ -1068,7 +1071,7 @@ async function playAction(ev) {
     }
     console.log(`wordList: ${wordList?.join("|")}`);
     console.log("move is valid");
-    store.moves.push(move);
+    store.acts.push(move);
     const params = new URLSearchParams(location.search);
     params.append("as", moveToParam(move));
 
@@ -1105,7 +1108,7 @@ async function playAction(ev) {
     store.moved = true;
     params.set("md", "1");
 
-    for (const m of store.moves) {
+    for (const m of store.acts) {
       for (const c of m.coordinates) {
         store.board[c.y][c.x] = c.panel;
       }

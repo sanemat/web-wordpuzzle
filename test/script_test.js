@@ -49,19 +49,19 @@ import {
 {
   const query = `as=0|0|0|a|1|0|r|2|0|m&bw=3&bh=4`;
   const store = buildStore(query);
-  assert.equal(store.moves.length, 1);
-  assert.equal(store.moves[0].playerId, 0);
-  assert.equal(store.moves[0].coordinates.length, 3);
-  assert.deepEqual(store.moves[0].coordinates[1], { panel: "r", x: 1, y: 0 });
+  assert.equal(store.acts.length, 1);
+  assert.equal(store.acts[0].playerId, 0);
+  assert.equal(store.acts[0].coordinates.length, 3);
+  assert.deepEqual(store.acts[0].coordinates[1], { panel: "r", x: 1, y: 0 });
 }
 
 {
   const query = `as=0|1|10|a&bw=2&bh=11`;
   const store = buildStore(query);
-  assert.equal(store.moves.length, 1);
-  assert.equal(store.moves[0].playerId, 0);
-  assert.equal(store.moves[0].coordinates.length, 1);
-  assert.deepEqual(store.moves[0].coordinates[0], { panel: "a", x: 1, y: 10 });
+  assert.equal(store.acts.length, 1);
+  assert.equal(store.acts[0].playerId, 0);
+  assert.equal(store.acts[0].coordinates.length, 1);
+  assert.deepEqual(store.acts[0].coordinates[0], { panel: "a", x: 1, y: 10 });
 }
 
 {
@@ -124,7 +124,7 @@ import {
   ];
   expected.version = "0.1.0";
   expected.players = ["foo", "bar"];
-  expected.moves = [
+  expected.acts = [
     {
       playerId: 0,
       coordinates: [
