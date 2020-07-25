@@ -129,10 +129,10 @@ export function buildStore(query) {
 
   data.boardMeta.width = Number(urlParams.get("bw"));
   data.boardMeta.height = Number(urlParams.get("bh"));
-  const ms = urlParams.getAll("ms");
+  const as = urlParams.getAll("as");
   /** @type {Move[]} */
   const moves = [];
-  for (const m of ms) {
+  for (const m of as) {
     const parts = m.split("|");
     /** @type {Move} */
     const move = { playerId: parseInt(parts[0], 10), coordinates: [] };
@@ -1070,7 +1070,7 @@ async function playAction(ev) {
     console.log("move is valid");
     store.moves.push(move);
     const params = new URLSearchParams(location.search);
-    params.append("ms", moveToParam(move));
+    params.append("as", moveToParam(move));
 
     // update hands
     used.reverse().forEach((usedIndex) => {

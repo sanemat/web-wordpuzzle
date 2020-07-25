@@ -47,7 +47,7 @@ import {
 }
 
 {
-  const query = `ms=0|0|0|a|1|0|r|2|0|m&bw=3&bh=4`;
+  const query = `as=0|0|0|a|1|0|r|2|0|m&bw=3&bh=4`;
   const store = buildStore(query);
   assert.equal(store.moves.length, 1);
   assert.equal(store.moves[0].playerId, 0);
@@ -56,7 +56,7 @@ import {
 }
 
 {
-  const query = `ms=0|1|10|a&bw=2&bh=11`;
+  const query = `as=0|1|10|a&bw=2&bh=11`;
   const store = buildStore(query);
   assert.equal(store.moves.length, 1);
   assert.equal(store.moves[0].playerId, 0);
@@ -108,7 +108,7 @@ import {
 }
 
 {
-  const query = `ps=foo&ps=bar&ms=0|0|0|a|1|0|r|2|0|m&hs=a|b|c|t&hs=e|a|f&v=0.1.0&bw=3&bh=4&j=a|b|x|x&cp=0&md=1&ov=1`;
+  const query = `ps=foo&ps=bar&as=0|0|0|a|1|0|r|2|0|m&hs=a|b|c|t&hs=e|a|f&v=0.1.0&bw=3&bh=4&j=a|b|x|x&cp=0&md=1&ov=1`;
   const store = buildStore(query);
   const expected = _minimalStore();
   expected.board = [
@@ -273,7 +273,7 @@ import {
 
 {
   const message = "first empty move";
-  const query = `ps=foo&ps=bar&ms=0&bw=3&bh=4`;
+  const query = `ps=foo&ps=bar&as=0&bw=3&bh=4`;
   const store = buildStore(query);
   (async () => {
     const result = await passTwice(store);
@@ -283,7 +283,7 @@ import {
 
 {
   const message = "third empty move";
-  const query = `ps=foo&ps=bar&ms=0&ms=1&ms=0&bw=3&bh=4`;
+  const query = `ps=foo&ps=bar&as=0&as=1&as=0&bw=3&bh=4`;
   const store = buildStore(query);
   (async () => {
     const result = await passTwice(store);
@@ -293,7 +293,7 @@ import {
 
 {
   const message = "fourth empty move";
-  const query = `ps=foo&ps=bar&ms=0&ms=1&ms=0&ms=1&bw=3&bh=4`;
+  const query = `ps=foo&ps=bar&as=0&as=1&as=0&as=1&bw=3&bh=4`;
   const store = buildStore(query);
   (async () => {
     const result = await passTwice(store);
@@ -308,7 +308,7 @@ import {
     playerId: 0,
     coordinates: [{ panel: "a", x: 1, y: 0 }],
   };
-  const query = `ms=0|0|0|a|1|0|r|2|0|m&bw=3&bh=4`;
+  const query = `as=0|0|0|a|1|0|r|2|0|m&bw=3&bh=4`;
   const store = buildStore(query);
   const words = new Set([]);
   (async () => {
@@ -325,7 +325,7 @@ import {
     playerId: 0,
     coordinates: [{ panel: "a", x: 4, y: 5 }],
   };
-  const query = `ms=0|0|0|a|1|0|r|2|0|m&bw=3&bh=4`;
+  const query = `as=0|0|0|a|1|0|r|2|0|m&bw=3&bh=4`;
   const store = buildStore(query);
   const words = new Set([]);
   (async () => {
@@ -342,7 +342,7 @@ import {
     playerId: 0,
     coordinates: [{ panel: "a", x: 4, y: 2 }],
   };
-  const query = `ms=0|0|0|a|1|0|r|2|0|m&bw=3&bh=4`;
+  const query = `as=0|0|0|a|1|0|r|2|0|m&bw=3&bh=4`;
   const store = buildStore(query);
   const words = new Set([]);
   (async () => {
@@ -358,7 +358,7 @@ import {
     playerId: 0,
     coordinates: [{ panel: "a", x: 0, y: 1 }],
   };
-  const query = `ms=0|0|0|a|1|0|r|2|0|m&bw=3&bh=4`;
+  const query = `as=0|0|0|a|1|0|r|2|0|m&bw=3&bh=4`;
   const store = buildStore(query);
   const words = new Set(["aa"]); // valid
   (async () => {
@@ -375,7 +375,7 @@ import {
     playerId: 0,
     coordinates: [],
   };
-  const query = `ms=0|0|0|a|1|0|r|2|0|m&bw=3&bh=4`;
+  const query = `as=0|0|0|a|1|0|r|2|0|m&bw=3&bh=4`;
   const store = buildStore(query);
   const words = new Set([]);
   (async () => {

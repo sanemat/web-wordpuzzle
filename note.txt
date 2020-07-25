@@ -4,7 +4,7 @@ This is first idea, we don't update it more.
 {
   "ps": "foo",
   "ps": "bar",
-  "ms": "0|0|0|a|1|0|r|2|0|m",
+  "as": "0|0|0|a|1|0|r|2|0|m",
   "hs": "a|b|c|t",
   "v": "0.1.0",
   "bw": 3,
