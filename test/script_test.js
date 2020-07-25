@@ -47,12 +47,21 @@ import {
 }
 
 {
-  const query = `ms=0|00|a|10|r|20|m&bw=3&bh=4`;
+  const query = `ms=0|0|0|a|1|0|r|2|0|m&bw=3&bh=4`;
   const store = buildStore(query);
   assert.equal(store.moves.length, 1);
   assert.equal(store.moves[0].playerId, 0);
   assert.equal(store.moves[0].coordinates.length, 3);
   assert.deepEqual(store.moves[0].coordinates[1], { panel: "r", x: 1, y: 0 });
+}
+
+{
+  const query = `ms=0|1|10|a&bw=2&bh=11`;
+  const store = buildStore(query);
+  assert.equal(store.moves.length, 1);
+  assert.equal(store.moves[0].playerId, 0);
+  assert.equal(store.moves[0].coordinates.length, 1);
+  assert.deepEqual(store.moves[0].coordinates[0], { panel: "a", x: 1, y: 10 });
 }
 
 {
@@ -99,7 +108,7 @@ import {
 }
 
 {
-  const query = `ps=foo&ps=bar&ms=0|00|a|10|r|20|m&hs=a|b|c|t&hs=e|a|f&v=0.1.0&bw=3&bh=4&j=a|b|x|x&cp=0&md=1&ov=1`;
+  const query = `ps=foo&ps=bar&ms=0|0|0|a|1|0|r|2|0|m&hs=a|b|c|t&hs=e|a|f&v=0.1.0&bw=3&bh=4&j=a|b|x|x&cp=0&md=1&ov=1`;
   const store = buildStore(query);
   const expected = _minimalStore();
   expected.board = [
@@ -258,7 +267,7 @@ import {
       { panel: "m", x: 2, y: 0 },
     ],
   };
-  const expected = "0|00|a|10|r|20|m";
+  const expected = "0|0|0|a|1|0|r|2|0|m";
   assert.equal(moveToParam(input), expected);
 }
 
@@ -299,7 +308,7 @@ import {
     playerId: 0,
     coordinates: [{ panel: "a", x: 1, y: 0 }],
   };
-  const query = `ms=0|00|a|10|r|20|m&bw=3&bh=4`;
+  const query = `ms=0|0|0|a|1|0|r|2|0|m&bw=3&bh=4`;
   const store = buildStore(query);
   const words = new Set([]);
   (async () => {
@@ -316,7 +325,7 @@ import {
     playerId: 0,
     coordinates: [{ panel: "a", x: 4, y: 5 }],
   };
-  const query = `ms=0|00|a|10|r|20|m&bw=3&bh=4`;
+  const query = `ms=0|0|0|a|1|0|r|2|0|m&bw=3&bh=4`;
   const store = buildStore(query);
   const words = new Set([]);
   (async () => {
@@ -333,7 +342,7 @@ import {
     playerId: 0,
     coordinates: [{ panel: "a", x: 4, y: 2 }],
   };
-  const query = `ms=0|00|a|10|r|20|m&bw=3&bh=4`;
+  const query = `ms=0|0|0|a|1|0|r|2|0|m&bw=3&bh=4`;
   const store = buildStore(query);
   const words = new Set([]);
   (async () => {
@@ -349,7 +358,7 @@ import {
     playerId: 0,
     coordinates: [{ panel: "a", x: 0, y: 1 }],
   };
-  const query = `ms=0|00|a|10|r|20|m&bw=3&bh=4`;
+  const query = `ms=0|0|0|a|1|0|r|2|0|m&bw=3&bh=4`;
   const store = buildStore(query);
   const words = new Set(["aa"]); // valid
   (async () => {
@@ -366,7 +375,7 @@ import {
     playerId: 0,
     coordinates: [],
   };
-  const query = `ms=0|00|a|10|r|20|m&bw=3&bh=4`;
+  const query = `ms=0|0|0|a|1|0|r|2|0|m&bw=3&bh=4`;
   const store = buildStore(query);
   const words = new Set([]);
   (async () => {
