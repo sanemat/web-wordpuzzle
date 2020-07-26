@@ -26,8 +26,7 @@ import {
   buildStore,
   sortCoordinates,
   filterSwap,
-  passTwice,
-  hasResign,
+  satisfyGameOver,
 } from "./functions.js";
 
 /**
@@ -1083,20 +1082,6 @@ export async function validateMove(move, store, words) {
   }
 
   return Promise.resolve([null, true, candidates]);
-}
-
-/**
- * @promise
- * @reject {Error}
- * @fulfill {boolean}
- * @returns {Promise.<boolean>}
- * @param {Store} store
- */
-export async function satisfyGameOver(store) {
-  if ((await passTwice(store)) || (await hasResign(store))) {
-    return Promise.resolve(true);
-  }
-  return Promise.resolve(false);
 }
 
 /**

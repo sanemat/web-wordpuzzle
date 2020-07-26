@@ -277,3 +277,17 @@ export async function hasResign(store) {
     return Promise.resolve(false);
   }
 }
+
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {boolean}
+ * @returns {Promise.<boolean>}
+ * @param {Store} store
+ */
+export async function satisfyGameOver(store) {
+  if ((await passTwice(store)) || (await hasResign(store))) {
+    return Promise.resolve(true);
+  }
+  return Promise.resolve(false);
+}
