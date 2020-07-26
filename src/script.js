@@ -28,10 +28,7 @@
  * }} Move
  */
 /**
- * @typedef {{
- *   type: string,
- *   playerId: number,
- * }} Pass
+ * @typedef {import('./functions').Pass} Pass
  */
 /**
  * @typedef {{
@@ -63,6 +60,8 @@
  *   over: boolean,
  * }} Store
  */
+import { passToParam } from "./functions.js";
+
 /**
  * @type {Store} store
  */
@@ -1305,19 +1304,6 @@ export function moveToParam(move) {
     r.push(c.y.toString());
     r.push(c.panel);
   }
-  return r.join("|");
-}
-
-/**
- * @returns {string}
- * @param {Pass} pass
- * @throws {Error}
- */
-export function passToParam(pass) {
-  /** @type {string[]} */
-  const r = [];
-  r.push(pass.playerId.toString());
-  r.push("p");
   return r.join("|");
 }
 

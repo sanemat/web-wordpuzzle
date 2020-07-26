@@ -16,7 +16,6 @@ import {
   hasConnection,
   allCandidatesInWordDictionary,
   passTwice,
-  passToParam,
   resignToParam,
   hasResign,
   filterSwap,
@@ -368,16 +367,6 @@ import {
   (async () => {
     assert.deepEqual(await buildMove(input), expected);
   })();
-}
-
-{
-  /** @type {import("../src/script.js").Pass} */
-  const input = {
-    type: "pass",
-    playerId: 0,
-  };
-  const expected = "0|p";
-  assert.equal(passToParam(input), expected);
 }
 
 {
