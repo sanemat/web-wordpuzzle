@@ -12,6 +12,7 @@ import {
   filterSwap,
   passTwice,
   hasResign,
+  buildSwap,
 } from "../src/functions.js";
 
 {
@@ -359,5 +360,26 @@ import {
   (async () => {
     const result = await hasResign(store);
     assert.equal(result, true, message);
+  })();
+}
+
+{
+  const input = [
+    ["playerId", "1"],
+    ["handId", "0"],
+    ["panel", "x"],
+    ["swap", "1"],
+  ];
+  /** @type {import("../src/models").SwapOpe} */
+  const expected = [
+    {
+      type: "swap",
+      playerId: 1,
+      panels: ["x"],
+    },
+    [0],
+  ];
+  (async () => {
+    assert.deepEqual(await buildSwap(input), expected);
   })();
 }

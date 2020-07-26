@@ -11,31 +11,9 @@ import {
   connected,
   hasConnection,
   allCandidatesInWordDictionary,
-  buildSwap,
 } from "../src/script.js";
 
 import { buildStore } from "../src/functions.js";
-
-{
-  const input = [
-    ["playerId", "1"],
-    ["handId", "0"],
-    ["panel", "x"],
-    ["swap", "1"],
-  ];
-  /** @type {import("../src/models").SwapOpe} */
-  const expected = [
-    {
-      type: "swap",
-      playerId: 1,
-      panels: ["x"],
-    },
-    [0],
-  ];
-  (async () => {
-    assert.deepEqual(await buildSwap(input), expected);
-  })();
-}
 
 {
   const input = [

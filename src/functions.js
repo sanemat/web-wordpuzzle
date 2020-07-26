@@ -4,6 +4,7 @@
  * @typedef {import('./models').Pass} Pass
  * @typedef {import('./models').Resign} Resign
  * @typedef {import('./models').Swap} Swap
+ * @typedef {import('./models').SwapOpe} SwapOpe
  * @typedef {import('./models').Move} Move
  * @typedef {import('./models').Store} Store
  * @typedef {import('./models').Coordinate} Coordinate
@@ -300,4 +301,28 @@ export async function satisfyGameOver(store) {
 export function playerIdFrom(data) {
   const playerIdString = data[0][1];
   return parseInt(playerIdString, 10);
+}
+
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {SwapOpe}
+ * @returns {Promise.<SwapOpe>}
+ * @param {string[][]} data
+ */
+export function buildSwap(data) {
+  /** @type {Swap} */
+  const swap = {
+    type: "swap",
+    playerId: 0,
+    panels: [],
+  };
+  /** @type {number[]} */
+  const used = [];
+  swap.playerId = playerIdFrom(data);
+  for (let i = 0; i < data.length - 1; i += 3) {
+    swap.panels.push(data[i + 2][1]);
+    used.push(parseInt(data[i + 1][1], 10));
+  }
+  return Promise.resolve([swap, used]);
 }

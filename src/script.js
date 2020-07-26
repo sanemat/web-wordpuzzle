@@ -28,6 +28,7 @@ import {
   filterSwap,
   satisfyGameOver,
   playerIdFrom,
+  buildSwap,
 } from "./functions.js";
 
 /**
@@ -597,30 +598,6 @@ function render() {
     renderOverArea(),
     renderResignArea(),
   ]);
-}
-
-/**
- * @promise
- * @reject {Error}
- * @fulfill {SwapOpe}
- * @returns {Promise.<SwapOpe>}
- * @param {string[][]} data
- */
-export function buildSwap(data) {
-  /** @type {Swap} */
-  const swap = {
-    type: "swap",
-    playerId: 0,
-    panels: [],
-  };
-  /** @type {number[]} */
-  const used = [];
-  swap.playerId = playerIdFrom(data);
-  for (let i = 0; i < data.length - 1; i += 3) {
-    swap.panels.push(data[i + 2][1]);
-    used.push(parseInt(data[i + 1][1], 10));
-  }
-  return Promise.resolve([swap, used]);
 }
 
 /**
