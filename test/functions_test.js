@@ -2,6 +2,7 @@
 
 import { strict as assert } from "assert";
 import {
+  _minimalStore,
   moveToParam,
   passToParam,
   resignToParam,
@@ -52,4 +53,8 @@ import {
   };
   const expected = "0|m|0|0|a|1|0|r|2|0|m";
   assert.equal(moveToParam(input), expected);
+}
+
+{
+  assert.deepEqual(_minimalStore(), _minimalStore());
 }

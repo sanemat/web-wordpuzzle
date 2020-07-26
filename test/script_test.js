@@ -1,7 +1,6 @@
 import { strict as assert } from "assert";
 
 import {
-  _minimalStore,
   buildStore,
   filterMove,
   buildMove,
@@ -19,6 +18,8 @@ import {
   filterSwap,
   buildSwap,
 } from "../src/script.js";
+
+import { _minimalStore } from "../src/functions.js";
 
 {
   const query = `v=0.1.0`;
@@ -982,5 +983,3 @@ import {
     }
   })();
 }
-
-assert.deepEqual(_minimalStore(), _minimalStore());

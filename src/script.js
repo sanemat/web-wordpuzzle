@@ -22,6 +22,7 @@ import {
   passToParam,
   resignToParam,
   swapToParam,
+  _minimalStore,
 } from "./functions.js";
 
 /**
@@ -36,24 +37,6 @@ let debug;
 /** @typedef {Set<string>} Words */
 /** @type {Words} words */
 let words;
-
-/**
- * @returns {Store}
- */
-export function _minimalStore() {
-  return {
-    players: [],
-    version: null,
-    boardMeta: { width: 0, height: 0 },
-    board: [],
-    hands: [],
-    acts: [],
-    jar: [],
-    currentPlayerId: 0,
-    moved: false,
-    over: false,
-  };
-}
 
 /**
  * @param {String} query

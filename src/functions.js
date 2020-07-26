@@ -5,6 +5,7 @@
  * @typedef {import('./models').Resign} Resign
  * @typedef {import('./models').Swap} Swap
  * @typedef {import('./models').Move} Move
+ * @typedef {import('./models').Store} Store
  */
 
 /**
@@ -63,4 +64,22 @@ export function moveToParam(move) {
     r.push(c.panel);
   }
   return r.join("|");
+}
+
+/**
+ * @returns {Store}
+ */
+export function _minimalStore() {
+  return {
+    players: [],
+    version: null,
+    boardMeta: { width: 0, height: 0 },
+    board: [],
+    hands: [],
+    acts: [],
+    jar: [],
+    currentPlayerId: 0,
+    moved: false,
+    over: false,
+  };
 }
