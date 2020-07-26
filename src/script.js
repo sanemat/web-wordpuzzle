@@ -1335,6 +1335,20 @@ export function resignToParam(resign) {
 }
 
 /**
+ * @returns {string}
+ * @param {Swap} swap
+ * @throws {Error}
+ */
+export function swapToParam(swap) {
+  /** @type {string[]} */
+  let r = [];
+  r.push(swap.playerId.toString());
+  r.push("s");
+  r = r.concat(swap.panels);
+  return r.join("|");
+}
+
+/**
  * @promise
  * @reject {Error}
  * @fulfill {boolean}

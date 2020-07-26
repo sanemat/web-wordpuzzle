@@ -21,6 +21,7 @@ import {
   hasResign,
   filterSwap,
   buildSwap,
+  swapToParam,
 } from "../src/script.js";
 
 {
@@ -387,6 +388,17 @@ import {
   };
   const expected = "0|r";
   assert.equal(resignToParam(input), expected);
+}
+
+{
+  /** @type {import("../src/script.js").Swap} */
+  const input = {
+    type: "swap",
+    playerId: 1,
+    panels: ["a", "b"],
+  };
+  const expected = "1|s|a|b";
+  assert.equal(swapToParam(input), expected);
 }
 
 {
