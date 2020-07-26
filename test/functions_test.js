@@ -13,6 +13,7 @@ import {
   passTwice,
   hasResign,
   buildSwap,
+  allCandidatesInWordDictionary,
 } from "../src/functions.js";
 
 {
@@ -381,5 +382,73 @@ import {
   ];
   (async () => {
     assert.deepEqual(await buildSwap(input), expected);
+  })();
+}
+
+{
+  const candidates = ["invalid"];
+  const wordDict = new Set(["aa", "bb"]);
+  (async () => {
+    const [errors, result] = await allCandidatesInWordDictionary(
+      candidates,
+      wordDict
+    );
+    if (errors === null) {
+      assert.fail("unreachable");
+    } else {
+      assert.equal(errors.length, 1);
+      assert.equal(errors[0].message, "invalid is not valid word");
+      assert.equal(result, false);
+    }
+  })();
+}
+
+{
+  const candidates = ["valid"];
+  const wordDict = new Set(["aa", "valid"]);
+  (async () => {
+    const [errors, result] = await allCandidatesInWordDictionary(
+      candidates,
+      wordDict
+    );
+    if (errors === null) {
+      assert.equal(result, true);
+    } else {
+      assert.fail("unreachable");
+    }
+  })();
+}
+
+{
+  const candidates = ["valid", "invalid"];
+  const wordDict = new Set(["aa", "valid"]);
+  (async () => {
+    const [errors, result] = await allCandidatesInWordDictionary(
+      candidates,
+      wordDict
+    );
+    if (errors === null) {
+      assert.fail("unreachable");
+    } else {
+      assert.equal(errors.length, 1);
+      assert.equal(errors[0].message, "invalid is not valid word");
+      assert.equal(result, false);
+    }
+  })();
+}
+
+{
+  const candidates = ["valid", "true"];
+  const wordDict = new Set(["true", "valid"]);
+  (async () => {
+    const [errors, result] = await allCandidatesInWordDictionary(
+      candidates,
+      wordDict
+    );
+    if (errors === null) {
+      assert.equal(result, true);
+    } else {
+      assert.fail("unreachable");
+    }
   })();
 }

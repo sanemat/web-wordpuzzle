@@ -29,6 +29,7 @@ import {
   satisfyGameOver,
   playerIdFrom,
   buildSwap,
+  allCandidatesInWordDictionary,
 } from "./functions.js";
 
 /**
@@ -942,26 +943,6 @@ export function findCandidates(board, coordinates) {
   return errors.length === 0
     ? Promise.resolve([null, results])
     : Promise.resolve([errors, null]);
-}
-
-/**
- * @promise
- * @reject {Error}
- * @fulfill {[Error[]|null, Boolean]}
- * @returns {Promise.<[Error[]|null, Boolean]>}
- * @param {string[]} candidates
- * @param {Set<string>} wordDict
- */
-export async function allCandidatesInWordDictionary(candidates, wordDict) {
-  /** @type {Error[]} */
-  const errors = [];
-  candidates.map((candidate) => {
-    if (!wordDict.has(candidate)) {
-      errors.push(new Error(`${candidate} is not valid word`));
-    }
-  });
-
-  return Promise.resolve(errors.length === 0 ? [null, true] : [errors, false]);
 }
 
 /**

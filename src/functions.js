@@ -326,3 +326,23 @@ export function buildSwap(data) {
   }
   return Promise.resolve([swap, used]);
 }
+
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {[Error[]|null, Boolean]}
+ * @returns {Promise.<[Error[]|null, Boolean]>}
+ * @param {string[]} candidates
+ * @param {Set<string>} wordDict
+ */
+export async function allCandidatesInWordDictionary(candidates, wordDict) {
+  /** @type {Error[]} */
+  const errors = [];
+  candidates.map((candidate) => {
+    if (!wordDict.has(candidate)) {
+      errors.push(new Error(`${candidate} is not valid word`));
+    }
+  });
+
+  return Promise.resolve(errors.length === 0 ? [null, true] : [errors, false]);
+}
