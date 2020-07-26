@@ -13,6 +13,7 @@
  */
 /**
  * @typedef {string} Panel the panel.
+ * @typedef {Panel|null} BoardPanel
  */
 
 export function _dummy() {

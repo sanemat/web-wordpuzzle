@@ -524,7 +524,7 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     ["a", "b"],
     [null, null],
@@ -537,7 +537,7 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     ["a", null],
     ["a", null],
@@ -551,7 +551,7 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     ["a", null],
     ["a", null],
@@ -565,7 +565,7 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     ["a", null, "b"],
     ["a", null, null],
@@ -579,7 +579,7 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     ["a", null, "b", null],
     ["a", null, null, null],
@@ -596,7 +596,7 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     [null, null, "b", null],
     ["a", null, null, null],
@@ -613,7 +613,7 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     ["a", null],
     [null, null],
@@ -627,7 +627,7 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     ["a", null],
     [null, null],
@@ -642,7 +642,7 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     ["a", null],
     [null, null],
@@ -661,7 +661,7 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     ["a", null],
     [null, null],
@@ -678,7 +678,7 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     ["a", null],
     [null, null],
@@ -701,7 +701,7 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     ["a", "b"],
     [null, null],
@@ -712,7 +712,7 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     ["a", "b"],
     [null, null],
@@ -723,7 +723,7 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     ["a", "b"],
     [null, null],
@@ -772,7 +772,7 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     [null, null],
     [null, null],
@@ -785,7 +785,7 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     [null, null],
     [null, null],
@@ -809,7 +809,7 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     [null, null],
     [null, null],
@@ -825,7 +825,7 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     [null, null],
     [null, null],
@@ -841,7 +841,7 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     [null, null],
     [null, null],
@@ -857,7 +857,7 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     [null, null, null],
     [null, "x", null],
@@ -871,7 +871,7 @@ import {
 
 {
   // up
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     [null, null, null],
     [null, "x", null],
@@ -885,7 +885,7 @@ import {
 
 {
   // down
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     [null, null, null],
     [null, "x", null],
@@ -899,7 +899,7 @@ import {
 
 {
   // left
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     [null, null, null],
     [null, "x", null],
@@ -913,7 +913,7 @@ import {
 
 {
   // right
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     [null, null, null],
     [null, "x", null],
@@ -926,7 +926,7 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     [null, null, null],
     [null, "x", null],
@@ -940,7 +940,7 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     [null, null, null],
     [null, "x", null],
