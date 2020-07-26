@@ -16,6 +16,7 @@ import {
   allCandidatesInWordDictionary,
   connected,
   hasConnection,
+  isUnique,
 } from "../src/functions.js";
 
 {
@@ -551,5 +552,54 @@ import {
     { x: 1, y: 0, panel: "b" },
   ];
   const [, result] = hasConnection(board, coordinates);
+  assert.equal(result, true);
+}
+
+{
+  /** @type {import("../src/models").Coordinate[]} */
+  const coordinates = [];
+  const [, result] = isUnique(coordinates);
+  assert.equal(result, true);
+}
+
+{
+  /** @type {import("../src/models").Coordinate[]} */
+  const coordinates = [{ x: 0, y: 1, panel: "a" }];
+  const [, result] = isUnique(coordinates);
+  assert.equal(result, true);
+}
+
+{
+  /** @type {import("../src/models").Coordinate[]} */
+  const coordinates = [
+    { x: 0, y: 1, panel: "a" },
+    { x: 0, y: 1, panel: "b" },
+  ];
+  const [errors, result] = isUnique(coordinates);
+  assert.equal(errors?.length, 1);
+  assert.equal(result, false);
+}
+
+{
+  /** @type {import("../src/models").Coordinate[]} */
+  const coordinates = [
+    { x: 0, y: 1, panel: "a" },
+    { x: 0, y: 1, panel: "b" },
+    { x: 1, y: 1, panel: "a" },
+    { x: 1, y: 1, panel: "b" },
+  ];
+  const [errors, result] = isUnique(coordinates);
+  assert.equal(errors?.length, 2);
+  assert.equal(result, false);
+}
+
+{
+  /** @type {import("../src/models").Coordinate[]} */
+  const coordinates = [
+    { x: 0, y: 1, panel: "a" },
+    { x: 0, y: 2, panel: "b" },
+  ];
+  const [errors, result] = isUnique(coordinates);
+  assert.equal(errors, null);
   assert.equal(result, true);
 }
