@@ -13,42 +13,10 @@ import {
   allCandidatesInWordDictionary,
   passTwice,
   hasResign,
-  filterSwap,
   buildSwap,
 } from "../src/script.js";
 
 import { buildStore } from "../src/functions.js";
-
-{
-  const input = [
-    ["playerId", "0"],
-    ["handId", "0"],
-    ["panel", "x"],
-    ["swap", ""],
-  ];
-  const expected = [["playerId", "0"]];
-  (async () => {
-    assert.deepEqual(await filterSwap(input), expected);
-  })();
-}
-
-{
-  const input = [
-    ["playerId", "0"],
-    ["handId", "0"],
-    ["panel", "x"],
-    ["swap", "1"],
-  ];
-  const expected = [
-    ["playerId", "0"],
-    ["handId", "0"],
-    ["panel", "x"],
-    ["swap", "1"],
-  ];
-  (async () => {
-    assert.deepEqual(await filterSwap(input), expected);
-  })();
-}
 
 {
   const input = [
