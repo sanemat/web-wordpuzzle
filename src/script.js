@@ -25,6 +25,11 @@ import {
   swapToParam,
   buildStore,
   sortCoordinates,
+  filterSwap,
+  satisfyGameOver,
+  playerIdFrom,
+  buildSwap,
+  allCandidatesInWordDictionary,
 } from "./functions.js";
 
 /**
@@ -603,52 +608,6 @@ function render() {
  * @returns {Promise.<string[][]>}
  * @param {string[][]} data
  */
-export function filterSwap(data) {
-  /** @type {string[][]} */
-  const r = [];
-  r.push([data[0][0], data[0][1]]);
-  for (let i = 0; i < data.length - 1; i += 3) {
-    // panel, swap are exists
-    if (data[i + 2][1].length > 0 && data[i + 3][1].length > 0) {
-      r.push([data[i + 1][0], data[i + 1][1]]); // handId
-      r.push([data[i + 2][0], data[i + 2][1]]); // panel
-      r.push([data[i + 3][0], data[i + 3][1]]); // swap
-    }
-  }
-  return Promise.resolve(r);
-}
-
-/**
- * @promise
- * @reject {Error}
- * @fulfill {SwapOpe}
- * @returns {Promise.<SwapOpe>}
- * @param {string[][]} data
- */
-export function buildSwap(data) {
-  /** @type {Swap} */
-  const swap = {
-    type: "swap",
-    playerId: 0,
-    panels: [],
-  };
-  /** @type {number[]} */
-  const used = [];
-  swap.playerId = playerIdFrom(data);
-  for (let i = 0; i < data.length - 1; i += 3) {
-    swap.panels.push(data[i + 2][1]);
-    used.push(parseInt(data[i + 1][1], 10));
-  }
-  return Promise.resolve([swap, used]);
-}
-
-/**
- * @promise
- * @reject {Error}
- * @fulfill {string[][]}
- * @returns {Promise.<string[][]>}
- * @param {string[][]} data
- */
 export function filterMove(data) {
   /** @type {string[][]} */
   const r = [];
@@ -667,16 +626,6 @@ export function filterMove(data) {
     }
   }
   return Promise.resolve(r);
-}
-
-/**
- * @promise
- * @returns {number}
- * @param {string[][]} data
- */
-function playerIdFrom(data) {
-  const playerIdString = data[0][1];
-  return parseInt(playerIdString, 10);
 }
 
 /**
@@ -999,26 +948,6 @@ export function findCandidates(board, coordinates) {
 /**
  * @promise
  * @reject {Error}
- * @fulfill {[Error[]|null, Boolean]}
- * @returns {Promise.<[Error[]|null, Boolean]>}
- * @param {string[]} candidates
- * @param {Set<string>} wordDict
- */
-export async function allCandidatesInWordDictionary(candidates, wordDict) {
-  /** @type {Error[]} */
-  const errors = [];
-  candidates.map((candidate) => {
-    if (!wordDict.has(candidate)) {
-      errors.push(new Error(`${candidate} is not valid word`));
-    }
-  });
-
-  return Promise.resolve(errors.length === 0 ? [null, true] : [errors, false]);
-}
-
-/**
- * @promise
- * @reject {Error}
  * @fulfill {[Error[]|null, Boolean, string[]|null]}
  * @returns {Promise.<[Error[]|null, Boolean, string[]|null]>} errors, valid, wordList
  * @param {Move} move
@@ -1102,60 +1031,6 @@ export async function validateMove(move, store, words) {
   }
 
   return Promise.resolve([null, true, candidates]);
-}
-
-/**
- * @promise
- * @reject {Error}
- * @fulfill {boolean}
- * @returns {Promise.<boolean>}
- * @param {Store} store
- */
-export async function passTwice(store) {
-  const threshold = 2 * store.players.length;
-  const targetMoves = store.acts.slice(store.acts.length - threshold);
-  if (
-    targetMoves.length >= threshold &&
-    targetMoves.every((m) => {
-      return m.type === "pass";
-    })
-  ) {
-    return Promise.resolve(true);
-  }
-  return Promise.resolve(false);
-}
-
-/**
- * @promise
- * @reject {Error}
- * @fulfill {boolean}
- * @returns {Promise.<boolean>}
- * @param {Store} store
- */
-export async function hasResign(store) {
-  if (
-    store.acts.length > 0 &&
-    store.acts.some((a) => {
-      return a.type === "resign";
-    })
-  ) {
-    return Promise.resolve(true);
-  } else {
-    return Promise.resolve(false);
-  }
-}
-/**
- * @promise
- * @reject {Error}
- * @fulfill {boolean}
- * @returns {Promise.<boolean>}
- * @param {Store} store
- */
-export async function satisfyGameOver(store) {
-  if ((await passTwice(store)) || (await hasResign(store))) {
-    return Promise.resolve(true);
-  }
-  return Promise.resolve(false);
 }
 
 /**

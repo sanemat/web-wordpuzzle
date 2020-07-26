@@ -9,6 +9,11 @@ import {
   swapToParam,
   sortCoordinates,
   buildStore,
+  filterSwap,
+  passTwice,
+  hasResign,
+  buildSwap,
+  allCandidatesInWordDictionary,
 } from "../src/functions.js";
 
 {
@@ -266,4 +271,184 @@ import {
   expected.moved = true;
   expected.over = true;
   assert.deepEqual(store, expected);
+}
+
+{
+  const input = [
+    ["playerId", "0"],
+    ["handId", "0"],
+    ["panel", "x"],
+    ["swap", ""],
+  ];
+  const expected = [["playerId", "0"]];
+  (async () => {
+    assert.deepEqual(await filterSwap(input), expected);
+  })();
+}
+
+{
+  const input = [
+    ["playerId", "0"],
+    ["handId", "0"],
+    ["panel", "x"],
+    ["swap", "1"],
+  ];
+  const expected = [
+    ["playerId", "0"],
+    ["handId", "0"],
+    ["panel", "x"],
+    ["swap", "1"],
+  ];
+  (async () => {
+    assert.deepEqual(await filterSwap(input), expected);
+  })();
+}
+
+{
+  const message = "first empty move";
+  const query = `ps=foo&ps=bar&as=0|p&bw=3&bh=4`;
+  const store = buildStore(query);
+  (async () => {
+    const result = await passTwice(store);
+    assert.equal(result, false, message);
+  })();
+}
+
+{
+  const message = "third empty move";
+  const query = `ps=foo&ps=bar&as=0|p&as=1|p&as=0|p&bw=3&bh=4`;
+  const store = buildStore(query);
+  (async () => {
+    const result = await passTwice(store);
+    assert.equal(result, false, message);
+  })();
+}
+
+{
+  const message = "fourth empty move";
+  const query = `ps=foo&ps=bar&as=0|p&as=1|p&as=0|p&as=1|p&bw=3&bh=4`;
+  const store = buildStore(query);
+  (async () => {
+    const result = await passTwice(store);
+    assert.equal(result, true, message);
+  })();
+}
+
+{
+  const message = "no acts";
+  const query = `ps=foo&ps=bar&bw=3&bh=4`;
+  const store = buildStore(query);
+  (async () => {
+    const result = await hasResign(store);
+    assert.equal(result, false, message);
+  })();
+}
+
+{
+  const message = "one pass";
+  const query = `ps=foo&ps=bar&as=0|p&bw=3&bh=4`;
+  const store = buildStore(query);
+  (async () => {
+    const result = await hasResign(store);
+    assert.equal(result, false, message);
+  })();
+}
+
+{
+  const message = "one resign";
+  const query = `ps=foo&ps=bar&as=0|r&bw=3&bh=4`;
+  const store = buildStore(query);
+  (async () => {
+    const result = await hasResign(store);
+    assert.equal(result, true, message);
+  })();
+}
+
+{
+  const input = [
+    ["playerId", "1"],
+    ["handId", "0"],
+    ["panel", "x"],
+    ["swap", "1"],
+  ];
+  /** @type {import("../src/models").SwapOpe} */
+  const expected = [
+    {
+      type: "swap",
+      playerId: 1,
+      panels: ["x"],
+    },
+    [0],
+  ];
+  (async () => {
+    assert.deepEqual(await buildSwap(input), expected);
+  })();
+}
+
+{
+  const candidates = ["invalid"];
+  const wordDict = new Set(["aa", "bb"]);
+  (async () => {
+    const [errors, result] = await allCandidatesInWordDictionary(
+      candidates,
+      wordDict
+    );
+    if (errors === null) {
+      assert.fail("unreachable");
+    } else {
+      assert.equal(errors.length, 1);
+      assert.equal(errors[0].message, "invalid is not valid word");
+      assert.equal(result, false);
+    }
+  })();
+}
+
+{
+  const candidates = ["valid"];
+  const wordDict = new Set(["aa", "valid"]);
+  (async () => {
+    const [errors, result] = await allCandidatesInWordDictionary(
+      candidates,
+      wordDict
+    );
+    if (errors === null) {
+      assert.equal(result, true);
+    } else {
+      assert.fail("unreachable");
+    }
+  })();
+}
+
+{
+  const candidates = ["valid", "invalid"];
+  const wordDict = new Set(["aa", "valid"]);
+  (async () => {
+    const [errors, result] = await allCandidatesInWordDictionary(
+      candidates,
+      wordDict
+    );
+    if (errors === null) {
+      assert.fail("unreachable");
+    } else {
+      assert.equal(errors.length, 1);
+      assert.equal(errors[0].message, "invalid is not valid word");
+      assert.equal(result, false);
+    }
+  })();
+}
+
+{
+  const candidates = ["valid", "true"];
+  const wordDict = new Set(["true", "valid"]);
+  (async () => {
+    const [errors, result] = await allCandidatesInWordDictionary(
+      candidates,
+      wordDict
+    );
+    if (errors === null) {
+      assert.equal(result, true);
+    } else {
+      assert.fail("unreachable");
+    }
+  })();
 }
