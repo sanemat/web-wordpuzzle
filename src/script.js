@@ -1595,8 +1595,52 @@ async function swapAction(ev) {
       }
       return [value[0], value[1]];
     });
-    console.log(data);
-    return Promise.resolve(true);
+
+    // get playerId from
+    const playerId = playerIdFrom(data);
+    const [swap, used] = await buildSwap(await filterSwap(data));
+    console.log(swap);
+
+    store.acts.push(swap);
+    const params = new URLSearchParams(location.search);
+    params.append("as", swapToParam(swap));
+
+    // update hands
+    used.reverse().forEach((usedIndex) => {
+      store.hands[playerId].splice(usedIndex, 1);
+    });
+
+    // satisfy the condition for the game is over
+    if (await satisfyGameOver(store)) {
+      console.log("this game is over!");
+      store.over = true;
+      params.set("ov", "1");
+    }
+
+    // fill from jar
+    while (store.hands[playerId].length < 7 && store.jar.length > 0) {
+      store.hands[playerId].push(
+        store.jar.splice(Math.floor(Math.random() * store.jar.length), 1)[0]
+      );
+    }
+    params.set("j", store.jar.join("|"));
+
+    const hs = params.getAll("hs");
+    params.delete("hs");
+    for (const [i, v] of hs.entries()) {
+      if (i === playerId) {
+        params.append("hs", store.hands[playerId].join("|"));
+      } else {
+        params.append("hs", v);
+      }
+    }
+
+    store.moved = true;
+    params.set("md", "1");
+
+    window.history.pushState({}, "", `${location.pathname}?${params}`);
+    console.log(store);
+    return render();
   } catch (/** @type {Error|string} */ e) {
     return Promise.reject(e);
   }
