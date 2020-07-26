@@ -2,58 +2,20 @@
 "use strict";
 
 /**
- * @typedef {{
- *   width: number,
- *   height: number,
- * }} BoardMeta
- */
-/**
- * @typedef {string} Player players' name.
- * @typedef {?string} Version version string.
- * @typedef {string} Panel the panel.
- * @typedef {Panel|null} BoardPanel
- */
-/**
- * @typedef {{
- *   x: number,
- *   y: number,
- *   panel: Panel,
- * }} Coordinate
- */
-/**
- * @typedef {{
- *   type: string,
- *   playerId: number,
- *   coordinates: Coordinate[],
- * }} Move
- */
-/**
+ * @typedef {import('./models').Player} Player
+ * @typedef {import('./models').Version} Version
  * @typedef {import('./models').Pass} Pass
  * @typedef {import('./models').Resign} Resign
- */
-/**
- * @typedef {{
- *   type: string,
- *   playerId: number,
- *   panels: Panel[],
- * }} Swap
- */
-/**
- * @typedef {Move|Pass|Resign|Swap} Act
- */
-/**
- * @typedef {{
- *   players: Player[],
- *   version: Version,
- *   boardMeta: BoardMeta,
- *   board: BoardPanel[][],
- *   hands: Panel[][],
- *   acts: Act[],
- *   jar: Panel[],
- *   currentPlayerId: number,
- *   moved: boolean,
- *   over: boolean,
- * }} Store
+ * @typedef {import('./models').Swap} Swap
+ * @typedef {import('./models').Move} Move
+ * @typedef {import('./models').Act} Act
+ * @typedef {import('./models').MoveOpe} MoveOpe
+ * @typedef {import('./models').SwapOpe} SwapOpe
+ * @typedef {import('./models').Panel} Panel
+ * @typedef {import('./models').BoardPanel} BoardPanel
+ * @typedef {import('./models').BoardMeta} BoardMeta
+ * @typedef {import('./models').Coordinate} Coordinate
+ * @typedef {import('./models').Store} Store
  */
 import { passToParam, resignToParam } from "./functions.js";
 
@@ -778,8 +740,6 @@ export function filterSwap(data) {
   return Promise.resolve(r);
 }
 
-/** @typedef {[Swap, number[]]} SwapOpe */
-
 /**
  * @promise
  * @reject {Error}
@@ -856,8 +816,6 @@ export function sortCoordinates(coordinates) {
     return a.x - b.x;
   });
 }
-
-/** @typedef {[Move, number[]]} MoveOpe */
 
 /**
  * @promise

@@ -56,16 +56,13 @@ import {
   assert.equal(store.acts.length, 1);
   const act = store.acts[0];
   assert.equal(act.type, "move");
+  assert.equal(/** @type {import("../src/models").Move} */ (act).playerId, 0);
   assert.equal(
-    /** @type {import("../src/script.js").Move} */ (act).playerId,
-    0
-  );
-  assert.equal(
-    /** @type {import("../src/script.js").Move} */ (act).coordinates.length,
+    /** @type {import("../src/models").Move} */ (act).coordinates.length,
     3
   );
   assert.deepEqual(
-    /** @type {import("../src/script.js").Move} */ (act).coordinates[1],
+    /** @type {import("../src/models").Move} */ (act).coordinates[1],
     { panel: "r", x: 1, y: 0 }
   );
 }
@@ -76,16 +73,13 @@ import {
   assert.equal(store.acts.length, 1);
   const act = store.acts[0];
   assert.equal(act.type, "move");
+  assert.equal(/** @type {import("../src/models").Move} */ (act).playerId, 0);
   assert.equal(
-    /** @type {import("../src/script.js").Move} */ (act).playerId,
-    0
-  );
-  assert.equal(
-    /** @type {import("../src/script.js").Move} */ (act).coordinates.length,
+    /** @type {import("../src/models").Move} */ (act).coordinates.length,
     1
   );
   assert.deepEqual(
-    /** @type {import("../src/script.js").Move} */ (act).coordinates[0],
+    /** @type {import("../src/models").Move} */ (act).coordinates[0],
     { panel: "a", x: 1, y: 10 }
   );
 }
@@ -96,10 +90,7 @@ import {
   assert.equal(store.acts.length, 1);
   const act = store.acts[0];
   assert.equal(act.type, "pass");
-  assert.equal(
-    /** @type {import("../src/script.js").Move} */ (act).playerId,
-    0
-  );
+  assert.equal(/** @type {import("../src/models").Move} */ (act).playerId, 0);
 }
 
 {
@@ -117,14 +108,11 @@ import {
   assert.equal(store.acts.length, 1);
   const act = store.acts[0];
   assert.equal(act.type, "swap");
-  assert.equal(
-    /** @type {import("../src/script.js").Swap} */ (act).playerId,
-    0
-  );
-  assert.deepEqual(
-    /** @type {import("../src/script.js").Swap} */ (act).panels,
-    ["a", "b"]
-  );
+  assert.equal(/** @type {import("../src/models").Swap} */ (act).playerId, 0);
+  assert.deepEqual(/** @type {import("../src/models").Swap} */ (act).panels, [
+    "a",
+    "b",
+  ]);
 }
 
 {
@@ -243,7 +231,7 @@ import {
     ["panel", "x"],
     ["swap", "1"],
   ];
-  /** @type {import("../src/script.js").SwapOpe} */
+  /** @type {import("../src/models").SwapOpe} */
   const expected = [
     {
       type: "swap",
@@ -293,7 +281,7 @@ import {
 
 {
   const input = [["playerId", "0"]];
-  /** @type {import("../src/script.js").MoveOpe} */
+  /** @type {import("../src/models").MoveOpe} */
   const expected = [
     {
       type: "move",
@@ -308,19 +296,19 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").Coordinate[]} */
+  /** @type {import("../src/models").Coordinate[]} */
   const coordinates = [];
   assert.deepEqual(sortCoordinates(coordinates), []);
 }
 
 {
-  /** @type {import("../src/script.js").Coordinate[]} */
+  /** @type {import("../src/models").Coordinate[]} */
   const coordinates = [{ x: 2, y: 3, panel: "x" }];
   assert.deepEqual(sortCoordinates(coordinates), [{ x: 2, y: 3, panel: "x" }]);
 }
 
 {
-  /** @type {import("../src/script.js").Coordinate[]} */
+  /** @type {import("../src/models").Coordinate[]} */
   const coordinates = [
     { x: 2, y: 3, panel: "x" },
     { x: 1, y: 3, panel: "x" },
@@ -332,7 +320,7 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").Coordinate[]} */
+  /** @type {import("../src/models").Coordinate[]} */
   const coordinates = [
     { x: 2, y: 3, panel: "x" },
     { x: 2, y: 2, panel: "x" },
@@ -351,7 +339,7 @@ import {
     ["x", "2"],
     ["y", "3"],
   ];
-  /** @type {import("../src/script.js").MoveOpe} */
+  /** @type {import("../src/models").MoveOpe} */
   const expected = [
     {
       type: "move",
@@ -366,7 +354,7 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").Swap} */
+  /** @type {import("../src/models").Swap} */
   const input = {
     type: "swap",
     playerId: 1,
@@ -377,7 +365,7 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").Move} */
+  /** @type {import("../src/models").Move} */
   const input = {
     type: "move",
     playerId: 0,
@@ -453,7 +441,7 @@ import {
 
 {
   const message = "will conflict 1,0:r";
-  /** @type {import("../src/script.js").Move} */
+  /** @type {import("../src/models").Move} */
   const move = {
     type: "move",
     playerId: 0,
@@ -471,7 +459,7 @@ import {
 
 {
   const message = "y is out of board";
-  /** @type {import("../src/script.js").Move} */
+  /** @type {import("../src/models").Move} */
   const move = {
     type: "move",
     playerId: 0,
@@ -489,7 +477,7 @@ import {
 
 {
   const message = "x4 is out of board";
-  /** @type {import("../src/script.js").Move} */
+  /** @type {import("../src/models").Move} */
   const move = {
     type: "move",
     playerId: 0,
@@ -506,7 +494,7 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").Move} */
+  /** @type {import("../src/models").Move} */
   const move = {
     type: "move",
     playerId: 0,
@@ -524,12 +512,12 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     ["a", "b"],
     [null, null],
   ];
-  /** @type {import("../src/script.js").Coordinate[]} */
+  /** @type {import("../src/models").Coordinate[]} */
   const coordinates = [];
   (async () => {
     assert.deepEqual(await findCandidates(board, coordinates), [null, null]);
@@ -537,12 +525,12 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     ["a", null],
     ["a", null],
   ];
-  /** @type {import("../src/script.js").Coordinate[]} */
+  /** @type {import("../src/models").Coordinate[]} */
   const coordinates = [{ x: 1, y: 0, panel: "x" }];
   const expected = [null, ["ax"]];
   (async () => {
@@ -551,12 +539,12 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     ["a", null],
     ["a", null],
   ];
-  /** @type {import("../src/script.js").Coordinate[]} */
+  /** @type {import("../src/models").Coordinate[]} */
   const coordinates = [{ x: 1, y: 1, panel: "x" }];
   const expected = [null, ["ax"]];
   (async () => {
@@ -565,12 +553,12 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     ["a", null, "b"],
     ["a", null, null],
   ];
-  /** @type {import("../src/script.js").Coordinate[]} */
+  /** @type {import("../src/models").Coordinate[]} */
   const coordinates = [{ x: 1, y: 0, panel: "x" }];
   const expected = [null, ["axb"]];
   (async () => {
@@ -579,12 +567,12 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     ["a", null, "b", null],
     ["a", null, null, null],
   ];
-  /** @type {import("../src/script.js").Coordinate[]} */
+  /** @type {import("../src/models").Coordinate[]} */
   const coordinates = [
     { x: 1, y: 0, panel: "x" },
     { x: 3, y: 0, panel: "y" },
@@ -596,12 +584,12 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     [null, null, "b", null],
     ["a", null, null, null],
   ];
-  /** @type {import("../src/script.js").Coordinate[]} */
+  /** @type {import("../src/models").Coordinate[]} */
   const coordinates = [
     { x: 1, y: 0, panel: "x" },
     { x: 3, y: 0, panel: "y" },
@@ -613,12 +601,12 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     ["a", null],
     [null, null],
   ];
-  /** @type {import("../src/script.js").Coordinate[]} */
+  /** @type {import("../src/models").Coordinate[]} */
   const coordinates = [{ x: 0, y: 1, panel: "x" }];
   const expected = [null, ["ax"]];
   (async () => {
@@ -627,13 +615,13 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     ["a", null],
     [null, null],
     ["a", null],
   ];
-  /** @type {import("../src/script.js").Coordinate[]} */
+  /** @type {import("../src/models").Coordinate[]} */
   const coordinates = [{ x: 0, y: 1, panel: "x" }];
   const expected = [null, ["axa"]];
   (async () => {
@@ -642,14 +630,14 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     ["a", null],
     [null, null],
     ["a", null],
     [null, null],
   ];
-  /** @type {import("../src/script.js").Coordinate[]} */
+  /** @type {import("../src/models").Coordinate[]} */
   const coordinates = [
     { x: 0, y: 1, panel: "x" },
     { x: 0, y: 3, panel: "x" },
@@ -661,12 +649,12 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     ["a", null],
     [null, null],
   ];
-  /** @type {import("../src/script.js").Coordinate[]} */
+  /** @type {import("../src/models").Coordinate[]} */
   const coordinates = [
     { x: 0, y: 1, panel: "x" },
     { x: 1, y: 1, panel: "y" },
@@ -678,13 +666,13 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     ["a", null],
     [null, null],
     [null, null],
   ];
-  /** @type {import("../src/script.js").Coordinate[]} */
+  /** @type {import("../src/models").Coordinate[]} */
   const coordinates = [
     { x: 1, y: 0, panel: "x" },
     { x: 1, y: 2, panel: "y" },
@@ -701,54 +689,54 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     ["a", "b"],
     [null, null],
   ];
-  /** @type {import("../src/script.js").Coordinate[]} */
+  /** @type {import("../src/models").Coordinate[]} */
   const coordinates = [];
   assert.equal(anywayGet(0, 0, board, coordinates), "a");
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     ["a", "b"],
     [null, null],
   ];
-  /** @type {import("../src/script.js").Coordinate[]} */
+  /** @type {import("../src/models").Coordinate[]} */
   const coordinates = [];
   assert.equal(anywayGet(0, 1, board, coordinates), null);
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     ["a", "b"],
     [null, null],
   ];
-  /** @type {import("../src/script.js").Coordinate[]} */
+  /** @type {import("../src/models").Coordinate[]} */
   const coordinates = [{ x: 0, y: 1, panel: "a" }];
   assert.equal(anywayGet(0, 1, board, coordinates), "a");
 }
 
 {
-  /** @type {import("../src/script.js").Coordinate[]} */
+  /** @type {import("../src/models").Coordinate[]} */
   const coordinates = [];
   const [, result] = isUnique(coordinates);
   assert.equal(result, true);
 }
 
 {
-  /** @type {import("../src/script.js").Coordinate[]} */
+  /** @type {import("../src/models").Coordinate[]} */
   const coordinates = [{ x: 0, y: 1, panel: "a" }];
   const [, result] = isUnique(coordinates);
   assert.equal(result, true);
 }
 
 {
-  /** @type {import("../src/script.js").Coordinate[]} */
+  /** @type {import("../src/models").Coordinate[]} */
   const coordinates = [
     { x: 0, y: 1, panel: "a" },
     { x: 0, y: 1, panel: "b" },
@@ -759,7 +747,7 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").Coordinate[]} */
+  /** @type {import("../src/models").Coordinate[]} */
   const coordinates = [
     { x: 0, y: 1, panel: "a" },
     { x: 0, y: 1, panel: "b" },
@@ -772,12 +760,12 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     [null, null],
     [null, null],
   ];
-  /** @type {import("../src/script.js").Coordinate[]} */
+  /** @type {import("../src/models").Coordinate[]} */
   const coordinates = [];
   const [errors, result] = isSequence(board, coordinates);
   assert.equal(errors, null);
@@ -785,12 +773,12 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     [null, null],
     [null, null],
   ];
-  /** @type {import("../src/script.js").Coordinate[]} */
+  /** @type {import("../src/models").Coordinate[]} */
   const coordinates = [{ x: 0, y: 1, panel: "a" }];
   const [errors, result] = isSequence(board, coordinates);
   assert.equal(errors, null);
@@ -798,7 +786,7 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").Coordinate[]} */
+  /** @type {import("../src/models").Coordinate[]} */
   const coordinates = [
     { x: 0, y: 1, panel: "a" },
     { x: 0, y: 2, panel: "b" },
@@ -809,12 +797,12 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     [null, null],
     [null, null],
   ];
-  /** @type {import("../src/script.js").Coordinate[]} */
+  /** @type {import("../src/models").Coordinate[]} */
   const coordinates = [
     { x: 0, y: 0, panel: "a" },
     { x: 0, y: 1, panel: "b" },
@@ -825,12 +813,12 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     [null, null],
     [null, null],
   ];
-  /** @type {import("../src/script.js").Coordinate[]} */
+  /** @type {import("../src/models").Coordinate[]} */
   const coordinates = [
     { x: 0, y: 0, panel: "a" },
     { x: 1, y: 0, panel: "b" },
@@ -841,12 +829,12 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     [null, null],
     [null, null],
   ];
-  /** @type {import("../src/script.js").Coordinate[]} */
+  /** @type {import("../src/models").Coordinate[]} */
   const coordinates = [
     { x: 0, y: 0, panel: "a" },
     { x: 1, y: 1, panel: "b" },
@@ -857,13 +845,13 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     [null, null, null],
     [null, "x", null],
     [null, null, null],
   ];
-  /** @type {import("../src/script.js").Coordinate} */
+  /** @type {import("../src/models").Coordinate} */
   const coordinate = { x: 0, y: 0, panel: "a" };
   const [, result] = connected(board, coordinate);
   assert.equal(result, false);
@@ -871,13 +859,13 @@ import {
 
 {
   // up
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     [null, null, null],
     [null, "x", null],
     [null, null, null],
   ];
-  /** @type {import("../src/script.js").Coordinate} */
+  /** @type {import("../src/models").Coordinate} */
   const coordinate = { x: 1, y: 2, panel: "a" };
   const [, result] = connected(board, coordinate);
   assert.equal(result, true);
@@ -885,13 +873,13 @@ import {
 
 {
   // down
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     [null, null, null],
     [null, "x", null],
     [null, null, null],
   ];
-  /** @type {import("../src/script.js").Coordinate} */
+  /** @type {import("../src/models").Coordinate} */
   const coordinate = { x: 1, y: 0, panel: "a" };
   const [, result] = connected(board, coordinate);
   assert.equal(result, true);
@@ -899,13 +887,13 @@ import {
 
 {
   // left
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     [null, null, null],
     [null, "x", null],
     [null, null, null],
   ];
-  /** @type {import("../src/script.js").Coordinate} */
+  /** @type {import("../src/models").Coordinate} */
   const coordinate = { x: 2, y: 1, panel: "a" };
   const [, result] = connected(board, coordinate);
   assert.equal(result, true);
@@ -913,26 +901,26 @@ import {
 
 {
   // right
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     [null, null, null],
     [null, "x", null],
     [null, null, null],
   ];
-  /** @type {import("../src/script.js").Coordinate} */
+  /** @type {import("../src/models").Coordinate} */
   const coordinate = { x: 0, y: 1, panel: "a" };
   const [, result] = connected(board, coordinate);
   assert.equal(result, true);
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     [null, null, null],
     [null, "x", null],
     [null, null, null],
   ];
-  /** @type {import("../src/script.js").Coordinate[]} */
+  /** @type {import("../src/models").Coordinate[]} */
   const coordinates = [{ x: 0, y: 0, panel: "a" }];
   const [errors, result] = hasConnection(board, coordinates);
   assert.equal(result, false);
@@ -940,13 +928,13 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").BoardPanel[][]} */
+  /** @type {import("../src/models").BoardPanel[][]} */
   const board = [
     [null, null, null],
     [null, "x", null],
     [null, null, null],
   ];
-  /** @type {import("../src/script.js").Coordinate[]} */
+  /** @type {import("../src/models").Coordinate[]} */
   const coordinates = [
     { x: 0, y: 0, panel: "a" },
     { x: 1, y: 0, panel: "b" },
