@@ -27,6 +27,7 @@ import {
   sortCoordinates,
   filterSwap,
   satisfyGameOver,
+  playerIdFrom,
 } from "./functions.js";
 
 /**
@@ -647,16 +648,6 @@ export function filterMove(data) {
     }
   }
   return Promise.resolve(r);
-}
-
-/**
- * @promise
- * @returns {number}
- * @param {string[][]} data
- */
-function playerIdFrom(data) {
-  const playerIdString = data[0][1];
-  return parseInt(playerIdString, 10);
 }
 
 /**

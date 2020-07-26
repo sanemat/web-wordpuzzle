@@ -291,3 +291,13 @@ export async function satisfyGameOver(store) {
   }
   return Promise.resolve(false);
 }
+
+/**
+ * @promise
+ * @returns {number}
+ * @param {string[][]} data
+ */
+export function playerIdFrom(data) {
+  const playerIdString = data[0][1];
+  return parseInt(playerIdString, 10);
+}
