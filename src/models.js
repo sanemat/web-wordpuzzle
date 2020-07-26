@@ -19,6 +19,12 @@
  * }} Swap
  */
 /**
+ * @typedef {{
+ *   width: number,
+ *   height: number,
+ * }} BoardMeta
+ */
+/**
  * @typedef {string} Panel the panel.
  * @typedef {Panel|null} BoardPanel
  */

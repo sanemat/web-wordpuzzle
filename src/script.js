@@ -2,12 +2,6 @@
 "use strict";
 
 /**
- * @typedef {{
- *   width: number,
- *   height: number,
- * }} BoardMeta
- */
-/**
  * @typedef {string} Player players' name.
  * @typedef {?string} Version version string.
  */
@@ -31,6 +25,7 @@
  * @typedef {import('./models').Swap} Swap
  * @typedef {import('./models').Panel} Panel
  * @typedef {import('./models').BoardPanel} BoardPanel
+ * @typedef {import('./models').BoardMeta} BoardMeta
  */
 /**
  * @typedef {Move|Pass|Resign|Swap} Act
