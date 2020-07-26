@@ -19,6 +19,7 @@ import {
   isUnique,
   isSequence,
   anywayGet,
+  filterMove,
 } from "../src/functions.js";
 
 {
@@ -711,4 +712,38 @@ import {
   /** @type {import("../src/models").Coordinate[]} */
   const coordinates = [{ x: 0, y: 1, panel: "a" }];
   assert.equal(anywayGet(0, 1, board, coordinates), "a");
+}
+
+{
+  const input = [
+    ["playerId", "0"],
+    ["handId", "0"],
+    ["panel", "x"],
+    ["x", ""],
+    ["y", ""],
+  ];
+  const expected = [["playerId", "0"]];
+  (async () => {
+    assert.deepEqual(await filterMove(input), expected);
+  })();
+}
+
+{
+  const input = [
+    ["playerId", "0"],
+    ["handId", "0"],
+    ["panel", "x"],
+    ["x", "2"],
+    ["y", "3"],
+  ];
+  const expected = [
+    ["playerId", "0"],
+    ["handId", "0"],
+    ["panel", "x"],
+    ["x", "2"],
+    ["y", "3"],
+  ];
+  (async () => {
+    assert.deepEqual(await filterMove(input), expected);
+  })();
 }

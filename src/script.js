@@ -34,6 +34,7 @@ import {
   isUnique,
   isSequence,
   anywayGet,
+  filterMove,
 } from "./functions.js";
 
 /**
@@ -603,33 +604,6 @@ function render() {
     renderOverArea(),
     renderResignArea(),
   ]);
-}
-
-/**
- * @promise
- * @reject {Error}
- * @fulfill {string[][]}
- * @returns {Promise.<string[][]>}
- * @param {string[][]} data
- */
-export function filterMove(data) {
-  /** @type {string[][]} */
-  const r = [];
-  r.push([data[0][0], data[0][1]]);
-  for (let i = 0; i < data.length - 1; i += 4) {
-    // panel, x, y are exists
-    if (
-      data[i + 2][1].length > 0 &&
-      data[i + 3][1].length > 0 &&
-      data[i + 4][1].length > 0
-    ) {
-      r.push([data[i + 1][0], data[i + 1][1]]); // handId
-      r.push([data[i + 2][0], data[i + 2][1]]); // panel
-      r.push([data[i + 3][0], data[i + 3][1]]); // x
-      r.push([data[i + 4][0], data[i + 4][1]]); // y
-    }
-  }
-  return Promise.resolve(r);
 }
 
 /**

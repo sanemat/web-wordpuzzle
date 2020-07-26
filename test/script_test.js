@@ -1,47 +1,8 @@
 import { strict as assert } from "assert";
 
-import {
-  filterMove,
-  buildMove,
-  validateMove,
-  findCandidates,
-} from "../src/script.js";
+import { buildMove, validateMove, findCandidates } from "../src/script.js";
 
 import { buildStore } from "../src/functions.js";
-
-{
-  const input = [
-    ["playerId", "0"],
-    ["handId", "0"],
-    ["panel", "x"],
-    ["x", ""],
-    ["y", ""],
-  ];
-  const expected = [["playerId", "0"]];
-  (async () => {
-    assert.deepEqual(await filterMove(input), expected);
-  })();
-}
-
-{
-  const input = [
-    ["playerId", "0"],
-    ["handId", "0"],
-    ["panel", "x"],
-    ["x", "2"],
-    ["y", "3"],
-  ];
-  const expected = [
-    ["playerId", "0"],
-    ["handId", "0"],
-    ["panel", "x"],
-    ["x", "2"],
-    ["y", "3"],
-  ];
-  (async () => {
-    assert.deepEqual(await filterMove(input), expected);
-  })();
-}
 
 {
   const input = [["playerId", "0"]];
