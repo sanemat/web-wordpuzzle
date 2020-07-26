@@ -11,6 +11,7 @@
  * @typedef {import('./models').Swap} Swap
  * @typedef {import('./models').Move} Move
  * @typedef {import('./models').MoveOpe} MoveOpe
+ * @typedef {import('./models').SwapOpe} SwapOpe
  * @typedef {import('./models').Panel} Panel
  * @typedef {import('./models').BoardPanel} BoardPanel
  * @typedef {import('./models').BoardMeta} BoardMeta
@@ -755,8 +756,6 @@ export function filterSwap(data) {
   }
   return Promise.resolve(r);
 }
-
-/** @typedef {[Swap, number[]]} SwapOpe */
 
 /**
  * @promise

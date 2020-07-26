@@ -39,6 +39,7 @@
  * }} Move
  */
 /** @typedef {[Move, number[]]} MoveOpe */
+/** @typedef {[Swap, number[]]} SwapOpe */
 /**
  * @typedef {string} Panel the panel.
  * @typedef {Panel|null} BoardPanel

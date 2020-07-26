@@ -231,7 +231,7 @@ import {
     ["panel", "x"],
     ["swap", "1"],
   ];
-  /** @type {import("../src/script.js").SwapOpe} */
+  /** @type {import("../src/models").SwapOpe} */
   const expected = [
     {
       type: "swap",
