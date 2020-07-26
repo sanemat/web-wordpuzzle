@@ -46,6 +46,7 @@
  */
 /** @typedef {string} Player players' name. */
 /** @typedef {?string} Version version string. */
+/** @typedef {Move|Pass|Resign|Swap} Act */
 
 export function _dummy() {
   return true;

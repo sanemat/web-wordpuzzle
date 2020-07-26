@@ -8,15 +8,13 @@
  * @typedef {import('./models').Resign} Resign
  * @typedef {import('./models').Swap} Swap
  * @typedef {import('./models').Move} Move
+ * @typedef {import('./models').Act} Act
  * @typedef {import('./models').MoveOpe} MoveOpe
  * @typedef {import('./models').SwapOpe} SwapOpe
  * @typedef {import('./models').Panel} Panel
  * @typedef {import('./models').BoardPanel} BoardPanel
  * @typedef {import('./models').BoardMeta} BoardMeta
  * @typedef {import('./models').Coordinate} Coordinate
- */
-/**
- * @typedef {Move|Pass|Resign|Swap} Act
  */
 /**
  * @typedef {{
