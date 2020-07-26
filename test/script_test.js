@@ -18,6 +18,7 @@ import {
   passTwice,
   passToParam,
   resignToParam,
+  hasResign,
 } from "../src/script.js";
 
 {
@@ -359,6 +360,36 @@ import {
   const store = buildStore(query);
   (async () => {
     const result = await passTwice(store);
+    assert.equal(result, true, message);
+  })();
+}
+
+{
+  const message = "no acts";
+  const query = `ps=foo&ps=bar&bw=3&bh=4`;
+  const store = buildStore(query);
+  (async () => {
+    const result = await hasResign(store);
+    assert.equal(result, false, message);
+  })();
+}
+
+{
+  const message = "one pass";
+  const query = `ps=foo&ps=bar&as=0|p&bw=3&bh=4`;
+  const store = buildStore(query);
+  (async () => {
+    const result = await hasResign(store);
+    assert.equal(result, false, message);
+  })();
+}
+
+{
+  const message = "one resign";
+  const query = `ps=foo&ps=bar&as=0|r&bw=3&bh=4`;
+  const store = buildStore(query);
+  (async () => {
+    const result = await hasResign(store);
     assert.equal(result, true, message);
   })();
 }
