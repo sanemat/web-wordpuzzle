@@ -15,20 +15,7 @@
  * @typedef {import('./models').BoardPanel} BoardPanel
  * @typedef {import('./models').BoardMeta} BoardMeta
  * @typedef {import('./models').Coordinate} Coordinate
- */
-/**
- * @typedef {{
- *   players: Player[],
- *   version: Version,
- *   boardMeta: BoardMeta,
- *   board: BoardPanel[][],
- *   hands: Panel[][],
- *   acts: Act[],
- *   jar: Panel[],
- *   currentPlayerId: number,
- *   moved: boolean,
- *   over: boolean,
- * }} Store
+ * @typedef {import('./models').Store} Store
  */
 import { passToParam, resignToParam } from "./functions.js";
 
