@@ -20,6 +20,7 @@ import {
   isSequence,
   anywayGet,
   filterMove,
+  buildMove,
 } from "../src/functions.js";
 
 {
@@ -745,5 +746,43 @@ import {
   ];
   (async () => {
     assert.deepEqual(await filterMove(input), expected);
+  })();
+}
+
+{
+  const input = [["playerId", "0"]];
+  /** @type {import("../src/models").MoveOpe} */
+  const expected = [
+    {
+      type: "move",
+      playerId: 0,
+      coordinates: [],
+    },
+    [],
+  ];
+  (async () => {
+    assert.deepEqual(await buildMove(input), expected);
+  })();
+}
+
+{
+  const input = [
+    ["playerId", "0"],
+    ["handId", "0"],
+    ["panel", "x"],
+    ["x", "2"],
+    ["y", "3"],
+  ];
+  /** @type {import("../src/models").MoveOpe} */
+  const expected = [
+    {
+      type: "move",
+      playerId: 0,
+      coordinates: [{ x: 2, y: 3, panel: "x" }],
+    },
+    [0],
+  ];
+  (async () => {
+    assert.deepEqual(await buildMove(input), expected);
   })();
 }

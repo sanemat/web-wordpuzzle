@@ -24,7 +24,6 @@ import {
   resignToParam,
   swapToParam,
   buildStore,
-  sortCoordinates,
   filterSwap,
   satisfyGameOver,
   playerIdFrom,
@@ -35,6 +34,7 @@ import {
   isSequence,
   anywayGet,
   filterMove,
+  buildMove,
 } from "./functions.js";
 
 /**
@@ -604,35 +604,6 @@ function render() {
     renderOverArea(),
     renderResignArea(),
   ]);
-}
-
-/**
- * @promise
- * @reject {Error}
- * @fulfill {MoveOpe}
- * @returns {Promise.<MoveOpe>}
- * @param {string[][]} data
- */
-export function buildMove(data) {
-  /** @type {Move} */
-  const move = {
-    type: "move",
-    playerId: 0,
-    coordinates: [],
-  };
-  /** @type {number[]} */
-  const used = [];
-  move.playerId = playerIdFrom(data);
-  for (let i = 0; i < data.length - 1; i += 4) {
-    move.coordinates.push({
-      panel: data[i + 2][1],
-      x: parseInt(data[i + 3][1], 10),
-      y: parseInt(data[i + 4][1], 10),
-    });
-    used.push(parseInt(data[i + 1][1], 10));
-  }
-  move.coordinates = sortCoordinates(move.coordinates);
-  return Promise.resolve([move, used]);
 }
 
 /**

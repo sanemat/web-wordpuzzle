@@ -1,46 +1,8 @@
 import { strict as assert } from "assert";
 
-import { buildMove, validateMove, findCandidates } from "../src/script.js";
+import { validateMove, findCandidates } from "../src/script.js";
 
 import { buildStore } from "../src/functions.js";
-
-{
-  const input = [["playerId", "0"]];
-  /** @type {import("../src/models").MoveOpe} */
-  const expected = [
-    {
-      type: "move",
-      playerId: 0,
-      coordinates: [],
-    },
-    [],
-  ];
-  (async () => {
-    assert.deepEqual(await buildMove(input), expected);
-  })();
-}
-
-{
-  const input = [
-    ["playerId", "0"],
-    ["handId", "0"],
-    ["panel", "x"],
-    ["x", "2"],
-    ["y", "3"],
-  ];
-  /** @type {import("../src/models").MoveOpe} */
-  const expected = [
-    {
-      type: "move",
-      playerId: 0,
-      coordinates: [{ x: 2, y: 3, panel: "x" }],
-    },
-    [0],
-  ];
-  (async () => {
-    assert.deepEqual(await buildMove(input), expected);
-  })();
-}
 
 {
   const message = "will conflict 1,0:r";

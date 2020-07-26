@@ -6,6 +6,7 @@
  * @typedef {import('./models').Swap} Swap
  * @typedef {import('./models').SwapOpe} SwapOpe
  * @typedef {import('./models').Move} Move
+ * @typedef {import('./models').MoveOpe} MoveOpe
  * @typedef {import('./models').Store} Store
  * @typedef {import('./models').Coordinate} Coordinate
  * @typedef {import('./models').Panel} Panel
@@ -499,4 +500,33 @@ export function filterMove(data) {
     }
   }
   return Promise.resolve(r);
+}
+
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {MoveOpe}
+ * @returns {Promise.<MoveOpe>}
+ * @param {string[][]} data
+ */
+export function buildMove(data) {
+  /** @type {Move} */
+  const move = {
+    type: "move",
+    playerId: 0,
+    coordinates: [],
+  };
+  /** @type {number[]} */
+  const used = [];
+  move.playerId = playerIdFrom(data);
+  for (let i = 0; i < data.length - 1; i += 4) {
+    move.coordinates.push({
+      panel: data[i + 2][1],
+      x: parseInt(data[i + 3][1], 10),
+      y: parseInt(data[i + 4][1], 10),
+    });
+    used.push(parseInt(data[i + 1][1], 10));
+  }
+  move.coordinates = sortCoordinates(move.coordinates);
+  return Promise.resolve([move, used]);
 }
