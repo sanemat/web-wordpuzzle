@@ -56,16 +56,13 @@ import {
   assert.equal(store.acts.length, 1);
   const act = store.acts[0];
   assert.equal(act.type, "move");
+  assert.equal(/** @type {import("../src/models").Move} */ (act).playerId, 0);
   assert.equal(
-    /** @type {import("../src/script.js").Move} */ (act).playerId,
-    0
-  );
-  assert.equal(
-    /** @type {import("../src/script.js").Move} */ (act).coordinates.length,
+    /** @type {import("../src/models").Move} */ (act).coordinates.length,
     3
   );
   assert.deepEqual(
-    /** @type {import("../src/script.js").Move} */ (act).coordinates[1],
+    /** @type {import("../src/models").Move} */ (act).coordinates[1],
     { panel: "r", x: 1, y: 0 }
   );
 }
@@ -76,16 +73,13 @@ import {
   assert.equal(store.acts.length, 1);
   const act = store.acts[0];
   assert.equal(act.type, "move");
+  assert.equal(/** @type {import("../src/models").Move} */ (act).playerId, 0);
   assert.equal(
-    /** @type {import("../src/script.js").Move} */ (act).playerId,
-    0
-  );
-  assert.equal(
-    /** @type {import("../src/script.js").Move} */ (act).coordinates.length,
+    /** @type {import("../src/models").Move} */ (act).coordinates.length,
     1
   );
   assert.deepEqual(
-    /** @type {import("../src/script.js").Move} */ (act).coordinates[0],
+    /** @type {import("../src/models").Move} */ (act).coordinates[0],
     { panel: "a", x: 1, y: 10 }
   );
 }
@@ -96,10 +90,7 @@ import {
   assert.equal(store.acts.length, 1);
   const act = store.acts[0];
   assert.equal(act.type, "pass");
-  assert.equal(
-    /** @type {import("../src/script.js").Move} */ (act).playerId,
-    0
-  );
+  assert.equal(/** @type {import("../src/models").Move} */ (act).playerId, 0);
 }
 
 {
@@ -290,7 +281,7 @@ import {
 
 {
   const input = [["playerId", "0"]];
-  /** @type {import("../src/script.js").MoveOpe} */
+  /** @type {import("../src/models").MoveOpe} */
   const expected = [
     {
       type: "move",
@@ -348,7 +339,7 @@ import {
     ["x", "2"],
     ["y", "3"],
   ];
-  /** @type {import("../src/script.js").MoveOpe} */
+  /** @type {import("../src/models").MoveOpe} */
   const expected = [
     {
       type: "move",
@@ -374,7 +365,7 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").Move} */
+  /** @type {import("../src/models").Move} */
   const input = {
     type: "move",
     playerId: 0,
@@ -450,7 +441,7 @@ import {
 
 {
   const message = "will conflict 1,0:r";
-  /** @type {import("../src/script.js").Move} */
+  /** @type {import("../src/models").Move} */
   const move = {
     type: "move",
     playerId: 0,
@@ -468,7 +459,7 @@ import {
 
 {
   const message = "y is out of board";
-  /** @type {import("../src/script.js").Move} */
+  /** @type {import("../src/models").Move} */
   const move = {
     type: "move",
     playerId: 0,
@@ -486,7 +477,7 @@ import {
 
 {
   const message = "x4 is out of board";
-  /** @type {import("../src/script.js").Move} */
+  /** @type {import("../src/models").Move} */
   const move = {
     type: "move",
     playerId: 0,
@@ -503,7 +494,7 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").Move} */
+  /** @type {import("../src/models").Move} */
   const move = {
     type: "move",
     playerId: 0,

@@ -32,6 +32,14 @@
  * }} Coordinate
  */
 /**
+ * @typedef {{
+ *   type: string,
+ *   playerId: number,
+ *   coordinates: Coordinate[],
+ * }} Move
+ */
+/** @typedef {[Move, number[]]} MoveOpe */
+/**
  * @typedef {string} Panel the panel.
  * @typedef {Panel|null} BoardPanel
  */

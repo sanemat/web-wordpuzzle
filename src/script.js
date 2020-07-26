@@ -6,16 +6,11 @@
  * @typedef {?string} Version version string.
  */
 /**
- * @typedef {{
- *   type: string,
- *   playerId: number,
- *   coordinates: Coordinate[],
- * }} Move
- */
-/**
  * @typedef {import('./models').Pass} Pass
  * @typedef {import('./models').Resign} Resign
  * @typedef {import('./models').Swap} Swap
+ * @typedef {import('./models').Move} Move
+ * @typedef {import('./models').MoveOpe} MoveOpe
  * @typedef {import('./models').Panel} Panel
  * @typedef {import('./models').BoardPanel} BoardPanel
  * @typedef {import('./models').BoardMeta} BoardMeta
@@ -839,8 +834,6 @@ export function sortCoordinates(coordinates) {
     return a.x - b.x;
   });
 }
-
-/** @typedef {[Move, number[]]} MoveOpe */
 
 /**
  * @promise
