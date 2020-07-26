@@ -10,6 +10,7 @@ import {
   sortCoordinates,
   buildStore,
   filterSwap,
+  passTwice,
 } from "../src/functions.js";
 
 {
@@ -297,5 +298,35 @@ import {
   ];
   (async () => {
     assert.deepEqual(await filterSwap(input), expected);
+  })();
+}
+
+{
+  const message = "first empty move";
+  const query = `ps=foo&ps=bar&as=0|p&bw=3&bh=4`;
+  const store = buildStore(query);
+  (async () => {
+    const result = await passTwice(store);
+    assert.equal(result, false, message);
+  })();
+}
+
+{
+  const message = "third empty move";
+  const query = `ps=foo&ps=bar&as=0|p&as=1|p&as=0|p&bw=3&bh=4`;
+  const store = buildStore(query);
+  (async () => {
+    const result = await passTwice(store);
+    assert.equal(result, false, message);
+  })();
+}
+
+{
+  const message = "fourth empty move";
+  const query = `ps=foo&ps=bar&as=0|p&as=1|p&as=0|p&as=1|p&bw=3&bh=4`;
+  const store = buildStore(query);
+  (async () => {
+    const result = await passTwice(store);
+    assert.equal(result, true, message);
   })();
 }

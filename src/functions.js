@@ -236,3 +236,24 @@ export function filterSwap(data) {
   }
   return Promise.resolve(r);
 }
+
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {boolean}
+ * @returns {Promise.<boolean>}
+ * @param {Store} store
+ */
+export async function passTwice(store) {
+  const threshold = 2 * store.players.length;
+  const targetMoves = store.acts.slice(store.acts.length - threshold);
+  if (
+    targetMoves.length >= threshold &&
+    targetMoves.every((m) => {
+      return m.type === "pass";
+    })
+  ) {
+    return Promise.resolve(true);
+  }
+  return Promise.resolve(false);
+}
