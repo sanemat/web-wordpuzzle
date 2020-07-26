@@ -658,6 +658,73 @@ function showSwapArea() {
     return Promise.reject(new Error("no .js-swap-area"));
   }
   swapArea.style.display = "block";
+
+  const coordinatesElem = document.body.querySelector(".js-swap-coordinates");
+  if (!coordinatesElem) {
+    return Promise.reject(new Error("no .js-swap-coordinates"));
+  }
+  coordinatesElem.innerHTML = "";
+
+  const playerId = store.currentPlayerId;
+
+  const playerIdInput = document.createElement("input");
+  playerIdInput.setAttribute("type", "hidden");
+  playerIdInput.setAttribute("name", "playerId");
+  playerIdInput.setAttribute("value", playerId.toString());
+  coordinatesElem.appendChild(playerIdInput);
+  for (const [i, v] of store.hands[playerId].entries()) {
+    const grouped = document.createElement("div");
+    grouped.classList.add("field");
+    grouped.classList.add("is-grouped");
+
+    {
+      const handId = document.createElement("input");
+      handId.setAttribute("type", "hidden");
+      handId.setAttribute("name", "handId");
+      handId.setAttribute("value", i.toString());
+      grouped.appendChild(handId);
+    }
+
+    // panel
+    {
+      const control = document.createElement("div");
+      control.classList.add("control");
+      const label = document.createElement("label");
+      label.setAttribute("for", `swap${i}panel`);
+      const select = document.createElement("div");
+      select.classList.add("select");
+      const panel = document.createElement("select");
+      panel.setAttribute("name", "panel");
+      panel.setAttribute("id", `swap${i}panel`);
+      panel.add(new Option(v, v, true, true));
+      select.appendChild(panel);
+      control.appendChild(label);
+      control.appendChild(select);
+      grouped.appendChild(control);
+    }
+
+    // swap
+    {
+      const control = document.createElement("div");
+      control.classList.add("control");
+      const label = document.createElement("label");
+      label.setAttribute("for", `swap${i}`);
+      const select = document.createElement("div");
+      select.classList.add("select");
+      const swap = document.createElement("select");
+      swap.setAttribute("name", "swap");
+      swap.setAttribute("id", `swap${i}`);
+      swap.add(new Option());
+      swap.add(new Option("swap", "1"));
+      select.appendChild(swap);
+      control.appendChild(label);
+      control.appendChild(select);
+      grouped.appendChild(control);
+    }
+
+    coordinatesElem.appendChild(grouped);
+  }
+
   return Promise.resolve(true);
 }
 
