@@ -30,7 +30,7 @@ import {
   playerIdFrom,
   buildSwap,
   allCandidatesInWordDictionary,
-  connected,
+  hasConnection,
 } from "./functions.js";
 
 /**
@@ -730,19 +730,6 @@ export function isSequence(board, coordinates) {
   }
 
   return errors.length === 0 ? [null, true] : [errors, false];
-}
-
-/**
- * @returns {[Error[]|null, Boolean]}
- * @param {Coordinate[]} coordinates
- * @param {BoardPanel[][]} board
- */
-export function hasConnection(board, coordinates) {
-  const result = coordinates.some((coordinate) => {
-    const [, res] = connected(board, coordinate);
-    return res;
-  });
-  return result ? [null, true] : [[new Error("has no connection")], false];
 }
 
 /**

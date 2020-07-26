@@ -386,3 +386,16 @@ export function connected(board, coordinate) {
   }
   return [null, false];
 }
+
+/**
+ * @returns {[Error[]|null, Boolean]}
+ * @param {Coordinate[]} coordinates
+ * @param {BoardPanel[][]} board
+ */
+export function hasConnection(board, coordinates) {
+  const result = coordinates.some((coordinate) => {
+    const [, res] = connected(board, coordinate);
+    return res;
+  });
+  return result ? [null, true] : [[new Error("has no connection")], false];
+}

@@ -15,6 +15,7 @@ import {
   buildSwap,
   allCandidatesInWordDictionary,
   connected,
+  hasConnection,
 } from "../src/functions.js";
 
 {
@@ -520,5 +521,35 @@ import {
   /** @type {import("../src/models").Coordinate} */
   const coordinate = { x: 0, y: 1, panel: "a" };
   const [, result] = connected(board, coordinate);
+  assert.equal(result, true);
+}
+
+{
+  /** @type {import("../src/models").BoardPanel[][]} */
+  const board = [
+    [null, null, null],
+    [null, "x", null],
+    [null, null, null],
+  ];
+  /** @type {import("../src/models").Coordinate[]} */
+  const coordinates = [{ x: 0, y: 0, panel: "a" }];
+  const [errors, result] = hasConnection(board, coordinates);
+  assert.equal(result, false);
+  assert.equal(errors?.length, 1);
+}
+
+{
+  /** @type {import("../src/models").BoardPanel[][]} */
+  const board = [
+    [null, null, null],
+    [null, "x", null],
+    [null, null, null],
+  ];
+  /** @type {import("../src/models").Coordinate[]} */
+  const coordinates = [
+    { x: 0, y: 0, panel: "a" },
+    { x: 1, y: 0, panel: "b" },
+  ];
+  const [, result] = hasConnection(board, coordinates);
   assert.equal(result, true);
 }
