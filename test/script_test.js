@@ -17,6 +17,7 @@ import {
   allCandidatesInWordDictionary,
   passTwice,
   passToParam,
+  resignToParam,
 } from "../src/script.js";
 
 {
@@ -95,6 +96,18 @@ import {
   assert.equal(act.type, "pass");
   assert.equal(
     /** @type {import("../src/script.js").Move} */ (act).playerId,
+    0
+  );
+}
+
+{
+  const query = `as=0|r&bw=3&bh=4`;
+  const store = buildStore(query);
+  assert.equal(store.acts.length, 1);
+  const act = store.acts[0];
+  assert.equal(act.type, "resign");
+  assert.equal(
+    /** @type {import("../src/script.js").Resign} */ (act).playerId,
     0
   );
 }
@@ -293,6 +306,16 @@ import {
   };
   const expected = "0|p";
   assert.equal(passToParam(input), expected);
+}
+
+{
+  /** @type {import("../src/script.js").Resign} */
+  const input = {
+    type: "resign",
+    playerId: 0,
+  };
+  const expected = "0|r";
+  assert.equal(resignToParam(input), expected);
 }
 
 {

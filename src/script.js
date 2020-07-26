@@ -34,7 +34,13 @@
  * }} Pass
  */
 /**
- * @typedef {Move|Pass} Act
+ * @typedef {{
+ *   type: string,
+ *   playerId: number,
+ * }} Resign
+ */
+/**
+ * @typedef {Move|Pass|Resign} Act
  */
 /**
  * @typedef {{
@@ -167,6 +173,13 @@ export function buildStore(query) {
         playerId: parseInt(parts[0], 10),
       };
       acts.push(pass);
+    } else if (parts[1] === "r") {
+      /** @type {Resign} */
+      const resign = {
+        type: "resign",
+        playerId: parseInt(parts[0], 10),
+      };
+      acts.push(resign);
     }
   }
   data.acts = acts;
@@ -1179,6 +1192,19 @@ export function passToParam(pass) {
 }
 
 /**
+ * @returns {string}
+ * @param {Resign} resign
+ * @throws {Error}
+ */
+export function resignToParam(resign) {
+  /** @type {string[]} */
+  const r = [];
+  r.push(resign.playerId.toString());
+  r.push("r");
+  return r.join("|");
+}
+
+/**
  * @promise
  * @reject {Error}
  * @fulfill {boolean}
@@ -1308,6 +1334,21 @@ async function playAction(ev) {
 async function resignAction() {
   console.log("resign!");
   const params = new URLSearchParams(location.search);
+
+  /** @type {Resign} */
+  const resign = {
+    type: "resign",
+    playerId: store.currentPlayerId,
+  };
+  store.acts.push(resign);
+  params.append("as", resignToParam(resign));
+
+  // satisfy the condition for the game is over
+  if (await satisfyGameOver(store)) {
+    console.log("this game is over!");
+    store.over = true;
+    params.set("ov", "1");
+  }
 
   store.moved = true;
   params.set("md", "1");
