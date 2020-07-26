@@ -257,3 +257,23 @@ export async function passTwice(store) {
   }
   return Promise.resolve(false);
 }
+
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {boolean}
+ * @returns {Promise.<boolean>}
+ * @param {Store} store
+ */
+export async function hasResign(store) {
+  if (
+    store.acts.length > 0 &&
+    store.acts.some((a) => {
+      return a.type === "resign";
+    })
+  ) {
+    return Promise.resolve(true);
+  } else {
+    return Promise.resolve(false);
+  }
+}

@@ -27,6 +27,7 @@ import {
   sortCoordinates,
   filterSwap,
   passTwice,
+  hasResign,
 } from "./functions.js";
 
 /**
@@ -1084,25 +1085,6 @@ export async function validateMove(move, store, words) {
   return Promise.resolve([null, true, candidates]);
 }
 
-/**
- * @promise
- * @reject {Error}
- * @fulfill {boolean}
- * @returns {Promise.<boolean>}
- * @param {Store} store
- */
-export async function hasResign(store) {
-  if (
-    store.acts.length > 0 &&
-    store.acts.some((a) => {
-      return a.type === "resign";
-    })
-  ) {
-    return Promise.resolve(true);
-  } else {
-    return Promise.resolve(false);
-  }
-}
 /**
  * @promise
  * @reject {Error}
