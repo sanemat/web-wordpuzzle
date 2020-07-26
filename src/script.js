@@ -28,13 +28,9 @@ import {
   satisfyGameOver,
   playerIdFrom,
   buildSwap,
-  allCandidatesInWordDictionary,
-  hasConnection,
-  isUnique,
-  isSequence,
   filterMove,
   buildMove,
-  findCandidates,
+  validateMove,
 } from "./functions.js";
 
 /**
@@ -604,94 +600,6 @@ function render() {
     renderOverArea(),
     renderResignArea(),
   ]);
-}
-
-/**
- * @promise
- * @reject {Error}
- * @fulfill {[Error[]|null, Boolean, string[]|null]}
- * @returns {Promise.<[Error[]|null, Boolean, string[]|null]>} errors, valid, wordList
- * @param {Move} move
- * @param {Store} store
- * @param {Set<string>} words
- */
-export async function validateMove(move, store, words) {
-  if (move.coordinates.length === 0) {
-    return Promise.resolve([
-      [new Error("move has no coordinates")],
-      false,
-      null,
-    ]);
-  }
-  /** @type {Error[]} */
-  let errors = [];
-  for (const coordinate of move.coordinates) {
-    if (typeof store.board[coordinate.y] === "undefined") {
-      errors.push(new Error(`y: ${coordinate.y} is out of board`));
-      continue;
-    }
-    if (typeof store.board[coordinate.y][coordinate.x] === "undefined") {
-      errors.push(new Error(`x: ${coordinate.x} is out of board`));
-      continue;
-    }
-    if (store.board[coordinate.y][coordinate.x] !== null) {
-      errors.push(
-        new Error(
-          `x: ${coordinate.x}, y: ${coordinate.y} exists ${
-            store.board[coordinate.y][coordinate.x]
-          }`
-        )
-      );
-    }
-  }
-  if (errors.length !== 0) {
-    return Promise.resolve([errors, false, null]);
-  }
-  {
-    const [errs, res] = isUnique(move.coordinates);
-    if (!res && errs !== null) {
-      errors = errors.concat(errs);
-      return Promise.resolve([errors, false, null]);
-    }
-  }
-  {
-    const [errs, res] = isSequence(store.board, move.coordinates);
-    if (!res && errs !== null) {
-      errors = errors.concat(errs);
-      return Promise.resolve([errors, false, null]);
-    }
-  }
-  {
-    const [errs, res] = hasConnection(store.board, move.coordinates);
-    if (!res && errs !== null) {
-      errors = errors.concat(errs);
-      return Promise.resolve([errors, false, null]);
-    }
-  }
-
-  /** @type {string[]|null} */
-  let candidates;
-  {
-    /** @type {Error[]|null} */
-    let errs;
-    [errs, candidates] = await findCandidates(store.board, move.coordinates);
-    if (errs !== null) {
-      errors = errors.concat(errs);
-      return Promise.resolve([errors, false, null]);
-    }
-    if (candidates) {
-      const [errs, res] = await allCandidatesInWordDictionary(
-        candidates,
-        words
-      );
-      if (!res && errs !== null) {
-        errors = errors.concat(errs);
-        return Promise.resolve([errors, false, null]);
-      }
-    }
-  }
-
-  return Promise.resolve([null, true, candidates]);
 }
 
 /**
