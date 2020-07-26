@@ -6,7 +6,6 @@ import {
   validateMove,
   findCandidates,
   anywayGet,
-  isSequence,
 } from "../src/script.js";
 
 import { buildStore } from "../src/functions.js";
@@ -363,78 +362,4 @@ import { buildStore } from "../src/functions.js";
   /** @type {import("../src/models").Coordinate[]} */
   const coordinates = [{ x: 0, y: 1, panel: "a" }];
   assert.equal(anywayGet(0, 1, board, coordinates), "a");
-}
-
-{
-  /** @type {import("../src/models").BoardPanel[][]} */
-  const board = [
-    [null, null],
-    [null, null],
-  ];
-  /** @type {import("../src/models").Coordinate[]} */
-  const coordinates = [];
-  const [errors, result] = isSequence(board, coordinates);
-  assert.equal(errors, null);
-  assert.equal(result, true);
-}
-
-{
-  /** @type {import("../src/models").BoardPanel[][]} */
-  const board = [
-    [null, null],
-    [null, null],
-  ];
-  /** @type {import("../src/models").Coordinate[]} */
-  const coordinates = [{ x: 0, y: 1, panel: "a" }];
-  const [errors, result] = isSequence(board, coordinates);
-  assert.equal(errors, null);
-  assert.equal(result, true);
-}
-
-{
-  /** @type {import("../src/models").BoardPanel[][]} */
-  const board = [
-    [null, null],
-    [null, null],
-  ];
-  /** @type {import("../src/models").Coordinate[]} */
-  const coordinates = [
-    { x: 0, y: 0, panel: "a" },
-    { x: 0, y: 1, panel: "b" },
-  ];
-  const [errors, result] = isSequence(board, coordinates);
-  assert.equal(errors, null);
-  assert.equal(result, true);
-}
-
-{
-  /** @type {import("../src/models").BoardPanel[][]} */
-  const board = [
-    [null, null],
-    [null, null],
-  ];
-  /** @type {import("../src/models").Coordinate[]} */
-  const coordinates = [
-    { x: 0, y: 0, panel: "a" },
-    { x: 1, y: 0, panel: "b" },
-  ];
-  const [errors, result] = isSequence(board, coordinates);
-  assert.equal(errors, null);
-  assert.equal(result, true);
-}
-
-{
-  /** @type {import("../src/models").BoardPanel[][]} */
-  const board = [
-    [null, null],
-    [null, null],
-  ];
-  /** @type {import("../src/models").Coordinate[]} */
-  const coordinates = [
-    { x: 0, y: 0, panel: "a" },
-    { x: 1, y: 1, panel: "b" },
-  ];
-  const [errors, result] = isSequence(board, coordinates);
-  assert.equal(errors?.length, 1);
-  assert.equal(result, false);
 }

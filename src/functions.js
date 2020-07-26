@@ -424,3 +424,27 @@ export function isUnique(coordinates) {
   }
   return errors.length === 0 ? [null, true] : [errors, false];
 }
+
+/**
+ * @returns {[Error[]|null, Boolean]}
+ * @param {Coordinate[]} coordinates
+ * @param {BoardPanel[][]} board
+ */
+export function isSequence(board, coordinates) {
+  if (coordinates.length === 0 || coordinates.length === 1) {
+    return [null, true];
+  }
+  /** @type {Error[]} */
+  const errors = [];
+  const hasSameX = coordinates.every((coordinate) => {
+    return coordinate.x === coordinates[0].x;
+  });
+  const hasSameY = coordinates.every((coordinate) => {
+    return coordinate.y === coordinates[0].y;
+  });
+  if (!hasSameX && !hasSameY) {
+    errors.push(new Error(`not same x and not same y`));
+  }
+
+  return errors.length === 0 ? [null, true] : [errors, false];
+}
