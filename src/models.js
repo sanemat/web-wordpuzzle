@@ -25,6 +25,13 @@
  * }} BoardMeta
  */
 /**
+ * @typedef {{
+ *   x: number,
+ *   y: number,
+ *   panel: Panel,
+ * }} Coordinate
+ */
+/**
  * @typedef {string} Panel the panel.
  * @typedef {Panel|null} BoardPanel
  */

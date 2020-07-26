@@ -7,13 +7,6 @@
  */
 /**
  * @typedef {{
- *   x: number,
- *   y: number,
- *   panel: Panel,
- * }} Coordinate
- */
-/**
- * @typedef {{
  *   type: string,
  *   playerId: number,
  *   coordinates: Coordinate[],
@@ -26,6 +19,7 @@
  * @typedef {import('./models').Panel} Panel
  * @typedef {import('./models').BoardPanel} BoardPanel
  * @typedef {import('./models').BoardMeta} BoardMeta
+ * @typedef {import('./models').Coordinate} Coordinate
  */
 /**
  * @typedef {Move|Pass|Resign|Swap} Act
