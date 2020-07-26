@@ -23,6 +23,7 @@ import {
   resignToParam,
   swapToParam,
   _minimalStore,
+  sortCoordinates,
 } from "./functions.js";
 
 /**
@@ -787,22 +788,6 @@ export function filterMove(data) {
 function playerIdFrom(data) {
   const playerIdString = data[0][1];
   return parseInt(playerIdString, 10);
-}
-
-/**
- * @returns {Coordinate[]}
- * @param {Coordinate[]} coordinates
- */
-export function sortCoordinates(coordinates) {
-  if (coordinates.length === 0 || coordinates.length === 1) {
-    return coordinates;
-  }
-  return coordinates.sort((a, b) => {
-    if (a.x === b.x) {
-      return a.y - b.y;
-    }
-    return a.x - b.x;
-  });
 }
 
 /**

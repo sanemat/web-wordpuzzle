@@ -7,6 +7,7 @@ import {
   passToParam,
   resignToParam,
   swapToParam,
+  sortCoordinates,
 } from "../src/functions.js";
 
 {
@@ -57,4 +58,40 @@ import {
 
 {
   assert.deepEqual(_minimalStore(), _minimalStore());
+}
+
+{
+  /** @type {import("../src/models").Coordinate[]} */
+  const coordinates = [];
+  assert.deepEqual(sortCoordinates(coordinates), []);
+}
+
+{
+  /** @type {import("../src/models").Coordinate[]} */
+  const coordinates = [{ x: 2, y: 3, panel: "x" }];
+  assert.deepEqual(sortCoordinates(coordinates), [{ x: 2, y: 3, panel: "x" }]);
+}
+
+{
+  /** @type {import("../src/models").Coordinate[]} */
+  const coordinates = [
+    { x: 2, y: 3, panel: "x" },
+    { x: 1, y: 3, panel: "x" },
+  ];
+  assert.deepEqual(sortCoordinates(coordinates), [
+    { x: 1, y: 3, panel: "x" },
+    { x: 2, y: 3, panel: "x" },
+  ]);
+}
+
+{
+  /** @type {import("../src/models").Coordinate[]} */
+  const coordinates = [
+    { x: 2, y: 3, panel: "x" },
+    { x: 2, y: 2, panel: "x" },
+  ];
+  assert.deepEqual(sortCoordinates(coordinates), [
+    { x: 2, y: 2, panel: "x" },
+    { x: 2, y: 3, panel: "x" },
+  ]);
 }

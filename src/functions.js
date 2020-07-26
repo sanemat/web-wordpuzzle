@@ -6,6 +6,7 @@
  * @typedef {import('./models').Swap} Swap
  * @typedef {import('./models').Move} Move
  * @typedef {import('./models').Store} Store
+ * @typedef {import('./models').Coordinate} Coordinate
  */
 
 /**
@@ -82,4 +83,20 @@ export function _minimalStore() {
     moved: false,
     over: false,
   };
+}
+
+/**
+ * @returns {Coordinate[]}
+ * @param {Coordinate[]} coordinates
+ */
+export function sortCoordinates(coordinates) {
+  if (coordinates.length === 0 || coordinates.length === 1) {
+    return coordinates;
+  }
+  return coordinates.sort((a, b) => {
+    if (a.x === b.x) {
+      return a.y - b.y;
+    }
+    return a.x - b.x;
+  });
 }
