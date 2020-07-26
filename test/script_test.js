@@ -19,6 +19,7 @@ import {
   passToParam,
   resignToParam,
   hasResign,
+  filterSwap,
 } from "../src/script.js";
 
 {
@@ -205,6 +206,37 @@ import {
   expected.moved = true;
   expected.over = true;
   assert.deepEqual(store, expected);
+}
+
+{
+  const input = [
+    ["playerId", "0"],
+    ["handId", "0"],
+    ["panel", "x"],
+    ["swap", ""],
+  ];
+  const expected = [["playerId", "0"]];
+  (async () => {
+    assert.deepEqual(await filterSwap(input), expected);
+  })();
+}
+
+{
+  const input = [
+    ["playerId", "0"],
+    ["handId", "0"],
+    ["panel", "x"],
+    ["swap", "1"],
+  ];
+  const expected = [
+    ["playerId", "0"],
+    ["handId", "0"],
+    ["panel", "x"],
+    ["swap", "1"],
+  ];
+  (async () => {
+    assert.deepEqual(await filterSwap(input), expected);
+  })();
 }
 
 {
