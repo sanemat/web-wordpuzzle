@@ -1460,6 +1460,13 @@ async function swapAction(ev) {
       return Promise.reject(new Error("event is not form"));
     }
     // Convert from (string|FormDataEntryValue)[][] to string[][]
+    const data = [...new FormData(ev.target).entries()].map((value) => {
+      if (typeof value[1] !== "string") {
+        throw new Error("form value is not string");
+      }
+      return [value[0], value[1]];
+    });
+    console.log(data);
     return Promise.resolve(true);
   } catch (/** @type {Error|string} */ e) {
     return Promise.reject(e);
