@@ -5,7 +5,6 @@ import {
   buildStore,
   filterMove,
   buildMove,
-  moveToParam,
   validateMove,
   findCandidates,
   anywayGet,
@@ -350,21 +349,6 @@ import {
   (async () => {
     assert.deepEqual(await buildMove(input), expected);
   })();
-}
-
-{
-  /** @type {import("../src/models").Move} */
-  const input = {
-    type: "move",
-    playerId: 0,
-    coordinates: [
-      { panel: "a", x: 0, y: 0 },
-      { panel: "r", x: 1, y: 0 },
-      { panel: "m", x: 2, y: 0 },
-    ],
-  };
-  const expected = "0|m|0|0|a|1|0|r|2|0|m";
-  assert.equal(moveToParam(input), expected);
 }
 
 {

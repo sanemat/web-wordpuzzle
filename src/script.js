@@ -17,7 +17,12 @@
  * @typedef {import('./models').Coordinate} Coordinate
  * @typedef {import('./models').Store} Store
  */
-import { passToParam, resignToParam, swapToParam } from "./functions.js";
+import {
+  moveToParam,
+  passToParam,
+  resignToParam,
+  swapToParam,
+} from "./functions.js";
 
 /**
  * @type {Store} store
@@ -1240,24 +1245,6 @@ export async function validateMove(move, store, words) {
   }
 
   return Promise.resolve([null, true, candidates]);
-}
-
-/**
- * @returns {string}
- * @param {Move} move
- * @throws {Error}
- */
-export function moveToParam(move) {
-  /** @type {string[]} */
-  const r = [];
-  r.push(move.playerId.toString());
-  r.push("m");
-  for (const c of move.coordinates) {
-    r.push(c.x.toString());
-    r.push(c.y.toString());
-    r.push(c.panel);
-  }
-  return r.join("|");
 }
 
 /**

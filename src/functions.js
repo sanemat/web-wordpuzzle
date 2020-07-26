@@ -4,6 +4,7 @@
  * @typedef {import('./models').Pass} Pass
  * @typedef {import('./models').Resign} Resign
  * @typedef {import('./models').Swap} Swap
+ * @typedef {import('./models').Move} Move
  */
 
 /**
@@ -43,5 +44,23 @@ export function swapToParam(swap) {
   r.push(swap.playerId.toString());
   r.push("s");
   r = r.concat(swap.panels);
+  return r.join("|");
+}
+
+/**
+ * @returns {string}
+ * @param {Move} move
+ * @throws {Error}
+ */
+export function moveToParam(move) {
+  /** @type {string[]} */
+  const r = [];
+  r.push(move.playerId.toString());
+  r.push("m");
+  for (const c of move.coordinates) {
+    r.push(c.x.toString());
+    r.push(c.y.toString());
+    r.push(c.panel);
+  }
   return r.join("|");
 }
