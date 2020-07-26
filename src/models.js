@@ -45,6 +45,7 @@
  * @typedef {Panel|null} BoardPanel
  */
 /** @typedef {string} Player players' name. */
+/** @typedef {?string} Version version string. */
 
 export function _dummy() {
   return true;

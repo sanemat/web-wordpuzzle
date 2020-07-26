@@ -2,10 +2,8 @@
 "use strict";
 
 /**
- * @typedef {?string} Version version string.
- */
-/**
  * @typedef {import('./models').Player} Player
+ * @typedef {import('./models').Version} Version
  * @typedef {import('./models').Pass} Pass
  * @typedef {import('./models').Resign} Resign
  * @typedef {import('./models').Swap} Swap
