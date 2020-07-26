@@ -57,7 +57,7 @@
         </div>
         <div class="main__play-area js-play-area">
           <form class="js-play field">
-            <div class="js-play-coordinates">
+            <div class="js-play-coordinates main__play-coordinates">
               <input type="hidden" name="playerId" value="0" />
               <div class="is-grouped field">
                 <input type="hidden" name="handId" value="0" />
@@ -146,22 +146,22 @@
         </div>
         <div class="main__swap-area js-swap-area">
           <form class="js-swap field">
-            <div class="js-swap-coordinates">
+            <div class="js-swap-coordinates main__swap-coordinates">
               <input type="hidden" name="playerId" value="0" />
               <div class="is-grouped field">
                 <input type="hidden" name="handId" value="0" />
                 <div class="control">
-                  <label for="swap1panel"></label>
+                  <label for="swap0panel"></label>
                   <div class="select">
-                    <select name="panel" id="swap1panel">
+                    <select name="panel" id="swap0panel">
                       <option value="b">b</option>
                     </select>
                   </div>
                 </div>
                 <div class="control">
-                  <label for="swap1"></label>
+                  <label for="swap0"></label>
                   <div class="select">
-                    <select name="swap1" id="swap1">
+                    <select name="swap" id="swap0">
                       <option></option>
                       <option value="1">swap</option>
                     </select>
@@ -169,19 +169,19 @@
                 </div>
               </div>
               <div class="is-grouped field">
-                <input type="hidden" name="handId" value="0" />
+                <input type="hidden" name="handId" value="1" />
                 <div class="control">
-                  <label for="swap0panel"></label>
+                  <label for="swap1panel"></label>
                   <div class="select">
-                    <select name="panel" id="swap0panel">
+                    <select name="panel" id="swap1panel">
                       <option value="s">s</option>
                     </select>
                   </div>
                 </div>
                 <div class="control">
-                  <label for="swap0"></label>
+                  <label for="swap1"></label>
                   <div class="select">
-                    <select name="swap0" id="swap0">
+                    <select name="swap" id="swap1">
                       <option></option>
                       <option value="1">swap</option>
                     </select>

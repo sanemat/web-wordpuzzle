@@ -4,6 +4,9 @@
 .main__play-area {
   min-height: 40vh;
 }
+.main__play-coordinates {
+  margin-top: 1rem;
+}
 .main__play-submit {
   margin-top: 1rem;
 }
@@ -14,6 +17,9 @@
   margin-top: 1rem;
 }
 .main__swap-submit {
+  margin-top: 1rem;
+}
+.main__swap-coordinates {
   margin-top: 1rem;
 }
 .main__pass-submit {

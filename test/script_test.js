@@ -19,6 +19,9 @@ import {
   passToParam,
   resignToParam,
   hasResign,
+  filterSwap,
+  buildSwap,
+  swapToParam,
 } from "../src/script.js";
 
 {
@@ -114,6 +117,22 @@ import {
 }
 
 {
+  const query = `as=0|s|a|b&bw=3&bh=4`;
+  const store = buildStore(query);
+  assert.equal(store.acts.length, 1);
+  const act = store.acts[0];
+  assert.equal(act.type, "swap");
+  assert.equal(
+    /** @type {import("../src/script.js").Swap} */ (act).playerId,
+    0
+  );
+  assert.deepEqual(
+    /** @type {import("../src/script.js").Swap} */ (act).panels,
+    ["a", "b"]
+  );
+}
+
+{
   const query = `j=a|b|x|x`;
   const store = buildStore(query);
   assert.equal(store.jar.length, 4);
@@ -189,6 +208,58 @@ import {
   expected.moved = true;
   expected.over = true;
   assert.deepEqual(store, expected);
+}
+
+{
+  const input = [
+    ["playerId", "0"],
+    ["handId", "0"],
+    ["panel", "x"],
+    ["swap", ""],
+  ];
+  const expected = [["playerId", "0"]];
+  (async () => {
+    assert.deepEqual(await filterSwap(input), expected);
+  })();
+}
+
+{
+  const input = [
+    ["playerId", "0"],
+    ["handId", "0"],
+    ["panel", "x"],
+    ["swap", "1"],
+  ];
+  const expected = [
+    ["playerId", "0"],
+    ["handId", "0"],
+    ["panel", "x"],
+    ["swap", "1"],
+  ];
+  (async () => {
+    assert.deepEqual(await filterSwap(input), expected);
+  })();
+}
+
+{
+  const input = [
+    ["playerId", "1"],
+    ["handId", "0"],
+    ["panel", "x"],
+    ["swap", "1"],
+  ];
+  /** @type {import("../src/script.js").SwapOpe} */
+  const expected = [
+    {
+      type: "swap",
+      playerId: 1,
+      panels: ["x"],
+    },
+    [0],
+  ];
+  (async () => {
+    assert.deepEqual(await buildSwap(input), expected);
+  })();
 }
 
 {
@@ -317,6 +388,17 @@ import {
   };
   const expected = "0|r";
   assert.equal(resignToParam(input), expected);
+}
+
+{
+  /** @type {import("../src/script.js").Swap} */
+  const input = {
+    type: "swap",
+    playerId: 1,
+    panels: ["a", "b"],
+  };
+  const expected = "1|s|a|b";
+  assert.equal(swapToParam(input), expected);
 }
 
 {

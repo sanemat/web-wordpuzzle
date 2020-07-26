@@ -40,7 +40,14 @@
  * }} Resign
  */
 /**
- * @typedef {Move|Pass|Resign} Act
+ * @typedef {{
+ *   type: string,
+ *   playerId: number,
+ *   panels: Panel[],
+ * }} Swap
+ */
+/**
+ * @typedef {Move|Pass|Resign|Swap} Act
  */
 /**
  * @typedef {{
@@ -180,6 +187,14 @@ export function buildStore(query) {
         playerId: parseInt(parts[0], 10),
       };
       acts.push(resign);
+    } else if (parts[1] === "s") {
+      /** @type {Swap} */
+      const swap = {
+        type: "swap",
+        playerId: parseInt(parts[0], 10),
+        panels: parts.slice(2),
+      };
+      acts.push(swap);
     }
   }
   data.acts = acts;
@@ -643,6 +658,73 @@ function showSwapArea() {
     return Promise.reject(new Error("no .js-swap-area"));
   }
   swapArea.style.display = "block";
+
+  const coordinatesElem = document.body.querySelector(".js-swap-coordinates");
+  if (!coordinatesElem) {
+    return Promise.reject(new Error("no .js-swap-coordinates"));
+  }
+  coordinatesElem.innerHTML = "";
+
+  const playerId = store.currentPlayerId;
+
+  const playerIdInput = document.createElement("input");
+  playerIdInput.setAttribute("type", "hidden");
+  playerIdInput.setAttribute("name", "playerId");
+  playerIdInput.setAttribute("value", playerId.toString());
+  coordinatesElem.appendChild(playerIdInput);
+  for (const [i, v] of store.hands[playerId].entries()) {
+    const grouped = document.createElement("div");
+    grouped.classList.add("field");
+    grouped.classList.add("is-grouped");
+
+    {
+      const handId = document.createElement("input");
+      handId.setAttribute("type", "hidden");
+      handId.setAttribute("name", "handId");
+      handId.setAttribute("value", i.toString());
+      grouped.appendChild(handId);
+    }
+
+    // panel
+    {
+      const control = document.createElement("div");
+      control.classList.add("control");
+      const label = document.createElement("label");
+      label.setAttribute("for", `swap${i}panel`);
+      const select = document.createElement("div");
+      select.classList.add("select");
+      const panel = document.createElement("select");
+      panel.setAttribute("name", "panel");
+      panel.setAttribute("id", `swap${i}panel`);
+      panel.add(new Option(v, v, true, true));
+      select.appendChild(panel);
+      control.appendChild(label);
+      control.appendChild(select);
+      grouped.appendChild(control);
+    }
+
+    // swap
+    {
+      const control = document.createElement("div");
+      control.classList.add("control");
+      const label = document.createElement("label");
+      label.setAttribute("for", `swap${i}`);
+      const select = document.createElement("div");
+      select.classList.add("select");
+      const swap = document.createElement("select");
+      swap.setAttribute("name", "swap");
+      swap.setAttribute("id", `swap${i}`);
+      swap.add(new Option());
+      swap.add(new Option("swap", "1"));
+      select.appendChild(swap);
+      control.appendChild(label);
+      control.appendChild(select);
+      grouped.appendChild(control);
+    }
+
+    coordinatesElem.appendChild(grouped);
+  }
+
   return Promise.resolve(true);
 }
 
@@ -678,6 +760,54 @@ function render() {
     renderOverArea(),
     renderResignArea(),
   ]);
+}
+
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {string[][]}
+ * @returns {Promise.<string[][]>}
+ * @param {string[][]} data
+ */
+export function filterSwap(data) {
+  /** @type {string[][]} */
+  const r = [];
+  r.push([data[0][0], data[0][1]]);
+  for (let i = 0; i < data.length - 1; i += 3) {
+    // panel, swap are exists
+    if (data[i + 2][1].length > 0 && data[i + 3][1].length > 0) {
+      r.push([data[i + 1][0], data[i + 1][1]]); // handId
+      r.push([data[i + 2][0], data[i + 2][1]]); // panel
+      r.push([data[i + 3][0], data[i + 3][1]]); // swap
+    }
+  }
+  return Promise.resolve(r);
+}
+
+/** @typedef {[Swap, number[]]} SwapOpe */
+
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {SwapOpe}
+ * @returns {Promise.<SwapOpe>}
+ * @param {string[][]} data
+ */
+export function buildSwap(data) {
+  /** @type {Swap} */
+  const swap = {
+    type: "swap",
+    playerId: 0,
+    panels: [],
+  };
+  /** @type {number[]} */
+  const used = [];
+  swap.playerId = playerIdFrom(data);
+  for (let i = 0; i < data.length - 1; i += 3) {
+    swap.panels.push(data[i + 2][1]);
+    used.push(parseInt(data[i + 1][1], 10));
+  }
+  return Promise.resolve([swap, used]);
 }
 
 /**
@@ -1205,6 +1335,20 @@ export function resignToParam(resign) {
 }
 
 /**
+ * @returns {string}
+ * @param {Swap} swap
+ * @throws {Error}
+ */
+export function swapToParam(swap) {
+  /** @type {string[]} */
+  let r = [];
+  r.push(swap.playerId.toString());
+  r.push("s");
+  r = r.concat(swap.panels);
+  return r.join("|");
+}
+
+/**
  * @promise
  * @reject {Error}
  * @fulfill {boolean}
@@ -1445,7 +1589,58 @@ async function swapAction(ev) {
       return Promise.reject(new Error("event is not form"));
     }
     // Convert from (string|FormDataEntryValue)[][] to string[][]
-    return Promise.resolve(true);
+    const data = [...new FormData(ev.target).entries()].map((value) => {
+      if (typeof value[1] !== "string") {
+        throw new Error("form value is not string");
+      }
+      return [value[0], value[1]];
+    });
+
+    // get playerId from
+    const playerId = playerIdFrom(data);
+    const [swap, used] = await buildSwap(await filterSwap(data));
+    console.log(swap);
+
+    store.acts.push(swap);
+    const params = new URLSearchParams(location.search);
+    params.append("as", swapToParam(swap));
+
+    // update hands
+    used.reverse().forEach((usedIndex) => {
+      store.hands[playerId].splice(usedIndex, 1);
+    });
+
+    // satisfy the condition for the game is over
+    if (await satisfyGameOver(store)) {
+      console.log("this game is over!");
+      store.over = true;
+      params.set("ov", "1");
+    }
+
+    // fill from jar
+    while (store.hands[playerId].length < 7 && store.jar.length > 0) {
+      store.hands[playerId].push(
+        store.jar.splice(Math.floor(Math.random() * store.jar.length), 1)[0]
+      );
+    }
+    params.set("j", store.jar.join("|"));
+
+    const hs = params.getAll("hs");
+    params.delete("hs");
+    for (const [i, v] of hs.entries()) {
+      if (i === playerId) {
+        params.append("hs", store.hands[playerId].join("|"));
+      } else {
+        params.append("hs", v);
+      }
+    }
+
+    store.moved = true;
+    params.set("md", "1");
+
+    window.history.pushState({}, "", `${location.pathname}?${params}`);
+    console.log(store);
+    return render();
   } catch (/** @type {Error|string} */ e) {
     return Promise.reject(e);
   }
