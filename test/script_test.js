@@ -5,7 +5,6 @@ import {
   buildMove,
   validateMove,
   findCandidates,
-  anywayGet,
 } from "../src/script.js";
 
 import { buildStore } from "../src/functions.js";
@@ -329,37 +328,4 @@ import { buildStore } from "../src/functions.js";
       assert.fail("unreachable");
     }
   })();
-}
-
-{
-  /** @type {import("../src/models").BoardPanel[][]} */
-  const board = [
-    ["a", "b"],
-    [null, null],
-  ];
-  /** @type {import("../src/models").Coordinate[]} */
-  const coordinates = [];
-  assert.equal(anywayGet(0, 0, board, coordinates), "a");
-}
-
-{
-  /** @type {import("../src/models").BoardPanel[][]} */
-  const board = [
-    ["a", "b"],
-    [null, null],
-  ];
-  /** @type {import("../src/models").Coordinate[]} */
-  const coordinates = [];
-  assert.equal(anywayGet(0, 1, board, coordinates), null);
-}
-
-{
-  /** @type {import("../src/models").BoardPanel[][]} */
-  const board = [
-    ["a", "b"],
-    [null, null],
-  ];
-  /** @type {import("../src/models").Coordinate[]} */
-  const coordinates = [{ x: 0, y: 1, panel: "a" }];
-  assert.equal(anywayGet(0, 1, board, coordinates), "a");
 }

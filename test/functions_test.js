@@ -18,6 +18,7 @@ import {
   hasConnection,
   isUnique,
   isSequence,
+  anywayGet,
 } from "../src/functions.js";
 
 {
@@ -677,4 +678,37 @@ import {
   const [errors, result] = isSequence(board, coordinates);
   assert.equal(errors?.length, 1);
   assert.equal(result, false);
+}
+
+{
+  /** @type {import("../src/models").BoardPanel[][]} */
+  const board = [
+    ["a", "b"],
+    [null, null],
+  ];
+  /** @type {import("../src/models").Coordinate[]} */
+  const coordinates = [];
+  assert.equal(anywayGet(0, 0, board, coordinates), "a");
+}
+
+{
+  /** @type {import("../src/models").BoardPanel[][]} */
+  const board = [
+    ["a", "b"],
+    [null, null],
+  ];
+  /** @type {import("../src/models").Coordinate[]} */
+  const coordinates = [];
+  assert.equal(anywayGet(0, 1, board, coordinates), null);
+}
+
+{
+  /** @type {import("../src/models").BoardPanel[][]} */
+  const board = [
+    ["a", "b"],
+    [null, null],
+  ];
+  /** @type {import("../src/models").Coordinate[]} */
+  const coordinates = [{ x: 0, y: 1, panel: "a" }];
+  assert.equal(anywayGet(0, 1, board, coordinates), "a");
 }
