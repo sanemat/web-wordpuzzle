@@ -11,6 +11,9 @@
  *   playerId: number,
  * }} Resign
  */
+/**
+ * @typedef {string} Panel the panel.
+ */
 
 export function _dummy() {
   return true;

@@ -10,7 +10,6 @@
 /**
  * @typedef {string} Player players' name.
  * @typedef {?string} Version version string.
- * @typedef {string} Panel the panel.
  * @typedef {Panel|null} BoardPanel
  */
 /**
@@ -30,6 +29,7 @@
 /**
  * @typedef {import('./models').Pass} Pass
  * @typedef {import('./models').Resign} Resign
+ * @typedef {import('./models').Panel} Panel
  */
 /**
  * @typedef {{
