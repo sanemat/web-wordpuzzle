@@ -16,6 +16,7 @@
  * @typedef {import('./models').BoardMeta} BoardMeta
  * @typedef {import('./models').Coordinate} Coordinate
  * @typedef {import('./models').Store} Store
+ * @typedef {import('./models').Debug} Debug
  */
 import {
   moveToParam,
@@ -31,7 +32,6 @@ import {
  */
 let store;
 
-/** @typedef {{render: boolean}} Debug */
 /** @type {Debug} debug */
 let debug;
 

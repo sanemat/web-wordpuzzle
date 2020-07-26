@@ -61,6 +61,7 @@
  *   over: boolean,
  * }} Store
  */
+/** @typedef {{render: boolean}} Debug */
 
 export function _dummy() {
   return true;
