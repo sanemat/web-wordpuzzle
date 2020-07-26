@@ -114,6 +114,22 @@ import {
 }
 
 {
+  const query = `as=0|s|a|b&bw=3&bh=4`;
+  const store = buildStore(query);
+  assert.equal(store.acts.length, 1);
+  const act = store.acts[0];
+  assert.equal(act.type, "swap");
+  assert.equal(
+    /** @type {import("../src/script.js").Swap} */ (act).playerId,
+    0
+  );
+  assert.deepEqual(
+    /** @type {import("../src/script.js").Swap} */ (act).panels,
+    ["a", "b"]
+  );
+}
+
+{
   const query = `j=a|b|x|x`;
   const store = buildStore(query);
   assert.equal(store.jar.length, 4);

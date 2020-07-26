@@ -40,7 +40,14 @@
  * }} Resign
  */
 /**
- * @typedef {Move|Pass|Resign} Act
+ * @typedef {{
+ *   type: string,
+ *   playerId: number,
+ *   panels: Panel[],
+ * }} Swap
+ */
+/**
+ * @typedef {Move|Pass|Resign|Swap} Act
  */
 /**
  * @typedef {{
@@ -180,6 +187,14 @@ export function buildStore(query) {
         playerId: parseInt(parts[0], 10),
       };
       acts.push(resign);
+    } else if (parts[1] === "s") {
+      /** @type {Swap} */
+      const swap = {
+        type: "swap",
+        playerId: parseInt(parts[0], 10),
+        panels: parts.slice(2),
+      };
+      acts.push(swap);
     }
   }
   data.acts = acts;
