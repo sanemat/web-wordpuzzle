@@ -117,14 +117,11 @@ import {
   assert.equal(store.acts.length, 1);
   const act = store.acts[0];
   assert.equal(act.type, "swap");
-  assert.equal(
-    /** @type {import("../src/script.js").Swap} */ (act).playerId,
-    0
-  );
-  assert.deepEqual(
-    /** @type {import("../src/script.js").Swap} */ (act).panels,
-    ["a", "b"]
-  );
+  assert.equal(/** @type {import("../src/models").Swap} */ (act).playerId, 0);
+  assert.deepEqual(/** @type {import("../src/models").Swap} */ (act).panels, [
+    "a",
+    "b",
+  ]);
 }
 
 {
@@ -366,7 +363,7 @@ import {
 }
 
 {
-  /** @type {import("../src/script.js").Swap} */
+  /** @type {import("../src/models").Swap} */
   const input = {
     type: "swap",
     playerId: 1,

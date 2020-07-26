@@ -12,6 +12,13 @@
  * }} Resign
  */
 /**
+ * @typedef {{
+ *   type: string,
+ *   playerId: number,
+ *   panels: Panel[],
+ * }} Swap
+ */
+/**
  * @typedef {string} Panel the panel.
  * @typedef {Panel|null} BoardPanel
  */

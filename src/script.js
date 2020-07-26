@@ -28,15 +28,9 @@
 /**
  * @typedef {import('./models').Pass} Pass
  * @typedef {import('./models').Resign} Resign
+ * @typedef {import('./models').Swap} Swap
  * @typedef {import('./models').Panel} Panel
  * @typedef {import('./models').BoardPanel} BoardPanel
- */
-/**
- * @typedef {{
- *   type: string,
- *   playerId: number,
- *   panels: Panel[],
- * }} Swap
  */
 /**
  * @typedef {Move|Pass|Resign|Swap} Act
