@@ -530,3 +530,164 @@ export function buildMove(data) {
   move.coordinates = sortCoordinates(move.coordinates);
   return Promise.resolve([move, used]);
 }
+
+/**
+ * @param {BoardPanel[][]} board
+ * @param {Coordinate[]} coordinates
+ * @promise
+ * @reject {Error}
+ * @fulfill {[Error[]|null, string[]|null]}
+ * @returns {Promise.<[Error[]|null, string[]|null]>}
+ * @throws {Error}
+ */
+export function findCandidates(board, coordinates) {
+  /** @type {Error[]} */
+  const errors = [];
+  const height = board.length;
+  if (height === 0) {
+    errors.push(new Error("require height"));
+    return Promise.resolve([errors, null]);
+  }
+  const width = board[0].length;
+  if (width === 0) {
+    errors.push(new Error("require width"));
+    return Promise.resolve([errors, null]);
+  }
+
+  if (coordinates.length === 0) {
+    return Promise.resolve([null, null]);
+  }
+
+  /** @type {string[]} */
+  const results = [];
+
+  for (let i = 0; i <= height - 1; i++) {
+    const some = coordinates.some((coordinate) => {
+      return coordinate.y === i;
+    });
+    if (!some) {
+      continue;
+    }
+    let start = coordinates[0].x;
+    let end = coordinates[coordinates.length - 1].x;
+    for (;;) {
+      /** @type {boolean} */
+      let cond;
+      try {
+        cond =
+          start - 1 < 0 || anywayGet(start - 1, i, board, coordinates) === null;
+      } catch (e) {
+        errors.push(e);
+        return Promise.resolve([errors, null]);
+      }
+      if (cond) {
+        break;
+      }
+      start--;
+    }
+    for (;;) {
+      /** @type {boolean} */
+      let cond;
+      try {
+        cond =
+          end + 1 > width - 1 ||
+          anywayGet(end + 1, i, board, coordinates) === null;
+      } catch (e) {
+        errors.push(e);
+        return Promise.resolve([errors, null]);
+      }
+      if (cond) {
+        break;
+      }
+      end++;
+    }
+    if (end - start <= 0) {
+      continue;
+    }
+    /** @type {Panel[]} panels */
+    let panels = [];
+    for (let j = start; j <= end; j++) {
+      /** @type {BoardPanel} */
+      let target;
+      try {
+        target = anywayGet(j, i, board, coordinates);
+      } catch (e) {
+        errors.push(e);
+        return Promise.resolve([errors, null]);
+      }
+      if (target) {
+        panels.push(target);
+      } else {
+        errors.push(new Error(`Empty panel x:${j}, y: ${i}`));
+      }
+    }
+    results.push(panels.join(""));
+  }
+
+  for (let i = 0; i <= width - 1; i++) {
+    const some = coordinates.some((coordinate) => {
+      return coordinate.x === i;
+    });
+    if (!some) {
+      continue;
+    }
+    let start = coordinates[0].y;
+    let end = coordinates[coordinates.length - 1].y;
+    for (;;) {
+      /** @type {boolean} */
+      let cond;
+      try {
+        cond =
+          start - 1 < 0 || anywayGet(i, start - 1, board, coordinates) === null;
+      } catch (e) {
+        errors.push(e);
+        return Promise.resolve([errors, null]);
+      }
+      if (cond) {
+        break;
+      }
+      start--;
+    }
+    for (;;) {
+      /** @type {boolean} */
+      let cond;
+      try {
+        cond =
+          end + 1 > height - 1 ||
+          anywayGet(i, end + 1, board, coordinates) === null;
+      } catch (e) {
+        errors.push(e);
+        return Promise.resolve([errors, null]);
+      }
+      if (cond) {
+        break;
+      }
+      end++;
+    }
+    if (end - start <= 0) {
+      continue;
+    }
+    /** @type {Panel[]} panels */
+    let panels = [];
+    for (let j = start; j <= end; j++) {
+      /** @type {BoardPanel} */
+      let target;
+      try {
+        target = anywayGet(i, j, board, coordinates);
+      } catch (e) {
+        errors.push(e);
+        return Promise.resolve([errors, null]);
+      }
+      if (target) {
+        panels.push(target);
+      } else {
+        errors.push(new Error(`Empty panel x: ${i}, y: ${j}`));
+      }
+    }
+    results.push(panels.join(""));
+  }
+
+  return errors.length === 0
+    ? Promise.resolve([null, results])
+    : Promise.resolve([errors, null]);
+}
