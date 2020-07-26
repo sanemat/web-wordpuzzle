@@ -4,7 +4,7 @@ import { strict as assert } from "assert";
 import { passToParam, resignToParam } from "../src/functions.js";
 
 {
-  /** @type {import("../src/functions").Pass} */
+  /** @type {import("../src/models").Pass} */
   const input = {
     type: "pass",
     playerId: 0,
@@ -14,7 +14,7 @@ import { passToParam, resignToParam } from "../src/functions.js";
 }
 
 {
-  /** @type {import("../src/functions").Resign} */
+  /** @type {import("../src/models").Resign} */
   const input = {
     type: "resign",
     playerId: 0,
