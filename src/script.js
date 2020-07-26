@@ -411,6 +411,50 @@ function renderPlayArea() {
  * @fulfill {Boolean}
  * @returns {Promise.<Boolean>}
  */
+function showResignArea() {
+  const resignArea = document.body.querySelector(".js-resign-area");
+  if (!resignArea || !(resignArea instanceof HTMLElement)) {
+    return Promise.reject(new Error("no .js-resign-area"));
+  }
+  resignArea.style.display = "block";
+  return Promise.resolve(true);
+}
+
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {Boolean}
+ * @returns {Promise.<Boolean>}
+ */
+function hideResignArea() {
+  const resignArea = document.body.querySelector(".js-resign-area");
+  if (!resignArea || !(resignArea instanceof HTMLElement)) {
+    return Promise.reject(new Error("no .js-resign-area"));
+  }
+  resignArea.style.display = "none";
+  return Promise.resolve(true);
+}
+
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {Boolean}
+ * @returns {Promise.<Boolean>}
+ */
+function renderResignArea() {
+  if (store.moved || store.over) {
+    return hideResignArea();
+  } else {
+    return showResignArea();
+  }
+}
+
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {Boolean}
+ * @returns {Promise.<Boolean>}
+ */
 function hidePassArea() {
   const passArea = document.body.querySelector(".js-pass-area");
   if (!passArea || !(passArea instanceof HTMLElement)) {
@@ -574,6 +618,7 @@ function render() {
     renderNextArea(),
     renderPassArea(),
     renderOverArea(),
+    renderResignArea(),
   ]);
 }
 
@@ -1215,6 +1260,24 @@ async function playAction(ev) {
  * @fulfill {Boolean}
  * @returns {Promise.<Boolean>}
  */
+async function resignAction() {
+  console.log("resign!");
+  const params = new URLSearchParams(location.search);
+
+  store.moved = true;
+  params.set("md", "1");
+
+  window.history.pushState({}, "", `${location.pathname}?${params}`);
+  console.log(store);
+  return render();
+}
+
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {Boolean}
+ * @returns {Promise.<Boolean>}
+ */
 async function passAction() {
   console.log("pass!");
   const params = new URLSearchParams(location.search);
@@ -1333,5 +1396,9 @@ async function loadDictionary() {
   const pass = document.body.querySelector(".js-pass");
   if (pass) {
     pass.addEventListener("click", passAction);
+  }
+  const resign = document.body.querySelector(".js-resign");
+  if (resign) {
+    resign.addEventListener("click", resignAction);
   }
 })();
