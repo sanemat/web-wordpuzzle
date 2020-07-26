@@ -30,6 +30,7 @@ import {
   playerIdFrom,
   buildSwap,
   allCandidatesInWordDictionary,
+  connected,
 } from "./functions.js";
 
 /**
@@ -729,46 +730,6 @@ export function isSequence(board, coordinates) {
   }
 
   return errors.length === 0 ? [null, true] : [errors, false];
-}
-
-/**
- * @returns {[Error[]|null, Boolean]}
- * @param {Coordinate} coordinate
- * @param {BoardPanel[][]} board
- */
-export function connected(board, coordinate) {
-  const height = board.length;
-  if (height === 0) {
-    return [[new Error("require height")], false];
-  }
-  const width = board[0].length;
-  if (width === 0) {
-    return [[new Error("require width")], false];
-  }
-
-  // up
-  if (coordinate.y > 0 && board[coordinate.y - 1][coordinate.x] !== null) {
-    return [null, true];
-  }
-  // down
-  if (
-    coordinate.y < height - 1 &&
-    board[coordinate.y + 1][coordinate.x] !== null
-  ) {
-    return [null, true];
-  }
-  // left
-  if (coordinate.x > 0 && board[coordinate.y][coordinate.x - 1] !== null) {
-    return [null, true];
-  }
-  // right
-  if (
-    coordinate.x < width - 1 &&
-    board[coordinate.y][coordinate.x + 1] !== null
-  ) {
-    return [null, true];
-  }
-  return [null, false];
 }
 
 /**

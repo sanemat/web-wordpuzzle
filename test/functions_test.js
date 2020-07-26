@@ -14,6 +14,7 @@ import {
   hasResign,
   buildSwap,
   allCandidatesInWordDictionary,
+  connected,
 } from "../src/functions.js";
 
 {
@@ -451,4 +452,73 @@ import {
       assert.fail("unreachable");
     }
   })();
+}
+
+{
+  /** @type {import("../src/models").BoardPanel[][]} */
+  const board = [
+    [null, null, null],
+    [null, "x", null],
+    [null, null, null],
+  ];
+  /** @type {import("../src/models").Coordinate} */
+  const coordinate = { x: 0, y: 0, panel: "a" };
+  const [, result] = connected(board, coordinate);
+  assert.equal(result, false);
+}
+
+{
+  // up
+  /** @type {import("../src/models").BoardPanel[][]} */
+  const board = [
+    [null, null, null],
+    [null, "x", null],
+    [null, null, null],
+  ];
+  /** @type {import("../src/models").Coordinate} */
+  const coordinate = { x: 1, y: 2, panel: "a" };
+  const [, result] = connected(board, coordinate);
+  assert.equal(result, true);
+}
+
+{
+  // down
+  /** @type {import("../src/models").BoardPanel[][]} */
+  const board = [
+    [null, null, null],
+    [null, "x", null],
+    [null, null, null],
+  ];
+  /** @type {import("../src/models").Coordinate} */
+  const coordinate = { x: 1, y: 0, panel: "a" };
+  const [, result] = connected(board, coordinate);
+  assert.equal(result, true);
+}
+
+{
+  // left
+  /** @type {import("../src/models").BoardPanel[][]} */
+  const board = [
+    [null, null, null],
+    [null, "x", null],
+    [null, null, null],
+  ];
+  /** @type {import("../src/models").Coordinate} */
+  const coordinate = { x: 2, y: 1, panel: "a" };
+  const [, result] = connected(board, coordinate);
+  assert.equal(result, true);
+}
+
+{
+  // right
+  /** @type {import("../src/models").BoardPanel[][]} */
+  const board = [
+    [null, null, null],
+    [null, "x", null],
+    [null, null, null],
+  ];
+  /** @type {import("../src/models").Coordinate} */
+  const coordinate = { x: 0, y: 1, panel: "a" };
+  const [, result] = connected(board, coordinate);
+  assert.equal(result, true);
 }
