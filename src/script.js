@@ -606,6 +606,50 @@ function renderNextArea() {
 /**
  * @promise
  * @reject {Error}
+ * @fulfill {Boolean}
+ * @returns {Promise.<Boolean>}
+ */
+function hideSwapArea() {
+  const swapArea = document.body.querySelector(".js-swap-area");
+  if (!swapArea || !(swapArea instanceof HTMLElement)) {
+    return Promise.reject(new Error("no .js-swap-area"));
+  }
+  swapArea.style.display = "none";
+  return Promise.resolve(true);
+}
+
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {Boolean}
+ * @returns {Promise.<Boolean>}
+ */
+function showSwapArea() {
+  const swapArea = document.body.querySelector(".js-swap-area");
+  if (!swapArea || !(swapArea instanceof HTMLElement)) {
+    return Promise.reject(new Error("no .js-swap-area"));
+  }
+  swapArea.style.display = "block";
+  return Promise.resolve(true);
+}
+
+/**
+ * @promise
+ * @reject {Error}
+ * @fulfill {Boolean}
+ * @returns {Promise.<Boolean>}
+ */
+function renderSwapArea() {
+  if (store.moved || store.over) {
+    return hideSwapArea();
+  } else {
+    return showSwapArea();
+  }
+}
+
+/**
+ * @promise
+ * @reject {Error}
  * @returns {Promise.<any>}
  */
 function render() {
@@ -616,6 +660,7 @@ function render() {
     renderGame(),
     renderPlayArea(),
     renderNextArea(),
+    renderSwapArea(),
     renderPassArea(),
     renderOverArea(),
     renderResignArea(),
