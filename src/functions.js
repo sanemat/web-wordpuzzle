@@ -1,16 +1,8 @@
 // @ts-check
 
 /**
- * @typedef {{
- *   type: string,
- *   playerId: number,
- * }} Pass
- */
-/**
- * @typedef {{
- *   type: string,
- *   playerId: number,
- * }} Resign
+ * @typedef {import('./models').Pass} Pass
+ * @typedef {import('./models').Resign} Resign
  */
 
 /**

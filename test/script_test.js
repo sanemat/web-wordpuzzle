@@ -108,10 +108,7 @@ import {
   assert.equal(store.acts.length, 1);
   const act = store.acts[0];
   assert.equal(act.type, "resign");
-  assert.equal(
-    /** @type {import("../src/script.js").Resign} */ (act).playerId,
-    0
-  );
+  assert.equal(/** @type {import("../src/models").Resign} */ (act).playerId, 0);
 }
 
 {

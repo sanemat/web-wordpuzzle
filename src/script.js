@@ -28,8 +28,8 @@
  * }} Move
  */
 /**
- * @typedef {import('./functions').Pass} Pass
- * @typedef {import('./functions').Resign} Resign
+ * @typedef {import('./models').Pass} Pass
+ * @typedef {import('./models').Resign} Resign
  */
 /**
  * @typedef {{
