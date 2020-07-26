@@ -20,6 +20,7 @@ import {
   resignToParam,
   hasResign,
   filterSwap,
+  buildSwap,
 } from "../src/script.js";
 
 {
@@ -236,6 +237,27 @@ import {
   ];
   (async () => {
     assert.deepEqual(await filterSwap(input), expected);
+  })();
+}
+
+{
+  const input = [
+    ["playerId", "1"],
+    ["handId", "0"],
+    ["panel", "x"],
+    ["swap", "1"],
+  ];
+  /** @type {import("../src/script.js").SwapOpe} */
+  const expected = [
+    {
+      type: "swap",
+      playerId: 1,
+      panels: ["x"],
+    },
+    [0],
+  ];
+  (async () => {
+    assert.deepEqual(await buildSwap(input), expected);
   })();
 }
 
