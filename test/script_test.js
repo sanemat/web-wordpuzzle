@@ -16,7 +16,6 @@ import {
   hasConnection,
   allCandidatesInWordDictionary,
   passTwice,
-  resignToParam,
   hasResign,
   filterSwap,
   buildSwap,
@@ -367,16 +366,6 @@ import {
   (async () => {
     assert.deepEqual(await buildMove(input), expected);
   })();
-}
-
-{
-  /** @type {import("../src/script.js").Resign} */
-  const input = {
-    type: "resign",
-    playerId: 0,
-  };
-  const expected = "0|r";
-  assert.equal(resignToParam(input), expected);
 }
 
 {

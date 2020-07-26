@@ -6,6 +6,12 @@
  *   playerId: number,
  * }} Pass
  */
+/**
+ * @typedef {{
+ *   type: string,
+ *   playerId: number,
+ * }} Resign
+ */
 
 /**
  * @returns {string}
@@ -17,5 +23,18 @@ export function passToParam(pass) {
   const r = [];
   r.push(pass.playerId.toString());
   r.push("p");
+  return r.join("|");
+}
+
+/**
+ * @returns {string}
+ * @param {Resign} resign
+ * @throws {Error}
+ */
+export function resignToParam(resign) {
+  /** @type {string[]} */
+  const r = [];
+  r.push(resign.playerId.toString());
+  r.push("r");
   return r.join("|");
 }

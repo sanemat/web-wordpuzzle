@@ -29,12 +29,7 @@
  */
 /**
  * @typedef {import('./functions').Pass} Pass
- */
-/**
- * @typedef {{
- *   type: string,
- *   playerId: number,
- * }} Resign
+ * @typedef {import('./functions').Resign} Resign
  */
 /**
  * @typedef {{
@@ -60,7 +55,7 @@
  *   over: boolean,
  * }} Store
  */
-import { passToParam } from "./functions.js";
+import { passToParam, resignToParam } from "./functions.js";
 
 /**
  * @type {Store} store
@@ -1304,19 +1299,6 @@ export function moveToParam(move) {
     r.push(c.y.toString());
     r.push(c.panel);
   }
-  return r.join("|");
-}
-
-/**
- * @returns {string}
- * @param {Resign} resign
- * @throws {Error}
- */
-export function resignToParam(resign) {
-  /** @type {string[]} */
-  const r = [];
-  r.push(resign.playerId.toString());
-  r.push("r");
   return r.join("|");
 }
 
