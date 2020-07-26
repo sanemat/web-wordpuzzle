@@ -17,7 +17,7 @@
  * @typedef {import('./models').Coordinate} Coordinate
  * @typedef {import('./models').Store} Store
  */
-import { passToParam, resignToParam } from "./functions.js";
+import { passToParam, resignToParam, swapToParam } from "./functions.js";
 
 /**
  * @type {Store} store
@@ -1257,20 +1257,6 @@ export function moveToParam(move) {
     r.push(c.y.toString());
     r.push(c.panel);
   }
-  return r.join("|");
-}
-
-/**
- * @returns {string}
- * @param {Swap} swap
- * @throws {Error}
- */
-export function swapToParam(swap) {
-  /** @type {string[]} */
-  let r = [];
-  r.push(swap.playerId.toString());
-  r.push("s");
-  r = r.concat(swap.panels);
   return r.join("|");
 }
 

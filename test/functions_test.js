@@ -1,7 +1,7 @@
 // @ts-check
 
 import { strict as assert } from "assert";
-import { passToParam, resignToParam } from "../src/functions.js";
+import { passToParam, resignToParam, swapToParam } from "../src/functions.js";
 
 {
   /** @type {import("../src/models").Pass} */
@@ -21,4 +21,15 @@ import { passToParam, resignToParam } from "../src/functions.js";
   };
   const expected = "0|r";
   assert.equal(resignToParam(input), expected);
+}
+
+{
+  /** @type {import("../src/models").Swap} */
+  const input = {
+    type: "swap",
+    playerId: 1,
+    panels: ["a", "b"],
+  };
+  const expected = "1|s|a|b";
+  assert.equal(swapToParam(input), expected);
 }

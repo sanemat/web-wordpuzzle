@@ -3,6 +3,7 @@
 /**
  * @typedef {import('./models').Pass} Pass
  * @typedef {import('./models').Resign} Resign
+ * @typedef {import('./models').Swap} Swap
  */
 
 /**
@@ -28,5 +29,19 @@ export function resignToParam(resign) {
   const r = [];
   r.push(resign.playerId.toString());
   r.push("r");
+  return r.join("|");
+}
+
+/**
+ * @returns {string}
+ * @param {Swap} swap
+ * @throws {Error}
+ */
+export function swapToParam(swap) {
+  /** @type {string[]} */
+  let r = [];
+  r.push(swap.playerId.toString());
+  r.push("s");
+  r = r.concat(swap.panels);
   return r.join("|");
 }

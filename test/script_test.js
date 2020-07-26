@@ -19,7 +19,6 @@ import {
   hasResign,
   filterSwap,
   buildSwap,
-  swapToParam,
 } from "../src/script.js";
 
 {
@@ -351,17 +350,6 @@ import {
   (async () => {
     assert.deepEqual(await buildMove(input), expected);
   })();
-}
-
-{
-  /** @type {import("../src/models").Swap} */
-  const input = {
-    type: "swap",
-    playerId: 1,
-    panels: ["a", "b"],
-  };
-  const expected = "1|s|a|b";
-  assert.equal(swapToParam(input), expected);
 }
 
 {
