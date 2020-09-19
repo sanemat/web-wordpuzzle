@@ -11,7 +11,7 @@
     "@typescript-eslint/eslint-plugin": "^4.0.0",
     "@typescript-eslint/parser": "^3.10.1",
     "bulma": "^0.9.0",
-    "eslint": "^7.8.1",
+    "eslint": "^7.9.0",
     "prettier": "^2.1.1",
     "serve": "^11.3.2",
     "type-coverage": "^2.13.0",
