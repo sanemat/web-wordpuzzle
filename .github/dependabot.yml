@@ -6,15 +6,6 @@ updates:
     interval: daily
     time: "22:00"
   open-pull-requests-limit: 10
-  ignore:
-  - dependency-name: type-coverage
-    versions:
-    - 2.16.1
-    - 2.17.1
-  - dependency-name: "@types/node"
-    versions:
-    - 14.14.26
-    - 14.14.29
 - package-ecosystem: gitsubmodule
   directory: "/"
   schedule:
