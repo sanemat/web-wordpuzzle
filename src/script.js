@@ -683,7 +683,7 @@ async function playAction(ev) {
     window.history.pushState({}, "", `${location.pathname}?${params}`);
     console.log(store);
     return render();
-  } catch (/** @type {Error|string} */ e) {
+  } catch (e) {
     return Promise.reject(e);
   }
 }
@@ -841,7 +841,7 @@ async function swapAction(ev) {
     window.history.pushState({}, "", `${location.pathname}?${params}`);
     console.log(store);
     return render();
-  } catch (/** @type {Error|string} */ e) {
+  } catch (e) {
     return Promise.reject(e);
   }
 }
@@ -869,14 +869,14 @@ async function loadDictionary() {
       await initialize();
       console.log(store);
       await render();
-    } catch (/** @type {Error|string} */ err) {
+    } catch (err) {
       console.error(err);
     }
   });
   window.addEventListener("load", async () => {
     try {
       await loadDictionary();
-    } catch (/** @type {Error|string} */ err) {
+    } catch (err) {
       console.error(err);
     }
   });
