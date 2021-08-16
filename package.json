@@ -8,7 +8,7 @@
   },
   "devDependencies": {
     "@types/node": "^16.4.13",
-    "@typescript-eslint/eslint-plugin": "^4.29.1",
+    "@typescript-eslint/eslint-plugin": "^4.29.2",
     "@typescript-eslint/parser": "^4.29.1",
     "bulma": "^0.9.3",
     "eslint": "^7.32.0",
