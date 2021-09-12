@@ -577,7 +577,9 @@ export function findCandidates(board, coordinates) {
         cond =
           start - 1 < 0 || anywayGet(start - 1, i, board, coordinates) === null;
       } catch (e) {
-        errors.push(e);
+        if (e instanceof Error) {
+          errors.push(e);
+        }
         return Promise.resolve([errors, null]);
       }
       if (cond) {
@@ -593,7 +595,9 @@ export function findCandidates(board, coordinates) {
           end + 1 > width - 1 ||
           anywayGet(end + 1, i, board, coordinates) === null;
       } catch (e) {
-        errors.push(e);
+        if (e instanceof Error) {
+          errors.push(e);
+        }
         return Promise.resolve([errors, null]);
       }
       if (cond) {
@@ -612,7 +616,9 @@ export function findCandidates(board, coordinates) {
       try {
         target = anywayGet(j, i, board, coordinates);
       } catch (e) {
-        errors.push(e);
+        if (e instanceof Error) {
+          errors.push(e);
+        }
         return Promise.resolve([errors, null]);
       }
       if (target) {
@@ -640,7 +646,9 @@ export function findCandidates(board, coordinates) {
         cond =
           start - 1 < 0 || anywayGet(i, start - 1, board, coordinates) === null;
       } catch (e) {
-        errors.push(e);
+        if (e instanceof Error) {
+          errors.push(e);
+        }
         return Promise.resolve([errors, null]);
       }
       if (cond) {
@@ -656,7 +664,9 @@ export function findCandidates(board, coordinates) {
           end + 1 > height - 1 ||
           anywayGet(i, end + 1, board, coordinates) === null;
       } catch (e) {
-        errors.push(e);
+        if (e instanceof Error) {
+          errors.push(e);
+        }
         return Promise.resolve([errors, null]);
       }
       if (cond) {
@@ -675,7 +685,9 @@ export function findCandidates(board, coordinates) {
       try {
         target = anywayGet(i, j, board, coordinates);
       } catch (e) {
-        errors.push(e);
+        if (e instanceof Error) {
+          errors.push(e);
+        }
         return Promise.resolve([errors, null]);
       }
       if (target) {
