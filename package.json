@@ -7,7 +7,7 @@
     "url": "https://github.com/sanemat/web-wordpuzzle/issues"
   },
   "devDependencies": {
-    "@types/node": "^20.2.1",
+    "@types/node": "^20.2.4",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
     "bulma": "^0.9.3",
