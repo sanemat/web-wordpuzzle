@@ -12,7 +12,7 @@
     "@typescript-eslint/parser": "^4.33.0",
     "bulma": "^0.9.3",
     "eslint": "^7.32.0",
-    "prettier": "^2.8.8",
+    "prettier": "^3.0.0",
     "serve": "^14.2.0",
     "type-coverage": "^2.25.3",
     "typescript": "^5.0.4"
